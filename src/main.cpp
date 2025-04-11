@@ -1,21 +1,29 @@
-#include <SFML/Graphics.hpp>
+#include "../include/const.h"
+#include "../include/handler.h"
+using namespace sf;
 
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({1920u, 1080u}), "CMake SFML Project");
-    window.setFramerateLimit(144);
+    // Set up the window
+    auto window = sf::RenderWindow(sf::VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), TITLE);
+    window.setFramerateLimit(MAX_FPS); // Limit frame rate
+    bool fullscreen = false; // Fullscreen mode flag
+    Vector2f last_window_size = {SCREEN_WIDTH, SCREEN_HEIGHT}; // Last window size
 
     while (window.isOpen())
     {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-            {
-                window.close();
-            }
-        }
 
+        // Handle events
+        window.handleEvents(
+            [&](const Event::Closed& event) { window.close(); }, // close the window
+            [&window, &last_window_size](const Event::Resized& event) { handle_resize(event, window, last_window_size); }, // resize the window
+            [&window, &fullscreen](const Event::KeyPressed& event) { handle_fullscreen(event, window, fullscreen); } // toggle fullscreen
+        );
+
+        // Clear the window
         window.clear();
+
+        // Display the window contents
         window.display();
     }
 }
