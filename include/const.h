@@ -1,7 +1,12 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <iostream>
 
 const std::string TITLE = "SurvivOps"; // Title of the game
+
+const std::string ICON_PATH = "assets/icon.png"; // Path to the game icon
 
 inline constexpr int MAX_FPS = 60; // Frames per second
 

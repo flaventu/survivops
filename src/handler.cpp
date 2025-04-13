@@ -22,39 +22,22 @@ void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vec
         (new_aspect < ASPECT) ? ws = {ws.x,static_cast<unsigned>(ws.x/ASPECT)} : ws = {static_cast<unsigned>(ws.y*ASPECT),ws.y};
 
         // set the last size of the window to the new size
-        last_window_size.x = ws.x;
-        last_window_size.y = ws.y;
+        last_window_size = {static_cast<float>(ws.x), static_cast<float>(ws.y)};
 
         // set the new size of the window
         window.setSize(ws);
     }
 }
 
-void handle_fullscreen(const Event::KeyPressed& key, sf::RenderWindow& window, bool& fullscreen)
+void handle(const Event::KeyPressed& key, GameState& game_state)
 {
-
-    // Check if the size of the desktop has an aspect ratio of 16:9
-    if(static_cast<float>(DESKTOP.size.x) / static_cast<float>(DESKTOP.size.y) == ASPECT)
+    // Handle key pressed events
+    switch (key.code)
     {
-
-        // if that size has an aspect ratio of 16:9, check if the key pressed is F11
-        if(key.code == Keyboard::Key::F11)
-        {
-            // if the window is in fullscreen mode, create a window with the original size
-            if (fullscreen)
-            {
-                window.create(VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), TITLE, Style::Default);
-                window.setFramerateLimit(MAX_FPS); // Limit frame rate to FPS
-                fullscreen = false; // Reset fullscreen mode flag
-            }
-
-            // else create a fullscreen window
-            else
-            {
-                window.create(DESKTOP, TITLE, Style::None);
-                window.setFramerateLimit(MAX_FPS); // Limit frame rate to FPS
-                fullscreen = true; // Set fullscreen mode flag
-            }
-        }
+        case Keyboard::Key::Enter:
+            game_state.set_state(RUNNING); // Set the game state to RUNNING
+            break;
+        default:
+            break;
     }
 }
