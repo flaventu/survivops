@@ -2,7 +2,7 @@
 #include "../include/handler.h"
 using namespace sf;
 
-void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vector2f& last_window_size)
+void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vector2f& last_window_size, GameState& game_state)
 {   
     // Get the new size of the window
     Vector2u ws = resized.size;
@@ -24,6 +24,10 @@ void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vec
         // set the last size of the window to the new size
         last_window_size = {static_cast<float>(ws.x), static_cast<float>(ws.y)};
 
+        // set the new view size to the new size of the window
+        View new_view = (View(game_state.get_view().getCenter(), {static_cast<float>(ws.x), static_cast<float>(ws.y)})); // Calculate the new view size
+        game_state.set_view(new_view); // Set the new view size
+
         // set the new size of the window
         window.setSize(ws);
     }
@@ -34,10 +38,54 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
     // Handle key pressed events
     switch (key.code)
     {
+
         case Keyboard::Key::Enter:
-            game_state.set_state(RUNNING); // Set the game state to RUNNING
+
+            switch (game_state.get_state())
+            {
+                case INIT:
+                    game_state.set_state(RUNNING); // Set the game state to RUNNING
+                break;
+            }
             break;
-        default:
+
+        case Keyboard::Key::W:
+                game_state.move_directions[UP] = true; // Set the UP direction to true
+            break;
+
+        case Keyboard::Key::S:
+                game_state.move_directions[DOWN] = true; // Set the UP direction to true
+            break;
+
+        case Keyboard::Key::A:
+                game_state.move_directions[LEFT] = true; // Set the UP direction to true
+            break;
+
+        case Keyboard::Key::D:
+                game_state.move_directions[RIGHT] = true; // Set the UP direction to true
+            break;
+    }
+}
+
+void handle(const Event::KeyReleased& key, GameState& game_state)
+{
+    // Handle key released events
+    switch (key.code)
+    {
+        case Keyboard::Key::W:
+                game_state.move_directions[UP] = false; // Set the UP direction to false
+            break;
+
+        case Keyboard::Key::S:
+                game_state.move_directions[DOWN] = false; // Set the UP direction to false
+            break;
+
+        case Keyboard::Key::A:
+                game_state.move_directions[LEFT] = false; // Set the UP direction to false
+            break;
+
+        case Keyboard::Key::D:
+                game_state.move_directions[RIGHT] = false; // Set the UP direction to false
             break;
     }
 }

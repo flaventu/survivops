@@ -1,6 +1,7 @@
 #include "../include/const.h"
 #include "../include/handler.h"
 #include "../include/state.h"
+#include <iostream>
 using namespace sf;
 
 int main()
@@ -21,7 +22,6 @@ int main()
 
     }
 
-    bool fullscreen = false; // Fullscreen mode flag
     Vector2f last_window_size = {SCREEN_WIDTH, SCREEN_HEIGHT}; // Last window size
 
     GameState game_state(window); // Game state object
@@ -33,7 +33,7 @@ int main()
         // Handle events
         window.handleEvents(
             [&](const Event::Closed& event) { window.close(); }, // close the window
-            [&](const Event::Resized& event) { handle_resize(event, window, last_window_size); }, // resize the window
+            [&](const Event::Resized& event) { handle_resize(event, window, last_window_size, game_state); }, // resize the window
             [&](const auto& event) { handle(event, game_state); } // handle other events
         );
         
@@ -51,6 +51,7 @@ int main()
             window.display();
 
         } catch (const Exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl; // Print the error message
             return EXIT_FAILURE; // Exit if there is an error
         }
     }

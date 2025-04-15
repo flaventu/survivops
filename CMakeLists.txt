@@ -12,6 +12,6 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(SurvivOps src/main.cpp src/handler.cpp src/state.cpp)
+add_executable(SurvivOps src/main.cpp src/handler.cpp src/state.cpp src/player.cpp)
 target_compile_features(SurvivOps PRIVATE cxx_std_17)
 target_link_libraries(SurvivOps PRIVATE SFML::Graphics)
