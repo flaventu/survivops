@@ -1,8 +1,8 @@
-#include "../include/const.h"
-#include "../include/handler.h"
+#include "../include/const.hpp"
+#include "../include/handler.hpp"
 using namespace sf;
 
-void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vector2f& last_window_size, GameState& game_state)
+void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2u& last_window_size)
 {   
     // Get the new size of the window
     Vector2u ws = resized.size;
@@ -15,18 +15,18 @@ void handle_resize (const Event::Resized& resized, sf::RenderWindow& window, Vec
         window.setSize({MIN_SCREEN_WIDTH, MIN_SCREEN_HEIGHT});
     else
     {
+        // casting to float
+        float x_float = static_cast<float>(ws.x);
+        float y_float = static_cast<float>(ws.y);
+        
         // calculate the new aspect ratio 
-        float new_aspect = static_cast<float>(ws.x)/static_cast<float>(ws.y);
+        float new_aspect = x_float/y_float;
 
         // adjust the size of the window to maintain the aspect ratio (16:9)
         (new_aspect < ASPECT) ? ws = {ws.x,static_cast<unsigned>(ws.x/ASPECT)} : ws = {static_cast<unsigned>(ws.y*ASPECT),ws.y};
 
         // set the last size of the window to the new size
-        last_window_size = {static_cast<float>(ws.x), static_cast<float>(ws.y)};
-
-        // set the new view size to the new size of the window
-        View new_view = (View(game_state.get_view().getCenter(), {static_cast<float>(ws.x), static_cast<float>(ws.y)})); // Calculate the new view size
-        game_state.set_view(new_view); // Set the new view size
+        last_window_size = {ws.x, ws.y};
 
         // set the new size of the window
         window.setSize(ws);
