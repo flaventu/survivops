@@ -1,5 +1,6 @@
 #pragma once
 #include "player.hpp"
+#include "tilemap.hpp"
 
 // Game state enum
 enum CURRENT_STATE {
@@ -18,6 +19,7 @@ class GameState
         CURRENT_STATE current_state = INIT; // Current state of the game
         sf::View view; // View for the game
         Player *player; // Player object
+        TileMap *tilemap; // Tilemap object
 
     public:
 

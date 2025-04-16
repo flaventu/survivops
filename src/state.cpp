@@ -3,10 +3,13 @@
 using namespace sf;
 
 
-GameState::GameState() : player(new Player()), view() // Initialize the player and view objects
+GameState::GameState() : player(new Player()), tilemap(new TileMap()) , view() // Initialize the player and view objects
 {
     view.setSize({SCREEN_WIDTH, SCREEN_HEIGHT}); // Set the view size to the screen size
     view.setCenter({0,0}); // Center the view in the window
+
+    if(!tilemap->load("assets/maps/map1.png", {TILE_SIZE, TILE_SIZE}, map1.data(), WORLD_ROWS, WORLD_COLS)) // Load the tilemap
+        throw new Exception("Failed to load tilemap"); // Throw an exception if the tilemap fails to load
 }
 
 void GameState::draw(RenderWindow& window) const
@@ -14,11 +17,11 @@ void GameState::draw(RenderWindow& window) const
     switch (current_state)
     {
         case INIT:
-            // Draw the title sprite (to be implemented)
-            break;
+        // Draw the title sprite (to be implemented)            break;
         case RUNNING:
-                if(player) // Check if the player object is not null
+                if(player && tilemap) // Check if the player object is not null
                 {
+                    window.draw(*tilemap); // Draw the tilemap on the window
                     player->draw(window); // Draw the player sprite on the window
                     window.setView(view); // Set the view for the window
                 }
