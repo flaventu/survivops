@@ -24,7 +24,10 @@ Player::Player()
     } catch (const Exception& e) {
         throw e; // Throw the exception if there is an error loading textures
     }
-    currentTexture = &down1; // Set the current texture to down1
+    playerSprite.setSize({TILE_SIZE, TILE_SIZE}); // Set the size of the player sprite
+    playerSprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f}); // Set the origin of the player sprite to the center
+    playerSprite.setPosition(position); // Set the initial position of the player sprite
+    playerSprite.setTexture(currentTexture); // Set the texture of the player sprite
 
 }
 
@@ -34,7 +37,7 @@ void Player::update(DIRECTIONS direction)
     {
         case UP:
             direction = UP; // Set the direction to UP
-            position.y -= SPEED; // Move the sprite up
+            position.y -= speed; // Move the sprite up
             if(spriteNum == 1)
                 currentTexture = &up1; // Set the texture to up1
             else
@@ -42,7 +45,7 @@ void Player::update(DIRECTIONS direction)
             break;
         case DOWN:
             direction = DOWN; // Set the direction to DOWN
-            position.y += SPEED; // Move the sprite down
+            position.y += speed; // Move the sprite down
             if(spriteNum == 1)
                 currentTexture = &down1; // Set the texture to down1
             else
@@ -50,7 +53,7 @@ void Player::update(DIRECTIONS direction)
             break;
         case LEFT:
             direction = LEFT; // Set the direction to LEFT
-            position.x -= SPEED; // Move the sprite left
+            position.x -= speed; // Move the sprite left
             if(spriteNum == 1)
                 currentTexture = &left1; // Set the texture to left1
             else
@@ -58,7 +61,7 @@ void Player::update(DIRECTIONS direction)
             break;
         case RIGHT:
             direction = RIGHT; // Set the direction to RIGHT
-            position.x += SPEED; // Move the sprite right
+            position.x += speed; // Move the sprite right
             if(spriteNum == 1)
                 currentTexture = &right1; // Set the texture to right1
             else
@@ -73,13 +76,8 @@ void Player::update(DIRECTIONS direction)
         spriteCount = 0; // Reset the sprite count
         spriteNum = (spriteNum == 1) ? 2 : 1; // Toggle between spriteNum 1 and 2 for animation
     }
-}
 
-void Player::draw(RenderWindow& window) const
-{
-    // Create a sprite for the player
-    RectangleShape sprite({TILE_SIZE, TILE_SIZE}); // Create a rectangle shape for the sprite
-    sprite.setPosition(position); // Set the position of the sprite
-    sprite.setTexture(currentTexture); // Set the texture of the sprite
-    window.draw(sprite); // Draw the sprite on the window
+    // Update the player sprite position
+    playerSprite.setPosition(position); // Set the position of the player sprite
+    playerSprite.setTexture(currentTexture); // Set the texture of the player sprite
 }

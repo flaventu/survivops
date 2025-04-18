@@ -1,5 +1,5 @@
 #pragma once
-
+#include <SFML/Graphics.hpp>
 #include "state.hpp"
 
 // Aspect ratio of 16:9

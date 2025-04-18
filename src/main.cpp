@@ -1,6 +1,7 @@
 #include "../include/const.hpp"
 #include "../include/handler.hpp"
 #include "../include/state.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 using namespace sf;
 using namespace std;
