@@ -1,6 +1,7 @@
 #include "tilemap.hpp"
 #include "const.hpp"
 #include <fstream>
+#include <sstream>
 using namespace sf;
 
 bool TileMap::load(const std::filesystem::path& tileset, const std::filesystem::path& map)
