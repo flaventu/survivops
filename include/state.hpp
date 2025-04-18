@@ -1,6 +1,7 @@
 #pragma once
 #include "player.hpp"
 #include "tilemap.hpp"
+#include <SFML/Graphics.hpp>
 
 // Game state enum
 enum CURRENT_STATE {

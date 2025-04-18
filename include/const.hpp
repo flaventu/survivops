@@ -1,6 +1,4 @@
 #pragma once
-
-#include <SFML/Graphics.hpp>
 #include <string>
 
 const std::string TITLE = "SurvivOps"; // Title of the game
@@ -22,8 +20,10 @@ inline constexpr unsigned int MIN_SCREEN_ROWS = 9; // Minimum number of rows on 
 inline constexpr unsigned int MIN_SCREEN_WIDTH = TILE_SIZE * MIN_SCREEN_COLS; // Minimum screen width in pixels (768)
 inline constexpr unsigned int MIN_SCREEN_HEIGHT = TILE_SIZE * MIN_SCREEN_ROWS; // Minimum screen height in pixels (480)
 
-inline constexpr unsigned int WORLD_COLS = 50; // Number of columns in the world
-inline constexpr unsigned int WORLD_ROWS = 50; // Number of rows in the world
-
-inline constexpr unsigned int WORLD_WIDTH = TILE_SIZE * WORLD_COLS; // World width in pixels (2400)
-inline constexpr unsigned int WORLD_HEIGHT = TILE_SIZE * WORLD_ROWS; // World height in pixels (2400)
+enum DIRECTIONS
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+};
