@@ -1,9 +1,9 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "const.hpp"
 #include "state.hpp"
 
-// Aspect ratio of 16:9
-inline constexpr float ASPECT = static_cast<float>(MIN_SCREEN_WIDTH)/static_cast<float>(MIN_SCREEN_HEIGHT);
+// Aspect ratio of 1.5
+inline constexpr float ASPECT = static_cast<float>(SCREEN_WIDTH)/static_cast<float>(SCREEN_HEIGHT);
 
 // Function to handle window resize events
 void handle_resize (const sf::Event::Resized&, sf::RenderWindow&, sf::Vector2u&); // Handle window resize events

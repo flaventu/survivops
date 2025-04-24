@@ -1,5 +1,4 @@
 #include "tilemap.hpp"
-#include "const.hpp"
 #include <fstream>
 #include <sstream>
 using namespace sf;
@@ -116,4 +115,56 @@ bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
 
     file.close();
     return true;
+}
+
+bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float speed) const
+{
+    float leftx = rect.position.x;
+    float rightx = rect.position.x + HITBOX_SIZE;
+    float topy = rect.position.y;
+    float bottomy = rect.position.y + HITBOX_SIZE;
+
+    float leftcol = (leftx  + (mapSize.x / 2.f)) / TILE_SIZE;
+    float rightcol = (rightx + (mapSize.x / 2.f)) / TILE_SIZE;
+    float toprow = (topy   + (mapSize.y / 2.f)) / TILE_SIZE;
+    float bottomrow = (bottomy + (mapSize.y / 2.f)) / TILE_SIZE;
+
+    int tileNum1, tileNum2;
+
+    switch (d)
+    {
+        case UP:
+            toprow = (topy - speed + (mapSize.y / 2.0f)) / TILE_SIZE;
+            if(toprow < 0) return true; // Collision detected with the top edge of the map
+            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
+            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
+            if (isSolid(tileNum1) || isSolid(tileNum2))
+                return true; // Collision detected with solid tile
+            break;
+        case DOWN:
+            bottomrow = (bottomy + speed + (mapSize.y / 2.0f)) / TILE_SIZE;
+            if(bottomrow >= height) return true; // Collision detected with the bottom edge of the map
+            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
+            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
+            if (isSolid(tileNum1) || isSolid(tileNum2))
+                return true; // Collision detected with solid tile
+            break;
+        case LEFT:
+            leftcol = (leftx - speed + (mapSize.x / 2.0f)) / TILE_SIZE;
+            if(leftcol < 0) return true; // Collision detected with the left edge of the map
+            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
+            tileNum2 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
+            if (isSolid(tileNum1) || isSolid(tileNum2))
+                return true; // Collision detected with solid tile
+            break;
+        case RIGHT:
+            rightcol = (rightx + speed + (mapSize.x / 2.0f)) / TILE_SIZE;
+            if(rightcol >= width) return true; // Collision detected with the right edge of the map
+            tileNum1 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
+            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
+            if (isSolid(tileNum1) || isSolid(tileNum2))
+                return true; // Collision detected with solid tile
+            break;
+    }
+    return false; // No collision detected
 }

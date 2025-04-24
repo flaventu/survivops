@@ -1,4 +1,3 @@
-#include "../include/const.hpp"
 #include "../include/handler.hpp"
 using namespace sf;
 
@@ -24,7 +23,7 @@ void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2
         // calculate the new aspect ratio 
         float new_aspect = x_float/y_float;
 
-        // adjust the size of the window to maintain the aspect ratio (16:9)
+        // adjust the size of the window to maintain the aspect ratio 1.5
         (new_aspect < ASPECT) ? ws = {ws.x,static_cast<unsigned>(ws.x/ASPECT)} : ws = {static_cast<unsigned>(ws.y*ASPECT),ws.y};
 
         // set the last size of the window to the new size

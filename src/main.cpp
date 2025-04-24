@@ -1,7 +1,4 @@
-#include "../include/const.hpp"
 #include "../include/handler.hpp"
-#include "../include/state.hpp"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -9,7 +6,7 @@ using namespace std;
 int main()
 {
     // Set up the window
-    RenderWindow window(VideoMode({MIN_SCREEN_WIDTH, MIN_SCREEN_HEIGHT}), TITLE);
+    RenderWindow window(VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), TITLE);
     window.setFramerateLimit(MAX_FPS); // Limit frame rate
 
     try {
@@ -24,7 +21,7 @@ int main()
 
     }
 
-    Vector2u last_window_size({MIN_SCREEN_WIDTH, MIN_SCREEN_HEIGHT}); // Last window size
+    Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
     GameState game_state; // Game state object
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "const.hpp"
 #include <vector>
 
 typedef std::vector<std::vector<int>> MapData; // Type alias for 2D vector of integers
@@ -25,5 +25,5 @@ class TileMap : public sf::Drawable, public sf::Transformable
         bool load(const std::filesystem::path&, const std::filesystem::path&, const int); // Function to load the map from a file
         void update(const sf::View&); // Function to update the tilemap based on the view
         bool isSolid(int tileNum) const { return tileNum >= solidTileNum; } // Function to check if a tile is solid
-   
+        bool collision(const sf::FloatRect&, const DIRECTIONS, float) const; // Function to check for collisions with a hitbox
 };

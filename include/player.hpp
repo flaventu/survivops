@@ -1,9 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "const.hpp"
-
-inline constexpr unsigned int HITBOX_SIZE = TILE_SIZE - 16; // Hitbox size in pixels (32x32)
-inline constexpr unsigned int HITBOX_OFFSET = TILE_SIZE / 2 - HITBOX_SIZE / 2; // Hitbox offset in pixels (8)
+#include "tilemap.hpp"
 
 // Class to handle the player character
 class Player
@@ -26,7 +22,7 @@ class Player
     public:
 
         Player(); // Constructor to initialize the player sprite
-        void update(DIRECTIONS); // Move the player in a direction with a speed and update the sprite
+        void update(const DIRECTIONS, const TileMap&); // Move the player in a direction with a speed and update the sprite
         sf::Vector2f get_position() const { return position; }; // Get the position of the player
 
         void draw(sf::RenderWindow& window) const { window.draw(playerSprite);} // Draw the player sprite on the window
