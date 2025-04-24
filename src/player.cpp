@@ -29,6 +29,9 @@ Player::Player()
     playerSprite.setPosition(position); // Set the initial position of the player sprite
     playerSprite.setTexture(currentTexture); // Set the texture of the player sprite
 
+    playerHitbox.setSize({HITBOX_SIZE,HITBOX_SIZE}); // Set the size of the player hitbox
+    playerHitbox.setOrigin({HITBOX_SIZE / 2.0f, HITBOX_SIZE / 2.0f}); // Set the origin of the player hitbox to the center
+    playerHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the initial position of the player hitbox
 }
 
 void Player::update(DIRECTIONS direction)
@@ -79,5 +82,6 @@ void Player::update(DIRECTIONS direction)
 
     // Update the player sprite position
     playerSprite.setPosition(position); // Set the position of the player sprite
+    playerHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the player hitbox
     playerSprite.setTexture(currentTexture); // Set the texture of the player sprite
 }

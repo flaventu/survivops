@@ -14,6 +14,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         MapData m_tiles; // 2D vector to hold the tile data
         unsigned int width, height; // Width and height of the map in tiles
         sf::Vector2f mapSize; // Size of the map in pixels
+        int solidTileNum; // Tile number for solid tiles (grather or equal than solidTileNum are solid tiles)
         
         bool loadMapFromCSV(const std::filesystem::path&); // Function to load the map from a CSV file
 
@@ -21,7 +22,8 @@ class TileMap : public sf::Drawable, public sf::Transformable
 
     public:
 
-        bool load(const std::filesystem::path&, const std::filesystem::path&); // Function to load the map from a file
+        bool load(const std::filesystem::path&, const std::filesystem::path&, const int); // Function to load the map from a file
         void update(const sf::View&); // Function to update the tilemap based on the view
+        bool isSolid(int tileNum) const { return tileNum >= solidTileNum; } // Function to check if a tile is solid
    
 };

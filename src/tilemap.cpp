@@ -4,7 +4,7 @@
 #include <sstream>
 using namespace sf;
 
-bool TileMap::load(const std::filesystem::path& tileset, const std::filesystem::path& map)
+bool TileMap::load(const std::filesystem::path& tileset, const std::filesystem::path& map, const int solid)
 {
 
     // Load the tileset texture
@@ -17,6 +17,7 @@ bool TileMap::load(const std::filesystem::path& tileset, const std::filesystem::
     width = static_cast<unsigned int>(m_tiles.size()); // Number of columns in the map
     height = static_cast<unsigned int>(m_tiles[0].size()); // Number of rows in the map
     mapSize = sf::Vector2f(width * TILE_SIZE, height * TILE_SIZE); // Size of the map in pixels
+    solidTileNum = solid; // Set the solid tile number
     return true;
 }
 
@@ -50,8 +51,8 @@ void TileMap::update(const sf::View& view)
             float tv = tileNumber / (m_tileset.getSize().x / TILE_SIZE); // Row index in the tileset
 
             // Calculate the position of the tile in the world
-            float x = static_cast<float>(i * TILE_SIZE) - mapSize.x / 2.f;
-            float y = static_cast<float>(j * TILE_SIZE) - mapSize.y / 2.f;
+            float x = static_cast<float>(i * TILE_SIZE) - mapSize.x / 2.f + TILE_SIZE / 2.f;
+            float y = static_cast<float>(j * TILE_SIZE) - mapSize.y / 2.f + TILE_SIZE / 2.f;
 
             // Create two triangles for each tile
             sf::Vertex triangles[6];
@@ -60,12 +61,12 @@ void TileMap::update(const sf::View& view)
             float tilesize = static_cast<float>(TILE_SIZE);
 
             // Set the position and texture coordinates for each vertex
-            triangles[0].position = {x, y};
-            triangles[1].position = {x + tilesize, y};
-            triangles[2].position = {x, y + tilesize};
-            triangles[3].position = {x, y + tilesize};
-            triangles[4].position = {x + tilesize, y};
-            triangles[5].position = {x + tilesize, y + tilesize};
+            triangles[0].position = {x - tilesize / 2.f, y - tilesize / 2.f};
+            triangles[1].position = {x + tilesize / 2.f, y - tilesize / 2.f};
+            triangles[2].position = {x - tilesize / 2.f, y + tilesize / 2.f};
+            triangles[3].position = {x - tilesize / 2.f, y + tilesize / 2.f};
+            triangles[4].position = {x + tilesize / 2.f, y - tilesize / 2.f};
+            triangles[5].position = {x + tilesize / 2.f, y + tilesize / 2.f};
 
             triangles[0].texCoords = {tu * tilesize, tv * tilesize};
             triangles[1].texCoords = {(tu + 1.0f) * tilesize, tv * tilesize};

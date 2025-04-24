@@ -5,10 +5,10 @@ using namespace sf;
 
 GameState::GameState() : player(new Player()), tilemap(new TileMap()) , view() // Initialize the player and view objects
 {
-    view.setSize({SCREEN_WIDTH, SCREEN_HEIGHT}); // Set the view size to the screen size
+    view.setSize({MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT}); // Set the view size to the screen size
     view.setCenter({0,0}); // Center the view in the window
 
-    if(!tilemap->load("assets/maps/map1.png", "assets/maps/map1.csv")) // Load the tilemap
+    if(!tilemap->load("assets/maps/map1.png", "assets/maps/map1.csv",1)) // Load the tilemap
         throw new Exception("Failed to load tilemap"); // Throw an exception if the tilemap fails to load
 }
 

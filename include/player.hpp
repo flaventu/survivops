@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include "const.hpp"
 
+inline constexpr unsigned int HITBOX_SIZE = TILE_SIZE - 16; // Hitbox size in pixels (32x32)
+inline constexpr unsigned int HITBOX_OFFSET = TILE_SIZE / 2 - HITBOX_SIZE / 2; // Hitbox offset in pixels (8)
+
 // Class to handle the player character
 class Player
 {
@@ -13,6 +16,7 @@ class Player
         sf::Vector2f position = {0,0}; // Position of the player
         const float speed = 4; // Speed of the player
         sf::RectangleShape playerSprite; // Rectangle shape for the player sprite
+        sf::RectangleShape playerHitbox; // Rectangle shape for the player hitbox
 
         int spriteCount = 0; // Counter for sprite animation
         int spriteNum = 1; // Number of sprite for animation
@@ -25,5 +29,5 @@ class Player
         void update(DIRECTIONS); // Move the player in a direction with a speed and update the sprite
         sf::Vector2f get_position() const { return position; }; // Get the position of the player
 
-        void draw(sf::RenderWindow& window) const { window.draw(playerSprite); }; // Draw the player sprite on the window
+        void draw(sf::RenderWindow& window) const { window.draw(playerSprite);} // Draw the player sprite on the window
 };

@@ -13,6 +13,8 @@ void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2
     // if the new size is smaller than the minimum size, set it to the minimum size
     if(ws.x < MIN_SCREEN_WIDTH || ws.y < MIN_SCREEN_HEIGHT)
         window.setSize({MIN_SCREEN_WIDTH, MIN_SCREEN_HEIGHT});
+    else if(ws.x > MAX_SCREEN_WIDTH || ws.y > MAX_SCREEN_HEIGHT)
+        window.setSize({MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT});
     else
     {
         // casting to float
