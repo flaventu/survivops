@@ -9,6 +9,9 @@ GameState::GameState() : player(new Player()), tilemap(new TileMap()) , view() /
 
     if(!tilemap->load("../../assets/maps/map1.png", "../../assets/maps/map1.csv",1)) // Load the tilemap
         throw new Exception("Failed to load tilemap"); // Throw an exception if the tilemap fails to load
+
+    if(!tilemap->loadObjects("../../assets/objects/obj_map1.csv")) // Load the objects in the tilemap
+        throw new Exception("Failed to load objects"); // Throw an exception if the objects fail to load
 }
 
 void GameState::draw(RenderWindow& window) const

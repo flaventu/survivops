@@ -38,13 +38,14 @@ void TileMap::update(const sf::View& view)
 
     // Loop through the visible tiles and create the vertex array
     for (int i = startX; i < endX; ++i) {
+        if (i < 0 || i >= static_cast<int>(m_tiles.size())) continue; // Check if the tile index is valid
         for (int j = startY; j < endY; ++j) {
 
-            if (i < 0 || i >= static_cast<int>(m_tiles.size()) || j < 0 || j >= static_cast<int>(m_tiles[i].size()))
-                continue;
+            if (j < 0 || j >= static_cast<int>(m_tiles[i].size())) continue; // Check if the tile index is valid
 
-            // 1D to 2D conversion
+            // Get the tile number from the map data
             int tileNumber = m_tiles[i][j];
+            if (tileNumber < 0) continue; // Skip empty tiles
 
             float tu = tileNumber % (m_tileset.getSize().x / TILE_SIZE); // Column index in the tileset
             float tv = tileNumber / (m_tileset.getSize().x / TILE_SIZE); // Row index in the tileset
@@ -87,6 +88,8 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     states.texture = &m_tileset;
     target.draw(m_vertices, states);
+
+    drawObjects(target); // Draw the objects on the map
 }
 
 bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
@@ -138,7 +141,7 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float spe
             if(toprow < 0) return true; // Collision detected with the top edge of the map
             tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
+            if (isSolid(tileNum1) || isSolid(tileNum2) || containsObjects({static_cast<int>(leftcol), static_cast<int>(toprow)}) || containsObjects({static_cast<int>(rightcol), static_cast<int>(toprow)}))
                 return true; // Collision detected with solid tile
             break;
         case DOWN:
@@ -146,7 +149,7 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float spe
             if(bottomrow >= height) return true; // Collision detected with the bottom edge of the map
             tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
+            if (isSolid(tileNum1) || isSolid(tileNum2) || containsObjects({static_cast<int>(leftcol), static_cast<int>(bottomrow)}) || containsObjects({static_cast<int>(rightcol), static_cast<int>(bottomrow)}))
                 return true; // Collision detected with solid tile
             break;
         case LEFT:
@@ -154,7 +157,7 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float spe
             if(leftcol < 0) return true; // Collision detected with the left edge of the map
             tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
             tileNum2 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
+            if (isSolid(tileNum1) || isSolid(tileNum2) || containsObjects({static_cast<int>(leftcol), static_cast<int>(toprow)}) || containsObjects({static_cast<int>(leftcol), static_cast<int>(bottomrow)}))
                 return true; // Collision detected with solid tile
             break;
         case RIGHT:
@@ -162,9 +165,66 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float spe
             if(rightcol >= width) return true; // Collision detected with the right edge of the map
             tileNum1 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
+            if (isSolid(tileNum1) || isSolid(tileNum2) || containsObjects({static_cast<int>(rightcol), static_cast<int>(toprow)}) || containsObjects({static_cast<int>(rightcol), static_cast<int>(bottomrow)}))
                 return true; // Collision detected with solid tile
             break;
     }
     return false; // No collision detected
+}
+
+bool TileMap::loadObjects(const std::filesystem::path& filePath)
+{
+    std::ifstream file(filePath);
+    if (!file.is_open())
+        return false; // If the file cannot be opened, return false
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::stringstream ss(line);
+        std::string cell;
+
+        // Leggi posizione X, posizione Y, larghezza, altezza e percorso della texture
+        float posX, posY;
+        std::string texturePath;
+
+        std::getline(ss, cell, ',');
+        posX = std::stof(cell);
+        std::getline(ss, cell, ',');
+        posY = std::stof(cell);
+        std::getline(ss, cell, ',');
+        texturePath = cell;
+
+        sf::Texture* texture = new sf::Texture();
+        if (!texture->loadFromFile(texturePath))
+        {
+            delete texture; // Libera la memoria se la texture non può essere caricata
+            continue;
+        }
+        // Crea l'oggetto e aggiungilo al vettore
+        Object* object = new Object(*texture, {((posX * TILE_SIZE) - (mapSize.x / 2.f)), ((posY * TILE_SIZE) - (mapSize.y / 2.f))}, {TILE_SIZE, TILE_SIZE});
+        object->setTiles({posX, posY}); // Set the tile coordinates of the object
+        m_objects.push_back(object);
+    }
+
+    file.close();
+    return true;
+}
+
+void TileMap::drawObjects(sf::RenderTarget& target) const
+{
+    for (const auto& object : m_objects)
+    {
+        target.draw(object->getShape()); // Draw each object in the vector
+    }
+}
+
+bool TileMap::containsObjects(Vector2i tileNums) const
+{
+    for (const auto& object : m_objects)
+    {
+        if (object->getTiles() == tileNums) // Check if the object is in the specified tile
+            return true; // Object found in the tile
+    }
+    return false; // No object found in the tile
 }
