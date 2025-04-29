@@ -47,6 +47,8 @@ void TileMap::update(const sf::View& view)
             int tileNumber = m_tiles[i][j];
             if (tileNumber < 0) continue; // Skip empty tiles
 
+            visibleObjects({i, j}); // Check if the tile has objects
+
             float tu = tileNumber % (m_tileset.getSize().x / TILE_SIZE); // Column index in the tileset
             float tv = tileNumber / (m_tileset.getSize().x / TILE_SIZE); // Row index in the tileset
 
@@ -120,7 +122,7 @@ bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
     return true;
 }
 
-bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, float speed) const
+bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const float speed) const
 {
     float leftx = rect.position.x;
     float rightx = rect.position.x + HITBOX_SIZE;
@@ -204,7 +206,7 @@ bool TileMap::loadObjects(const std::filesystem::path& filePath)
         // Crea l'oggetto e aggiungilo al vettore
         Object* object = new Object(*texture, {((posX * TILE_SIZE) - (mapSize.x / 2.f)), ((posY * TILE_SIZE) - (mapSize.y / 2.f))}, {TILE_SIZE, TILE_SIZE});
         object->setTiles({posX, posY}); // Set the tile coordinates of the object
-        m_objects.push_back(object);
+        m_objects[{posX, posY}] = object;
     }
 
     file.close();
@@ -215,16 +217,15 @@ void TileMap::drawObjects(sf::RenderTarget& target) const
 {
     for (const auto& object : m_objects)
     {
-        target.draw(object->getShape()); // Draw each object in the vector
+        if (!object.second->isVisible()) continue; // Skip not visible objects
+        target.draw(object.second->getShape()); // Draw each object in the vector
+        // reset the visibility of the object to false
+        object.second->setVisible(false); // Reset the visibility of the object to false
     }
 }
 
-bool TileMap::containsObjects(Vector2i tileNums) const
+void TileMap::visibleObjects(const Vector2i tileNums) const
 {
-    for (const auto& object : m_objects)
-    {
-        if (object->getTiles() == tileNums) // Check if the object is in the specified tile
-            return true; // Object found in the tile
-    }
-    return false; // No object found in the tile
+    if(!containsObjects(tileNums)) return; // If there are no objects in the tile, return
+    m_objects.at({tileNums.x, tileNums.y})->setVisible(true); // Set the object to visible
 }
