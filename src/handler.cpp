@@ -15,7 +15,12 @@ void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2
     else if(ws.x > MAX_SCREEN_WIDTH || ws.y > MAX_SCREEN_HEIGHT)
         window.setSize({MAX_SCREEN_WIDTH, MAX_SCREEN_HEIGHT});
     else
-    {
+        resizeWindow(ws, last_window_size, window);
+}
+
+
+void resizeWindow(sf::Vector2u &ws, sf::Vector2u & last_window_size, sf::RenderWindow & window)
+{
         // casting to float
         float x_float = static_cast<float>(ws.x);
         float y_float = static_cast<float>(ws.y);
@@ -31,8 +36,8 @@ void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2
 
         // set the new size of the window
         window.setSize(ws);
-    }
 }
+
 
 void handle(const Event::KeyPressed& key, GameState& game_state)
 {
@@ -42,12 +47,7 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
 
         case Keyboard::Key::Enter:
 
-            switch (game_state.get_state())
-            {
-                case INIT:
-                    game_state.set_state(RUNNING); // Set the game state to RUNNING
-                break;
-            }
+            handleEnter(game_state); // Handle enter key events
             break;
 
         case Keyboard::Key::W:
@@ -65,6 +65,17 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
         case Keyboard::Key::D:
                 game_state.move_directions[RIGHT] = true; // Set the UP direction to true
             break;
+    }
+}
+
+void handleEnter(GameState& game_state)
+{
+    // Handle enter key events based on the current game state
+    switch (game_state.get_state())
+    {
+        case INIT:
+            game_state.set_state(RUNNING); // Set the game state to RUNNING
+        break;
     }
 }
 
