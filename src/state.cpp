@@ -1,4 +1,3 @@
-#include "../include/const.hpp"
 #include "../include/state.hpp"
 using namespace sf;
 
@@ -8,8 +7,11 @@ GameState::GameState() : player(new Player()), tilemap(new TileMap()) , view() /
     view.setSize({SCREEN_WIDTH, SCREEN_HEIGHT}); // Set the view size to the screen size
     view.setCenter({0,0}); // Center the view in the window
 
-    if(!tilemap->load("assets/maps/map1.png", "assets/maps/map1.csv")) // Load the tilemap
+    if(!tilemap->load("../../assets/maps/map1.png", "../../assets/maps/map1.csv",5)) // Load the tilemap
         throw new Exception("Failed to load tilemap"); // Throw an exception if the tilemap fails to load
+
+    if(!tilemap->loadObjects("../../assets/objects/obj_map1.csv")) // Load the objects in the tilemap
+        throw new Exception("Failed to load objects"); // Throw an exception if the objects fail to load
 }
 
 void GameState::draw(RenderWindow& window) const
@@ -41,8 +43,15 @@ void GameState::update()
     // Update player position
     for(int i = 0; i < 4; i++) {
         if(move_directions[i])
-            player->update(static_cast<DIRECTIONS>(i)); // Move the player in the specified direction
+            player->update(static_cast<DIRECTIONS>(i), *tilemap); // Move the player in the specified direction
     }
+
+    while (!tilemap->pickableObjects.empty())
+    {
+        player->addToInventory(tilemap->pickableObjects.back());
+        tilemap->pickableObjects.pop_back(); // Remove the object from the pickable objects vector
+    }
+    
 
     // Update the view position to follow the player
     view.setCenter(player->get_position()); // Set the view center to the player's position
