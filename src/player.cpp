@@ -27,6 +27,8 @@ Player::Player()
 
     position = {0, 0}; // Initialize the position of the player sprite
     speed = 4; // Set the speed of the player sprite
+    totalhealth = 100.0f;
+    currenthealth = totalhealth;
 
     entitySprite.setSize({TILE_SIZE, TILE_SIZE}); // Set the size of the player sprite
     entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f}); // Set the origin of the player sprite to the center

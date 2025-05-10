@@ -15,8 +15,9 @@ class Player : public Entity
 
         Player(); // Constructor to initialize the player sprite
 
-        void addToInventory(Object* object) { inventory.insert(object); } // Add an object to the inventory
+        void addToInventory(Object* object) { if(inventory.size() <= 4) inventory.insert(object); } // Add an object to the inventory
         void removeFromInventory(Object* object) { inventory.erase(object); } // Remove an object from the inventory
         bool hasObject(Object* object) const { return inventory.find(object) != inventory.end(); } // Check if the player has an object in the inventory
         void clearInventory() { inventory.clear(); } // Clear the inventory
+        std::set<Object*> getInventory() const { return inventory; };
 };
