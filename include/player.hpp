@@ -9,6 +9,10 @@ class Player : public Entity
     private:
 
         std::set<Object*> inventory; // Set to hold the player's inventory
+        int money = 0;
+        int level = 1;
+        float expForNew = level * 100;
+        float currentExp = 0;
         void loadTextures() override; // Load textures for the player sprite
 
     public:
@@ -19,5 +23,8 @@ class Player : public Entity
         void removeFromInventory(Object* object) { inventory.erase(object); } // Remove an object from the inventory
         bool hasObject(Object* object) const { return inventory.find(object) != inventory.end(); } // Check if the player has an object in the inventory
         void clearInventory() { inventory.clear(); } // Clear the inventory
+        float getExpPerc() const { return currentExp/expForNew; };
+        int getCurrentLevel() const { return level; };
+        int getMoney() const { return money; };
         std::set<Object*> getInventory() const { return inventory; };
 };

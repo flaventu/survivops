@@ -53,7 +53,7 @@ void GameState::update()
         tilemap->pickableObjects.pop_back(); // Remove the object from the pickable objects vector
     }
 
-    ui->update(player->getHealthPerc(), view, player->getInventory());
+    ui->update(player->getHealthPerc(), player->getMoney() ,player->getExpPerc(), player->getCurrentLevel() ,view, player->getInventory());
     
 
     // Update the view position to follow the player
