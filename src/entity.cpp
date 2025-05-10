@@ -1,7 +1,7 @@
 #include "../include/entity.hpp"
 using namespace sf;
 
-void Entity::update(const DIRECTIONS dir, const TileMap& tilemap)
+void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
 {
     Vector2f newPosition = position; // Create a new position vector to store the updated position
     switch (dir)

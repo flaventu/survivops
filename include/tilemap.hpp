@@ -37,11 +37,14 @@ class TileMap : public sf::Drawable, public sf::Transformable
         void drawObjects(sf::RenderTarget&) const; // Function to draw objects on the map
         bool isSolid(const int tileNum) const { return tileNum >= solidTileNum; } // Function to check if a tile is solid
         void visibleObjects(const sf::Vector2i) const; // Function to check if a tile has objects
+        void pickObject(const sf::Vector2i tileNum); // Function to pick objects from a tile
         
         public:
+
+        std::vector<Object*> pickableObjects; // Vector to hold pickable objects
         
         bool load(const std::filesystem::path&, const std::filesystem::path&, const int); // Function to load the map from a file
         bool loadObjects(const std::filesystem::path&); // Function to load objects from a file
         void update(const sf::View&); // Function to update the tilemap based on the view
-        bool collision(const sf::FloatRect&, const DIRECTIONS, const float) const; // Function to check for collisions with a hitbox
+        bool collision(const sf::FloatRect&, const DIRECTIONS, const float); // Function to check for collisions with a hitbox
 };

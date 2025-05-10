@@ -21,7 +21,7 @@ class Entity
 
     public:
 
-        void update(const DIRECTIONS, const TileMap&); // Move the entity in a direction with a speed and update the sprite
+        void update(const DIRECTIONS, TileMap&); // Move the entity in a direction with a speed and update the sprite
         sf::Vector2f get_position() const { return position; }; // Get the position of the entity
 
         void draw(sf::RenderWindow& window) const { window.draw(entitySprite);} // Draw the entity sprite on the window

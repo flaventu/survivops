@@ -46,6 +46,13 @@ void GameState::update()
             player->update(static_cast<DIRECTIONS>(i), *tilemap); // Move the player in the specified direction
     }
 
+    while (!tilemap->pickableObjects.empty())
+    {
+        player->addToInventory(tilemap->pickableObjects.back());
+        tilemap->pickableObjects.pop_back(); // Remove the object from the pickable objects vector
+    }
+    
+
     // Update the view position to follow the player
     view.setCenter(player->get_position()); // Set the view center to the player's position
 
