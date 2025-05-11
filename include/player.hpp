@@ -26,5 +26,7 @@ class Player : public Entity
         float getExpPerc() const { return currentExp/expForNew; };
         int getCurrentLevel() const { return level; };
         int getMoney() const { return money; };
+        void gainMoney(const int coins) { money += coins; };
+        void gainExp(const float);
         std::set<Object*> getInventory() const { return inventory; };
 };

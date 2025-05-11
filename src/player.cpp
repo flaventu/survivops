@@ -39,3 +39,11 @@ Player::Player()
     entityHitbox.setOrigin({HITBOX_SIZE / 2.0f, HITBOX_SIZE / 2.0f}); // Set the origin of the player hitbox to the center
     entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the initial position of the player hitbox
 }
+
+void Player::gainExp(const float exp) {
+    currentExp += exp;
+    if(currentExp >= expForNew) {
+        currentExp -= expForNew;
+        level++;
+    }
+}

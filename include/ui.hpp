@@ -3,7 +3,9 @@
 #include "object.hpp"
 #include <set>
 
-const sf::Vector2f healthBarSize = {200,20};
+inline const sf::Vector2f levelhBarSize = {180,10};
+inline const sf::Vector2f healthBarSize = {200,20};
+inline constexpr int FONTSIZE = 25;
 
 class UI
 {
