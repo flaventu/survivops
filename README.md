@@ -1,3 +1,7 @@
+# Survivops 🎮
+
+[![CI](https://github.com/flaventu/survivops/actions/workflows/ci.yml/badge.svg)](https://github.com/flaventu/survivops/actions/workflows/ci.yml)
+
 ## Purpose 🥅
 
 This is a project for the "[Fundamentals of computer graphics](https://corsi.unige.it/off.f/2024/ins/77856)" course offered by the Bachelor's degree in [Computer Science](https://corsi.unige.it/corsi/8759) at the [University of Genoa](https://unige.it/).
