@@ -1,6 +1,8 @@
 # Survivops 🎮
 
 [![CI](https://github.com/flaventu/survivops/actions/workflows/ci.yml/badge.svg)](https://github.com/flaventu/survivops/actions/workflows/ci.yml)
+[![Repo Size](https://img.shields.io/github/repo-size/flaventu/survivops)]()
+[![SFML](https://img.shields.io/badge/SFML-3.0.1-green?logo=sfml)](https://www.sfml-dev.org/)
 
 ## Purpose 🥅
 
@@ -23,7 +25,7 @@ It's a run-based game, which means that instead of following a linear story, the
 ## Constraint 🛑
 
 1. the project must start from **scratch** (i can only use the [cmake-sfml-project](https://github.com/SFML/cmake-sfml-project) template).
-2. I cannot use **external library** except for [SFML](https://www.sfml-dev.org/) itself.
+2. I cannot use **external libraries** except for [SFML](https://www.sfml-dev.org/) itself.
 3. I can only operate with **basic primitives** (text, simple shapes, sprite and vertex array).
 
 ## Credits 🌟
