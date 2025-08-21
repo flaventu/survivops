@@ -1,4 +1,5 @@
 #include "../include/handler.hpp"
+#include "../include/State/StartState.hpp"
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -23,15 +24,8 @@ int main()
 
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
-    GameState game_state; // Game state object
-
-    try {
-        game_state = GameState(); // Initialize the game state
-    }
-    catch (const Exception& e) {
-        cerr << "Error initializing game state: " << e.what() << endl;
-        return EXIT_FAILURE; // Exit if there is an error
-    }
+    StartState start_state; // Start state
+    GameState game_state(start_state); // Initialize the game state
 
     while (window.isOpen())
     {

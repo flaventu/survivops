@@ -1,6 +1,6 @@
 #pragma once
-#include "entity.hpp"
-#include "object.hpp"
+#include "Entity.hpp"
+#include "Object.hpp"
 #include <set>
 
 // Class to handle the player character

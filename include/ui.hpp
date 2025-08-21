@@ -1,6 +1,6 @@
 #pragma once
-#include "player.hpp"
-#include "object.hpp"
+#include "Player.hpp"
+#include "Object.hpp"
 #include <set>
 
 inline const sf::Vector2f levelhBarSize = {180,10};

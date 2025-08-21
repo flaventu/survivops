@@ -1,5 +1,5 @@
 #pragma once
-#include "tilemap.hpp"
+#include "Tilemap.hpp"
 
 // Class to handle the player character
 class Entity

@@ -47,7 +47,7 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
 
         case Keyboard::Key::Enter:
 
-            handleEnter(game_state); // Handle enter key events
+            handleEnterPressed(game_state); // Handle enter key events
             break;
 
         case Keyboard::Key::W:
@@ -68,14 +68,12 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
     }
 }
 
-void handleEnter(GameState& game_state)
+void handleEnterPressed(GameState& game_state)
 {
-    // Handle enter key events based on the current game state
-    switch (game_state.get_state())
+    if(dynamic_cast<StartState*>(&game_state.getState()))
     {
-        case INIT:
-            game_state.set_state(RUNNING); // Set the game state to RUNNING
-        break;
+        RunningState running_state(game_state); // Create a new running state
+        game_state.changeState(std::make_unique<RunningState>(running_state)); // Change the game state to the running state
     }
 }
 
