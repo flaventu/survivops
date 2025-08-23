@@ -9,13 +9,7 @@ void RunningState::update() {
             gs.player.update(static_cast<DIRECTIONS>(i), gs.tilemap); // Move the player in the specified direction
     }
 
-    while (!gs.tilemap.pickableObjects.empty())
-    {
-        gs.player.addToInventory(gs.tilemap.pickableObjects.back());
-        gs.tilemap.pickableObjects.pop_back(); // Remove the object from the pickable objects vector
-    }
-
-    gs.ui.update(gs.player.getHealthPerc(), gs.player.getMoney() ,gs.player.getExpPerc(), gs.player.getCurrentLevel() ,gs.view, gs.player.getInventory());
+    gs.ui.update(gs.player.getHealthPerc(), gs.player.getMoney() ,gs.player.getExpPerc(), gs.player.getCurrentLevel() ,gs.view);
 
     // Update the view position to follow the player
     gs.view.setCenter(gs.player.get_position());

@@ -47,8 +47,6 @@ void TileMap::update(const sf::View& view)
             int tileNumber = m_tiles[i][j];
             if (tileNumber < 0) continue; // Skip empty tiles
 
-            visibleObjects({i, j}); // Check if the tile has objects
-
             float tu = tileNumber % (m_tileset.getSize().x / TILE_SIZE); // Column index in the tileset
             float tv = tileNumber / (m_tileset.getSize().x / TILE_SIZE); // Row index in the tileset
 
@@ -90,8 +88,6 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     states.texture = &m_tileset;
     target.draw(m_vertices, states);
-
-    drawObjects(target); // Draw the objects on the map
 }
 
 bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
@@ -145,10 +141,6 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const flo
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
             if (isSolid(tileNum1) || isSolid(tileNum2))
                 return true; // Collision detected with solid tile
-            if(containsObjects({static_cast<int>(leftcol), static_cast<int>(toprow)}))
-                pickObject({static_cast<int>(leftcol), static_cast<int>(toprow)}); // Pick up the object if it is present
-            if(containsObjects({static_cast<int>(rightcol), static_cast<int>(toprow)}))
-                pickObject({static_cast<int>(rightcol), static_cast<int>(toprow)}); // Pick up the object if it is present
             break;
         case DOWN:
             bottomrow = (bottomy + speed + (mapSize.y / 2.0f)) / TILE_SIZE;
@@ -157,10 +149,6 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const flo
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
             if (isSolid(tileNum1) || isSolid(tileNum2))
                 return true; // Collision detected with solid tile
-            if(containsObjects({static_cast<int>(leftcol), static_cast<int>(bottomrow)}))
-                pickObject({static_cast<int>(leftcol), static_cast<int>(bottomrow)}); // Pick up the object if it is present
-            if(containsObjects({static_cast<int>(rightcol), static_cast<int>(bottomrow)}))
-                pickObject({static_cast<int>(rightcol), static_cast<int>(bottomrow)}); // Pick up the object if it is present
             break;
         case LEFT:
             leftcol = (leftx - speed + (mapSize.x / 2.0f)) / TILE_SIZE;
@@ -169,10 +157,6 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const flo
             tileNum2 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
             if (isSolid(tileNum1) || isSolid(tileNum2))
                 return true; // Collision detected with solid tile
-            if(containsObjects({static_cast<int>(leftcol), static_cast<int>(toprow)}))
-                pickObject({static_cast<int>(leftcol), static_cast<int>(toprow)}); // Pick up the object if it is present
-            if(containsObjects({static_cast<int>(leftcol), static_cast<int>(bottomrow)}))
-                pickObject({static_cast<int>(leftcol), static_cast<int>(bottomrow)}); // Pick up the object if it is present
             break;
         case RIGHT:
             rightcol = (rightx + speed + (mapSize.x / 2.0f)) / TILE_SIZE;
@@ -181,76 +165,7 @@ bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const flo
             tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
             if (isSolid(tileNum1) || isSolid(tileNum2))
                 return true; // Collision detected with solid tile
-            if(containsObjects({static_cast<int>(rightcol), static_cast<int>(toprow)}))
-                pickObject({static_cast<int>(rightcol), static_cast<int>(toprow)}); // Pick up the object if it is present
-            if(containsObjects({static_cast<int>(rightcol), static_cast<int>(bottomrow)}))
-                pickObject({static_cast<int>(rightcol), static_cast<int>(bottomrow)}); // Pick up the object if it is present
             break;
     }
     return false; // No collision detected
-}
-
-bool TileMap::loadObjects(const std::filesystem::path& filePath)
-{
-    std::ifstream file(filePath);
-    if (!file.is_open())
-        return false; // If the file cannot be opened, return false
-
-    std::string line;
-    while (std::getline(file, line))
-    {
-        std::stringstream ss(line);
-        std::string cell;
-
-        // Leggi posizione X, posizione Y, larghezza, altezza e percorso della texture
-        float posX, posY;
-        std::string name,texturePath;
-
-        std::getline(ss, cell, ',');
-        posX = std::stof(cell);
-        std::getline(ss, cell, ',');
-        posY = std::stof(cell);
-        std::getline(ss, cell, ',');
-        name = cell;
-        std::getline(ss, cell, ',');
-        texturePath = cell;
-
-        sf::Texture* texture = new sf::Texture();
-        if (!texture->loadFromFile(texturePath))
-        {
-            delete texture; // Libera la memoria se la texture non può essere caricata
-            continue;
-        }
-        // Crea l'oggetto e aggiungilo al vettore
-        Object* object = new Object(*texture, {((posX * TILE_SIZE) - (mapSize.x / 2.f)), ((posY * TILE_SIZE) - (mapSize.y / 2.f))}, {TILE_SIZE, TILE_SIZE}, name);
-        object->setTiles({posX, posY}); // Set the tile coordinates of the object
-        m_objects[{posX, posY}] = object;
-    }
-
-    file.close();
-    return true;
-}
-
-void TileMap::drawObjects(sf::RenderTarget& target) const
-{
-    for (const auto& object : m_objects)
-    {
-        if (!object.second->isVisible()) continue; // Skip not visible objects
-        target.draw(object.second->getShape()); // Draw each object in the vector
-        // reset the visibility of the object to false
-        object.second->setVisible(false); // Reset the visibility of the object to false
-    }
-}
-
-void TileMap::visibleObjects(const Vector2i tileNums) const
-{
-    if(!containsObjects(tileNums)) return; // If there are no objects in the tile, return
-    m_objects.at({tileNums.x, tileNums.y})->setVisible(true); // Set the object to visible
-}
-
-void TileMap::pickObject(const Vector2i tileNums)
-{
-    Object* object = m_objects.at({tileNums.x, tileNums.y}); // Get the object from the map
-    pickableObjects.push_back(object); // Add the object to the pickable objects vector
-    m_objects.erase({tileNums.x, tileNums.y}); // Remove the object from the map
 }

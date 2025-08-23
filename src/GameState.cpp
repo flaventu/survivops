@@ -9,7 +9,4 @@ GameState::GameState(std::unique_ptr<IState> init) : state(std::move(init)), pla
 
     if(!tilemap.load("../../assets/maps/map1.png", "../../assets/maps/map1.csv",5)) // Load the tilemap
         throw new Exception("Failed to load tilemap"); // Throw an exception if the tilemap fails to load
-
-    if(!tilemap.loadObjects("../../assets/objects/obj_map1.csv")) // Load the objects in the tilemap
-        throw new Exception("Failed to load objects"); // Throw an exception if the objects fail to load
 }

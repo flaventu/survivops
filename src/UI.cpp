@@ -40,16 +40,9 @@ UI::UI() : font("../../assets/fonts/arial.ttf"), moneyTab(font), levelTab(font)
     levelBar.setSize(levelhBarSize);
     levelBar.setOrigin({levelhBarSize.x/2.f,levelhBarSize.y/2.f});
     levelBar.setFillColor(Color::Blue);
-
-    // Prepare the inventory background
-    InventoryBack.setSize({TILE_SIZE*4, TILE_SIZE}); // 4 slots
-    InventoryBack.setOrigin({TILE_SIZE*2, TILE_SIZE/2});
-    InventoryBack.setFillColor(Color(128, 128, 128)); // Grey color
-    InventoryBack.setOutlineColor(Color::Black);
-    InventoryBack.setOutlineThickness(2);
 }
 
-void UI::update(const float healthPerc, const int money, const float expPerc, const int level, const View v, const set<Object*>& invent)
+void UI::update(const float healthPerc, const int money, const float expPerc, const int level, const View& v)
 {
 
     // Get the view center and size
@@ -81,22 +74,6 @@ void UI::update(const float healthPerc, const int money, const float expPerc, co
     levelBarBack.setPosition({viewCenter.x, marginTopY + levelhBarSize.y + levelTabSize.y + 20.f});
     levelBar.setPosition({viewCenter.x, marginTopY + levelhBarSize.y + levelTabSize.y + 20.f});
 
-
-    Vector2f InventoryPos = {viewCenter.x, marginBottomY - 40.f - TILE_SIZE-10.f};
-    InventoryBack.setPosition(InventoryPos);
-
-    int count = 2; // 2 tiles to the left of the center
-    for(const auto& obj : invent) {
-        Inventory[count] = (obj->getShape());
-        Inventory[count].setOrigin({TILE_SIZE/2.f, TILE_SIZE/2.f});
-        Inventory[count].setPosition({InventoryPos.x - TILE_SIZE*count + (TILE_SIZE/2), InventoryPos.y});
-        
-        Inventory[count].setOutlineColor(Color::Black);
-        Inventory[count].setOutlineThickness(1);
-        
-        count--;
-    }
-
 }
 
 void UI::draw(RenderWindow& window) const {
@@ -106,7 +83,4 @@ void UI::draw(RenderWindow& window) const {
         window.draw(levelBar); // level bar
         window.draw(healthBarBack); // health bar back
         window.draw(healthBar); // health bar
-        window.draw(InventoryBack); // inventory background
-        for(const auto& obj : Inventory)
-            window.draw(obj); // inventory items
     }
