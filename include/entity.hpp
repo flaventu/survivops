@@ -1,32 +1,40 @@
 #pragma once
 #include "Tilemap.hpp"
 
-// Class to handle the player character
+// Class to handle the entities
 class Entity
 {
     protected:
 
+        // Health variables
         float totalhealth;
         float currenthealth;
-        sf::Texture up1, up2, down1, down2, left1, left2, right1, right2; // Textures for the entity sprite 
-        sf::Texture* currentTexture = &down1; // Pointer to the current texture
-        DIRECTIONS direction = DOWN; // Current direction of the entity
-        sf::Vector2f position; // Position of the entity
-        float speed; // Speed of the entity
-        sf::RectangleShape entitySprite; // Rectangle shape for the entity sprite
-        sf::RectangleShape entityHitbox; // Rectangle shape for the entity hitbox
 
-        int spriteCount = 0; // Counter for sprite animation
-        int spriteNum = 1; // Number of sprite for animation
+        // Sprite variables
+        sf::Texture textureSheet;
+        sf::Sprite entitySprite;
+        sf::RectangleShape entityHitbox;
+        int frameWidth;
+        int frameHeight;
 
-        virtual void loadTextures() = 0; // Load textures for the entity sprite
+        // Movement variables
+        DIRECTIONS direction = DOWN;
+        sf::Vector2f position;
+        float speed;
+        int spriteNum = 0;
+
+        void updateTextureRect(); // Update the texture rectangle for the sprite
 
     public:
 
-        void update(const DIRECTIONS, TileMap&); // Move the entity in a direction with a speed and update the sprite
-        sf::Vector2f get_position() const { return position; }; // Get the position of the entity
+        Entity(const std::string& textureFile, int frameWidth, int frameHeight) 
+            : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight) { updateTextureRect(); }
+
+        // Getters
+        sf::Vector2f get_position() const { return position; };
         float getHealth() const { return currenthealth; };
         float getHealthPerc() const { return currenthealth/totalhealth; };
-
-        void draw(sf::RenderWindow& window) const { window.draw(entitySprite);} // Draw the entity sprite on the window
+        
+        void update(const DIRECTIONS, TileMap&, sf::Clock&);
+        void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

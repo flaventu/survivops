@@ -55,15 +55,15 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
             break;
 
         case Keyboard::Key::S:
-                game_state.move_directions[DOWN] = true; // Set the UP direction to true
+                game_state.move_directions[DOWN] = true; // Set the DOWN direction to true
             break;
 
         case Keyboard::Key::A:
-                game_state.move_directions[LEFT] = true; // Set the UP direction to true
+                game_state.move_directions[LEFT] = true; // Set the LEFT direction to true
             break;
 
         case Keyboard::Key::D:
-                game_state.move_directions[RIGHT] = true; // Set the UP direction to true
+                game_state.move_directions[RIGHT] = true; // Set the RIGHT direction to true
             break;
     }
 }

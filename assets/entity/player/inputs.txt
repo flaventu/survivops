@@ -1,0 +1,8 @@
+file 'down1.png'
+file 'down2.png'
+file 'up1.png'
+file 'up2.png'
+file 'left1.png'
+file 'left2.png'
+file 'right1.png'
+file 'right2.png'

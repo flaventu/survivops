@@ -1,4 +1,4 @@
-#include "tilemap.hpp"
+#include "Tilemap.hpp"
 #include <fstream>
 #include <sstream>
 using namespace sf;

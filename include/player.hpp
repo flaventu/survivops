@@ -13,7 +13,6 @@ class Player : public Entity
         int level = 1;
         float expForNew = level * 100;
         float currentExp = 0;
-        void loadTextures() override; // Load textures for the player sprite
 
     public:
 

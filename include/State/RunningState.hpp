@@ -2,6 +2,7 @@
 #include "IState.hpp"
 #include "../GameState.hpp"
 
+// Running state class
 class RunningState : public IState {
     public:
 
@@ -9,7 +10,7 @@ class RunningState : public IState {
 
         RunningState(GameState& gameState) : gs(gameState) {}
 
-        void update() override;
+        void update(sf::Clock&) override;
 
-        void draw(sf::RenderWindow& window) const override;
+        void draw(sf::RenderWindow&) const override;
 };

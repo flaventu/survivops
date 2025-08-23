@@ -2,7 +2,7 @@
 using namespace sf;
 
 
-GameState::GameState(StartState& state) : state(std::make_unique<StartState>(state)), player(), tilemap(), view(), ui() // Initialize the player and view objects
+GameState::GameState(std::unique_ptr<IState> init) : state(std::move(init)), player(), tilemap(), view(), ui() // Initialize the player and view objects
 {
     view.setSize({SCREEN_WIDTH, SCREEN_HEIGHT}); // Set the view size to the screen size
     view.setCenter({0,0}); // Center the view in the window

@@ -1,5 +1,4 @@
 #include "../include/handler.hpp"
-#include "../include/State/StartState.hpp"
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -24,9 +23,11 @@ int main()
 
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
-    StartState start_state; // Start state
-    GameState game_state(start_state); // Initialize the game state
+    // TO BE CHANGED (now we start with the RunningState instead of the StartState)
+    GameState game_state(std::make_unique<RunningState>(game_state));
 
+    Clock clock; // Clock for managing time
+    
     while (window.isOpen())
     {
 
@@ -38,8 +39,8 @@ int main()
         );
         
         // Update the game state
-        game_state.update();
-            
+        game_state.update(clock);
+
         // Clear the window
         window.clear();
             

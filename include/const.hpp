@@ -29,8 +29,8 @@ inline constexpr unsigned int MIN_SCREEN_HEIGHT = TILE_SIZE * MIN_SCREEN_ROWS; /
 
 enum DIRECTIONS
 {
-    UP,
     DOWN,
+    UP,
     LEFT,
     RIGHT,
 };
