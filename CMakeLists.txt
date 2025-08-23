@@ -6,13 +6,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.0.0
+    GIT_TAG 3.0.1
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(SurvivOps src/main.cpp src/handler.cpp src/GameState.cpp src/Player.cpp src/Tilemap.cpp src/Entity.cpp src/UI.cpp src/State/RunningState.cpp src/State/PausedState.cpp src/State/StartState.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
+add_executable(SurvivOps ${SOURCES})
 target_compile_features(SurvivOps PRIVATE cxx_std_17)
 target_include_directories(SurvivOps PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
