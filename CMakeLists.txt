@@ -12,7 +12,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(SurvivOps src/main.cpp src/handler.cpp src/gameState.cpp src/Player.cpp src/Tilemap.cpp src/Entity.cpp src/UI.cpp src/State/RunningState.cpp src/State/PausedState.cpp src/State/StartState.cpp)
+add_executable(SurvivOps src/main.cpp src/handler.cpp src/GameState.cpp src/Player.cpp src/Tilemap.cpp src/Entity.cpp src/UI.cpp src/State/RunningState.cpp src/State/PausedState.cpp src/State/StartState.cpp)
 target_compile_features(SurvivOps PRIVATE cxx_std_17)
 target_include_directories(SurvivOps PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
