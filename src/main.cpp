@@ -25,8 +25,6 @@ int main()
 
     // TO BE CHANGED (now we start with the RunningState instead of the StartState)
     GameState game_state(std::make_unique<StartState>());
-
-    Clock clock; // Clock for managing time
     
     while (window.isOpen())
     {
@@ -39,7 +37,7 @@ int main()
         );
         
         // Update the game state
-        game_state.update(clock);
+        game_state.update();
 
         // Clear the window
         window.clear();

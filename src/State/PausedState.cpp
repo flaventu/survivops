@@ -1,7 +1,7 @@
 #include "../include/State/PausedState.hpp"
 using namespace sf;
 
-void PausedState::update(Clock& clock) {
+void PausedState::update() {
     // Update logic for the paused state
 }
 

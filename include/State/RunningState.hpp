@@ -10,7 +10,7 @@ class RunningState : public IState {
 
         RunningState(GameState& gameState) : gs(gameState) {}
 
-        void update(sf::Clock&) override;
+        void update() override;
 
         void draw(sf::RenderWindow&) const override;
 };

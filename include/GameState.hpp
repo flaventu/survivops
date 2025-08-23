@@ -31,6 +31,6 @@ class GameState
         void changeState(std::unique_ptr<IState> newState) { state = std::move(newState); }
 
         void draw(sf::RenderWindow& window) const { state->draw(window); }
-        void update(sf::Clock& clock) { state->update(clock); }
+        void update() { state->update(); }
 };
 

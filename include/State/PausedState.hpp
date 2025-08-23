@@ -4,7 +4,7 @@
 // Paused state class
 class PausedState : public IState {
 
-    void update(sf::Clock&) override;
+    void update() override;
 
     void draw(sf::RenderWindow&) const override;
 };

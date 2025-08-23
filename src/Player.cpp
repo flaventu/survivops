@@ -6,9 +6,7 @@ Player::Player() : Entity("assets/entity/player/spritesheet.png", TILE_SIZE, TIL
 {
 
     position = {0, 0}; // Initialize the position of the player sprite
-    speed = 4; // Set the speed of the player sprite
-    totalhealth = 100.0f;
-    currenthealth = totalhealth;
+    speed = 3; // Set the speed of the player sprite
 
     entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f}); // Set the origin of the player sprite to the center
     entitySprite.setPosition(position); // Set the initial position of the player sprite
@@ -23,5 +21,14 @@ void Player::gainExp(const float exp) {
     if(currentExp >= expForNew) {
         currentExp -= expForNew;
         level++;
+        upgradePlayer();
     }
+}
+
+void Player::upgradePlayer() {
+    totalHealth += 0.8f;
+    speed += 0.03f;
+    power += 0.015f;
+    dodge += 0.2f;
+    expForNew = level * 100.f;
 }

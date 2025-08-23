@@ -12,7 +12,7 @@ void Entity::updateTextureRect() {
     entitySprite.setTextureRect(rect);
 }
 
-void Entity::update(const DIRECTIONS dir, TileMap& tilemap, Clock& clock)
+void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
 {
     Vector2f newPosition = position; // Create a new position vector to store the updated position
 
@@ -44,9 +44,9 @@ void Entity::update(const DIRECTIONS dir, TileMap& tilemap, Clock& clock)
         position = newPosition; // Update the position if there is no collision
 
         // update the sprite animation every 200 milliseconds (12 frames at 60 FPS)
-        if(clock.getElapsedTime().asMilliseconds() > 200) {
+        if(animationClock.getElapsedTime().asMilliseconds() > 200) {
             spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
-            clock.restart();
+            animationClock.restart();
         }
     }
 

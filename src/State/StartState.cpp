@@ -1,7 +1,7 @@
 #include "../include/State/StartState.hpp"
 using namespace sf;
 
-void StartState::update(Clock& clock) {
+void StartState::update() {
     // Update game logic for the start state
 }
 

@@ -1,12 +1,12 @@
 #include "../../include/State/RunningState.hpp"
 using namespace sf;
 
-void RunningState::update(Clock& clock) {
+void RunningState::update() {
 
     // Update player position
     for(int i = 0; i < 4; i++) {
         if(gs.move_directions[i])
-            gs.player.update(static_cast<DIRECTIONS>(i), gs.tilemap, clock); // Move the player in the specified direction
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.tilemap); // Move the player in the specified direction
     }
 
     while (!gs.tilemap.pickableObjects.empty())
