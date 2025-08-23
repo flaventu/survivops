@@ -24,7 +24,7 @@ int main()
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
     // TO BE CHANGED (now we start with the RunningState instead of the StartState)
-    GameState game_state(std::make_unique<RunningState>(game_state));
+    GameState game_state(std::make_unique<StartState>());
 
     Clock clock; // Clock for managing time
     
