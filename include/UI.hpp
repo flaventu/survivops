@@ -17,9 +17,11 @@ class UI
 
         sf::RectangleShape healthBar;
         sf::RectangleShape healthBarBack;
+
     public:
 
     UI();
-    void update(const Player&, const sf::View&);
+    
+    void update(const Player&);
     void draw(sf::RenderWindow&) const;
 };

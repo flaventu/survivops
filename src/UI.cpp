@@ -40,17 +40,18 @@ UI::UI() : font("../../assets/fonts/arial.ttf"), moneyTab(font), levelTab(font)
     levelBar.setSize(levelhBarSize);
     levelBar.setOrigin({levelhBarSize.x/2.f,levelhBarSize.y/2.f});
     levelBar.setFillColor(Color::Blue);
+
+    // Prepare the position of the UI elements
+    moneyTab.setPosition({15.f, 10.f});
+    levelTab.setPosition({SCREEN_WIDTH / 2.f, 20.f});
+    levelBarBack.setPosition({SCREEN_WIDTH / 2.f, 45.f});
+    levelBar.setPosition(levelBarBack.getPosition());
+    healthBarBack.setPosition({SCREEN_WIDTH / 2.f, SCREEN_HEIGHT - 35.f});
+    healthBar.setPosition(healthBarBack.getPosition());
 }
 
-void UI::update(const Player& player, const View& v)
+void UI::update(const Player& player)
 {
-
-    // Get the view center and size
-    Vector2f viewCenter = v.getCenter();
-    Vector2f viewSize = v.getSize();
-
-    float marginBottomY = viewCenter.y + (viewSize.y / 2.f);
-    float marginTopY = viewCenter.y - (viewSize.y / 2.f);
 
     // Update the health bar and level bar sizes based on the percentage
     healthBar.setSize({healthBarSize.x * player.getHealthPerc(), healthBarSize.y});
@@ -58,29 +59,20 @@ void UI::update(const Player& player, const View& v)
 
     // Update the money tab
     moneyTab.setString("Coins x" + to_string(player.getMoney()));
-    moneyTab.setPosition({viewCenter.x - viewSize.x / 2.f + 15.f, marginTopY + 10.f}); // Top left corner
 
     // Update the level tab
     levelTab.setString("Level " + to_string(player.getCurrentLevel()));
     Vector2f levelTabSize = {levelTab.getLocalBounds().size.x,levelTab.getLocalBounds().size.y};
     levelTab.setOrigin({levelTabSize.x / 2.f, levelTabSize.y / 2.f});
-    levelTab.setPosition({viewCenter.x, marginTopY + levelTabSize.y}); // Top center
-
-    // Update the health bar position (bottom centered)
-    healthBarBack.setPosition({viewCenter.x, marginBottomY - 40.f});
-    healthBar.setPosition({viewCenter.x, marginBottomY - 40.f});
-
-    // Update the level bar position (top centered)
-    levelBarBack.setPosition({viewCenter.x, marginTopY + levelhBarSize.y + levelTabSize.y + 20.f});
-    levelBar.setPosition({viewCenter.x, marginTopY + levelhBarSize.y + levelTabSize.y + 20.f});
 
 }
 
 void UI::draw(RenderWindow& window) const {
-        window.draw(moneyTab); // money count
-        window.draw(levelTab); // level count
-        window.draw(levelBarBack); // level bar back
-        window.draw(levelBar); // level bar
-        window.draw(healthBarBack); // health bar back
-        window.draw(healthBar); // health bar
-    }
+
+    window.draw(moneyTab);
+    window.draw(levelTab);
+    window.draw(levelBarBack);
+    window.draw(levelBar);
+    window.draw(healthBarBack); 
+    window.draw(healthBar);
+}
