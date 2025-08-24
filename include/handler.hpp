@@ -9,7 +9,7 @@ inline constexpr float ASPECT = static_cast<float>(SCREEN_WIDTH)/static_cast<flo
 
 // Functions to handle window resize events
 void handle_resize (const sf::Event::Resized&, sf::RenderWindow&, sf::Vector2u&);
-void resizeWindow(sf::Vector2u&, sf::Vector2u&, sf::RenderWindow&);
+void resizeWindow(sf::Vector2u, sf::Vector2u&, sf::RenderWindow&);
 
 // Template function to handle events
 template<typename T>

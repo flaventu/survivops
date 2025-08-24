@@ -12,6 +12,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
+file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR}/bin)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(SurvivOps ${SOURCES})
 target_compile_features(SurvivOps PRIVATE cxx_std_17)

@@ -42,7 +42,7 @@ UI::UI() : font("../../assets/fonts/arial.ttf"), moneyTab(font), levelTab(font)
     levelBar.setFillColor(Color::Blue);
 }
 
-void UI::update(const float healthPerc, const int money, const float expPerc, const int level, const View& v)
+void UI::update(const Player& player, const View& v)
 {
 
     // Get the view center and size
@@ -53,15 +53,15 @@ void UI::update(const float healthPerc, const int money, const float expPerc, co
     float marginTopY = viewCenter.y - (viewSize.y / 2.f);
 
     // Update the health bar and level bar sizes based on the percentage
-    healthBar.setSize({healthBarSize.x * healthPerc, healthBarSize.y});
-    levelBar.setSize({levelhBarSize.x * expPerc, levelhBarSize.y});
+    healthBar.setSize({healthBarSize.x * player.getHealthPerc(), healthBarSize.y});
+    levelBar.setSize({levelhBarSize.x * player.getExpPerc(), levelhBarSize.y});
 
     // Update the money tab
-    moneyTab.setString("Coins x" + to_string(money));
+    moneyTab.setString("Coins x" + to_string(player.getMoney()));
     moneyTab.setPosition({viewCenter.x - viewSize.x / 2.f + 15.f, marginTopY + 10.f}); // Top left corner
 
     // Update the level tab
-    levelTab.setString("Level " + to_string(level));
+    levelTab.setString("Level " + to_string(player.getCurrentLevel()));
     Vector2f levelTabSize = {levelTab.getLocalBounds().size.x,levelTab.getLocalBounds().size.y};
     levelTab.setOrigin({levelTabSize.x / 2.f, levelTabSize.y / 2.f});
     levelTab.setPosition({viewCenter.x, marginTopY + levelTabSize.y}); // Top center

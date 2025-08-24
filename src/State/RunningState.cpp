@@ -9,7 +9,7 @@ void RunningState::update() {
             gs.player.update(static_cast<DIRECTIONS>(i), gs.tilemap); // Move the player in the specified direction
     }
 
-    gs.ui.update(gs.player.getHealthPerc(), gs.player.getMoney() ,gs.player.getExpPerc(), gs.player.getCurrentLevel() ,gs.view);
+    gs.ui.update(gs.player, gs.view);
 
     // Update the view position to follow the player
     gs.view.setCenter(gs.player.get_position());

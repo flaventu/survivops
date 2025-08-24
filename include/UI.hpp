@@ -20,6 +20,6 @@ class UI
     public:
 
     UI();
-    void update(const float, const int, const float, const int, const sf::View&);
+    void update(const Player&, const sf::View&);
     void draw(sf::RenderWindow&) const;
 };

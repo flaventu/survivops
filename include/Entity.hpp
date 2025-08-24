@@ -7,16 +7,16 @@ class Entity
     private:
 
         // Frame dimensions
-        int frameWidth;
-        int frameHeight;
+        const int frameWidth;
+        const int frameHeight;
 
+        const sf::Texture textureSheet;
+        
     protected:
 
-        // Animation clock
         sf::Clock animationClock;
 
         // Sprite variables
-        sf::Texture textureSheet;
         sf::Sprite entitySprite;
         sf::RectangleShape entityHitbox;
 
@@ -30,7 +30,7 @@ class Entity
 
     public:
 
-        Entity(const std::string& textureFile, int frameWidth, int frameHeight) 
+        Entity(const std::string& textureFile, const int frameWidth, const int frameHeight) 
             : textureSheet(textureFile), entitySprite(textureSheet), animationClock(), frameWidth(frameWidth), frameHeight(frameHeight) 
                 { updateTextureRect(); }
 

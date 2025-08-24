@@ -3,7 +3,7 @@ using namespace sf;
 
 void Entity::updateTextureRect() {
 
-    sf::IntRect rect;
+    IntRect rect;
     rect.position.x = spriteNum * frameWidth;
     rect.position.y = direction * frameHeight;
     rect.size.x = frameWidth;
