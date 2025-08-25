@@ -1,4 +1,4 @@
-#include "../include/handler.hpp"
+#include "../include/Handler.hpp"
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -23,29 +23,22 @@ int main()
 
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
-    GameState game_state; // Game state object
-
-    try {
-        game_state = GameState(); // Initialize the game state
-    }
-    catch (const Exception& e) {
-        cerr << "Error initializing game state: " << e.what() << endl;
-        return EXIT_FAILURE; // Exit if there is an error
-    }
-
+    // TO BE CHANGED (now we start with the RunningState instead of the StartState)
+    GameState game_state(std::make_unique<StartState>());
+    
     while (window.isOpen())
     {
 
         // Handle events
         window.handleEvents(
             [&](const Event::Closed& event) { window.close(); }, // close the window
-            [&](const Event::Resized& event) { handle_resize(event, window, last_window_size); }, // resize the window
-            [&](const auto& event) { handle(event, game_state); } // handle other events
+            [&](const Event::Resized& event) { Handler::handle_resize(event, window, last_window_size); }, // resize the window
+            [&](const auto& event) { Handler::handle(event, game_state); } // handle other events
         );
         
         // Update the game state
         game_state.update();
-            
+
         // Clear the window
         window.clear();
             
