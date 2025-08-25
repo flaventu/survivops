@@ -14,30 +14,27 @@ void Entity::updateTextureRect() {
 
 void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
 {
+
     Vector2f newPosition = position; // Create a new position vector to store the updated position
 
-    // Update the direction and position based on the input
+    // Update the temporary position based on the input
     switch (dir)
     {
         case UP:
-            direction = UP;
             newPosition.y -= speed;
             break;
         case DOWN:
-            direction = DOWN;
             newPosition.y += speed;
             break;
         case LEFT:
-            direction = LEFT;
             newPosition.x -= speed;
             break;
         case RIGHT:
-            direction = RIGHT;
             newPosition.x += speed;
-            break;
+        break;
     }
 
-    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
+    direction = dir;
 
     if(!tilemap.collision(entityHitbox.getGlobalBounds(), direction, speed))
     {
@@ -52,5 +49,6 @@ void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
 
     // Update the entity sprite position
     entitySprite.setPosition(position);
+    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
     updateTextureRect();
 }

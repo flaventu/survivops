@@ -1,6 +1,7 @@
 #pragma once
 #include "const.hpp"
 #include <vector>
+#include <cmath>
 
 class TileMap : public sf::Drawable, public sf::Transformable
 {
@@ -17,8 +18,6 @@ class TileMap : public sf::Drawable, public sf::Transformable
         sf::Vector2u mapSize;
         const int solidTileNum; // grather or equal than solidTileNum are solid tiles
 
-        sf::Vector2f lastPosition = {0, -1};
-
         static const int maxVertexCount = (MAX_SCREEN_COLS+1) * (MAX_SCREEN_ROWS+1) * 6;
 
         bool loadMapFromCSV(const std::filesystem::path&);
@@ -29,8 +28,16 @@ class TileMap : public sf::Drawable, public sf::Transformable
         
         TileMap(const std::filesystem::path&, const std::filesystem::path&, const int); 
 
-        bool isSolid(const int tileNum) const { return tileNum >= solidTileNum; } 
-        
+        sf::Vector2i positionToTile(const sf::Vector2f& position) const {
+            return {
+                static_cast<int>(std::floor((position.x + mapSize.x / 2.f) / TILE_SIZE)),
+                static_cast<int>(std::floor((position.y + mapSize.y / 2.f) / TILE_SIZE))
+            };
+}
+
+
+        bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
+
         void update(const sf::View&);
 
         bool collision(const sf::FloatRect&, const DIRECTIONS, const float);

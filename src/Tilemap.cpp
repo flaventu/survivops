@@ -1,7 +1,6 @@
 #include "Tilemap.hpp"
 #include <fstream>
 #include <sstream>
-#include <cmath>
 using namespace std;
 using namespace sf;
 
@@ -23,24 +22,21 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
 void TileMap::update(const View& view)
 {
 
-    Vector2f currentPosition = view.getCenter();
-
-    if(currentPosition == lastPosition)
-        return; // No need to update if the position hasn't changed
-
-    lastPosition = currentPosition;
-
     m_vertices.resize(TileMap::maxVertexCount);
 
     // Calculate the visible area of the map based on the view
-    sf::Vector2f topLeft(currentPosition - view.getSize() / 2.f);
-    sf::Vector2f bottomRight(currentPosition + view.getSize() / 2.f);
+    sf::Vector2f topLeft(view.getCenter() - view.getSize() / 2.f);
+    sf::Vector2f bottomRight(view.getCenter() + view.getSize() / 2.f);
+
+    // Calculate the corresponding tile indices
+    sf::Vector2i startTile = positionToTile(topLeft);
+    sf::Vector2i endTile = positionToTile(bottomRight);
 
     // Calculate the start and end tile indices based on the visible area
-    int startX = max(0, static_cast<int>(floor((topLeft.x + mapSize.x / 2) / TILE_SIZE))-1);
-    int startY = max(0, static_cast<int>(floor((topLeft.y + mapSize.y / 2) / TILE_SIZE))-1);
-    int endX = min(width, static_cast<int>(ceil((bottomRight.x + mapSize.x / 2) / TILE_SIZE))+1);
-    int endY = min(height, static_cast<int>(ceil((bottomRight.y + mapSize.y / 2) / TILE_SIZE))+1);
+    int startX = max(0, startTile.x - 1);
+    int startY = max(0, startTile.y - 1);
+    int endX = min(width, endTile.x + 1);
+    int endY = min(height, endTile.y + 1);
 
     int vertexIndex = 0;
 
@@ -132,52 +128,40 @@ bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
 
 bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const float speed)
 {
-    float leftx = rect.position.x;
-    float rightx = rect.position.x + HITBOX_SIZE;
-    float topy = rect.position.y;
-    float bottomy = rect.position.y + HITBOX_SIZE;
 
-    float leftcol = (leftx  + (mapSize.x / 2.f)) / TILE_SIZE;
-    float rightcol = (rightx + (mapSize.x / 2.f)) / TILE_SIZE;
-    float toprow = (topy   + (mapSize.y / 2.f)) / TILE_SIZE;
-    float bottomrow = (bottomy + (mapSize.y / 2.f)) / TILE_SIZE;
+    // Calculate the offset based on the direction
+    sf::Vector2f offset(0.f, 0.f);
+    switch (d) {
+        case UP:    offset.y = -speed; break;
+        case DOWN:  offset.y = speed;  break;
+        case LEFT:  offset.x = -speed; break;
+        case RIGHT: offset.x = speed;  break;
+    }
 
-    int tileNum1, tileNum2;
+    // Calculate new corners of the rectangle with applied offset
+    sf::Vector2f topLeft = { rect.position.x + offset.x, rect.position.y + offset.y };
+    sf::Vector2f bottomRight = { rect.position.x + HITBOX_SIZE + offset.x, rect.position.y + HITBOX_SIZE + offset.y };
 
+    // Convert to tile coordinates
+    sf::Vector2i tileTopLeft = positionToTile(topLeft);
+    sf::Vector2i tileBottomRight = positionToTile(bottomRight);
+
+    // Check for out-of-bounds tiles
+    if (tileTopLeft.x < 0 || tileTopLeft.y < 0 || tileBottomRight.x >= width || tileBottomRight.y >= height)
+        return true;
+
+    // Check collision based on direction
     switch (d)
     {
         case UP:
-            toprow = (topy - speed + (mapSize.y / 2.0f)) / TILE_SIZE;
-            if(toprow < 0) return true; // Collision detected with the top edge of the map
-            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
-            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
-                return true; // Collision detected with solid tile
-            break;
+            return isSolid({tileTopLeft.x, tileTopLeft.y}) || isSolid({tileBottomRight.x, tileTopLeft.y});
         case DOWN:
-            bottomrow = (bottomy + speed + (mapSize.y / 2.0f)) / TILE_SIZE;
-            if(bottomrow >= height) return true; // Collision detected with the bottom edge of the map
-            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
-            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
-                return true; // Collision detected with solid tile
-            break;
+            return isSolid({tileTopLeft.x, tileBottomRight.y}) || isSolid({tileBottomRight.x, tileBottomRight.y});
         case LEFT:
-            leftcol = (leftx - speed + (mapSize.x / 2.0f)) / TILE_SIZE;
-            if(leftcol < 0) return true; // Collision detected with the left edge of the map
-            tileNum1 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(toprow)];
-            tileNum2 = m_tiles[static_cast<int>(leftcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
-                return true; // Collision detected with solid tile
-            break;
+            return isSolid({tileTopLeft.x, tileTopLeft.y}) || isSolid({tileTopLeft.x, tileBottomRight.y});
         case RIGHT:
-            rightcol = (rightx + speed + (mapSize.x / 2.0f)) / TILE_SIZE;
-            if(rightcol >= width) return true; // Collision detected with the right edge of the map
-            tileNum1 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(toprow)];
-            tileNum2 = m_tiles[static_cast<int>(rightcol)][static_cast<int>(bottomrow)];
-            if (isSolid(tileNum1) || isSolid(tileNum2))
-                return true; // Collision detected with solid tile
-            break;
+            return isSolid({tileBottomRight.x, tileTopLeft.y}) || isSolid({tileBottomRight.x, tileBottomRight.y});
     }
-    return false; // No collision detected
+
+    return false;
 }
