@@ -31,3 +31,7 @@ It's a run-based game, which means that instead of following a linear story, the
 ## Credits 🌟
 
 nothing yet. 🙃
+
+## Current Class Diagram 🔠
+
+![class diagram](docs/class_diagram.png)

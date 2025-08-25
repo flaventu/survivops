@@ -1,4 +1,4 @@
-#include "../include/handler.hpp"
+#include "../include/Handler.hpp"
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -32,8 +32,8 @@ int main()
         // Handle events
         window.handleEvents(
             [&](const Event::Closed& event) { window.close(); }, // close the window
-            [&](const Event::Resized& event) { handle_resize(event, window, last_window_size); }, // resize the window
-            [&](const auto& event) { handle(event, game_state); } // handle other events
+            [&](const Event::Resized& event) { Handler::handle_resize(event, window, last_window_size); }, // resize the window
+            [&](const auto& event) { Handler::handle(event, game_state); } // handle other events
         );
         
         // Update the game state

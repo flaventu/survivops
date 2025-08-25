@@ -2,7 +2,7 @@
 using namespace std;
 using namespace sf;
 
-void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2u& last_window_size)
+void Handler::handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2u& last_window_size)
 {   
     // Get the new size of the window
     Vector2u ws = resized.size;
@@ -20,7 +20,7 @@ void handle_resize (const Event::Resized& resized, RenderWindow& window, Vector2
 }
 
 
-void resizeWindow(sf::Vector2u ws, sf::Vector2u &last_window_size, sf::RenderWindow &window)
+void Handler::resizeWindow(sf::Vector2u ws, sf::Vector2u &last_window_size, sf::RenderWindow &window)
 {
         // casting to float
         float x_float = static_cast<float>(ws.x);
@@ -40,7 +40,7 @@ void resizeWindow(sf::Vector2u ws, sf::Vector2u &last_window_size, sf::RenderWin
 }
 
 
-void handle(const Event::KeyPressed& key, GameState& game_state)
+void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
 {
     // Handle key pressed events
     switch (key.code)
@@ -69,7 +69,7 @@ void handle(const Event::KeyPressed& key, GameState& game_state)
     }
 }
 
-void handleEnterPressed(GameState& game_state)
+void Handler::handleEnterPressed(GameState& game_state)
 {
     if(dynamic_cast<StartState*>(game_state.state.get()))
     {
@@ -78,7 +78,7 @@ void handleEnterPressed(GameState& game_state)
     }
 }
 
-void handle(const Event::KeyReleased& key, GameState& game_state)
+void Handler::handle(const Event::KeyReleased& key, GameState& game_state)
 {
     // Handle key released events
     switch (key.code)
