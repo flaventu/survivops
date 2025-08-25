@@ -1,9 +1,8 @@
 #pragma once
-#include "const.hpp"
-#include "GameState.hpp"
-#include "State/StartState.hpp"
-#include "State/RunningState.hpp"
+#include "states/StartState.hpp"
+#include "states/RunningState.hpp"
 
+// Handler class to manage game states
 class Handler {
 
     private:
@@ -13,7 +12,7 @@ class Handler {
         static inline constexpr float ASPECT = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
 
         // Util
-        static void resizeWindow(sf::Vector2u, sf::Vector2u&, sf::RenderWindow&);
+        static void resizeWindow(sf::Vector2u&, sf::Vector2u&, sf::RenderWindow&);
         static void handleEnterPressed(GameState&);
 
 

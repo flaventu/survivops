@@ -1,4 +1,4 @@
-#include "../include/State/StartState.hpp"
+#include "../../include/states/StartState.hpp"
 using namespace sf;
 
 void StartState::update() {

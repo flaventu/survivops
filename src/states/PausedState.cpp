@@ -1,4 +1,4 @@
-#include "../include/State/PausedState.hpp"
+#include "../../include/states/PausedState.hpp"
 using namespace sf;
 
 void PausedState::update() {

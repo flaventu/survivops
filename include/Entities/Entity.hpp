@@ -1,5 +1,5 @@
 #pragma once
-#include "Tilemap.hpp"
+#include "../Collision.hpp"
 
 // Class to handle the entities
 class Entity
@@ -30,13 +30,13 @@ class Entity
 
     public:
 
-        Entity(const std::string& textureFile, const int frameWidth, const int frameHeight) 
+        Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
             : textureSheet(textureFile), entitySprite(textureSheet), animationClock(), frameWidth(frameWidth), frameHeight(frameHeight) 
                 { updateTextureRect(); }
 
         // Getters
-        sf::Vector2f get_position() const { return position; };
-        
-        void update(const DIRECTIONS, TileMap&);
+        const sf::Vector2f& get_position() const { return position; };
+
+        void update(const DIRECTIONS, const Collision&);
         void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

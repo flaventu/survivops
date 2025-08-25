@@ -8,6 +8,7 @@ inline constexpr int FONTSIZE = 25;
 class UI
 {
     private:
+    
         sf::Font font;
         sf::Text moneyTab;
         sf::Text levelTab;
@@ -20,8 +21,8 @@ class UI
 
     public:
 
-    UI();
-    
-    void update(const Player&);
-    void draw(sf::RenderWindow&) const;
+        UI();
+        
+        void update(const Player&);
+        void draw(sf::RenderWindow&) const;
 };

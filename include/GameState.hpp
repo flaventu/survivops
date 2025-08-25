@@ -1,7 +1,5 @@
 #pragma once
-#include "State/IState.hpp"
-#include "Player.hpp"
-#include "Tilemap.hpp"
+#include "states/IState.hpp"
 #include "UI.hpp"
 
 
@@ -16,10 +14,11 @@ class GameState
         Player player;
         TileMap tilemap;
         UI ui;
+        Collision collision;
 
         GameState(std::unique_ptr<IState> init)
             : state(std::move(init)), player(), tilemap("../../assets/maps/map1.png", "../../assets/maps/map1.csv", 5), 
-              view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui()
+              view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui(), collision(tilemap)
                 { tilemap.update(view); } // Initialize the tilemap
 
         bool move_directions[4] = {false,false,false,false}; // Array to store movement directions

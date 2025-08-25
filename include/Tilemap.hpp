@@ -1,7 +1,10 @@
 #pragma once
 #include "const.hpp"
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 
 class TileMap : public sf::Drawable, public sf::Transformable
 {
@@ -33,12 +36,13 @@ class TileMap : public sf::Drawable, public sf::Transformable
                 static_cast<int>(std::floor((position.x + mapSize.x / 2.f) / TILE_SIZE)),
                 static_cast<int>(std::floor((position.y + mapSize.y / 2.f) / TILE_SIZE))
             };
-}
+        }
 
+        // Getters
+        const int getWidth() const { return width; }
+        const int getHeight() const { return height; }
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
 
         void update(const sf::View&);
-
-        bool collision(const sf::FloatRect&, const DIRECTIONS, const float);
 };

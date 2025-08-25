@@ -22,8 +22,8 @@ class Player : public Entity
         Player(); // Constructor to initialize the player sprite
 
         // Getters
-        float getHealth() const { return currentHealth; };
-        int getMoney() const { return money; };
+        const float getHealth() const { return currentHealth; };
+        const int getMoney() const { return money; };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
@@ -36,7 +36,7 @@ class Player : public Entity
         void respawn() { currentHealth = totalHealth; position = {0, 0}; };
         
         // UI utils
-        int getCurrentLevel() const { return level; };
-        float getExpPerc() const { return currentExp/expForNew; };
-        float getHealthPerc() const { return currentHealth / totalHealth; };
+        const int getCurrentLevel() const { return level; };
+        const float getExpPerc() const { return currentExp/expForNew; };
+        const float getHealthPerc() const { return currentHealth / totalHealth; };
 };

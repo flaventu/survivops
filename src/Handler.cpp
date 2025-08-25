@@ -20,7 +20,7 @@ void Handler::handle_resize (const Event::Resized& resized, RenderWindow& window
 }
 
 
-void Handler::resizeWindow(sf::Vector2u ws, sf::Vector2u &last_window_size, sf::RenderWindow &window)
+void Handler::resizeWindow(sf::Vector2u& ws, sf::Vector2u &last_window_size, sf::RenderWindow &window)
 {
         // casting to float
         float x_float = static_cast<float>(ws.x);

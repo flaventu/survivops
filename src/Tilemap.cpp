@@ -1,6 +1,4 @@
 #include "Tilemap.hpp"
-#include <fstream>
-#include <sstream>
 using namespace std;
 using namespace sf;
 
@@ -16,7 +14,7 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
     height = m_tiles[0].size();
     mapSize = {width * TILE_SIZE, height * TILE_SIZE};
 
-    m_vertices.setPrimitiveType(sf::PrimitiveType::Triangles);
+    m_vertices.setPrimitiveType(PrimitiveType::Triangles);
 }
 
 void TileMap::update(const View& view)
@@ -25,12 +23,12 @@ void TileMap::update(const View& view)
     m_vertices.resize(TileMap::maxVertexCount);
 
     // Calculate the visible area of the map based on the view
-    sf::Vector2f topLeft(view.getCenter() - view.getSize() / 2.f);
-    sf::Vector2f bottomRight(view.getCenter() + view.getSize() / 2.f);
+    Vector2f topLeft(view.getCenter() - view.getSize() / 2.f);
+    Vector2f bottomRight(view.getCenter() + view.getSize() / 2.f);
 
     // Calculate the corresponding tile indices
-    sf::Vector2i startTile = positionToTile(topLeft);
-    sf::Vector2i endTile = positionToTile(bottomRight);
+    Vector2i startTile = positionToTile(topLeft);
+    Vector2i endTile = positionToTile(bottomRight);
 
     // Calculate the start and end tile indices based on the visible area
     int startX = max(0, startTile.x - 1);
@@ -62,7 +60,7 @@ void TileMap::update(const View& view)
             int y = (j * TILE_SIZE) - mapSize.y / 2 + TILE_SIZE / 2;
 
             // Create two triangles for each tile
-            sf::Vertex* triangles = &m_vertices[vertexIndex];
+            Vertex* triangles = &m_vertices[vertexIndex];
 
             // Set the position and texture coordinates for each vertex
             triangles[0].position = {x - TILE_SIZE / 2.f, y - TILE_SIZE / 2.f};
@@ -90,7 +88,7 @@ void TileMap::update(const View& view)
 
 
 
-void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void TileMap::draw(RenderTarget& target, RenderStates states) const {
 
     states.transform *= getTransform();
     states.texture = &m_tileset;
@@ -98,7 +96,7 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 }
 
-bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
+bool TileMap::loadMapFromCSV(const filesystem::path& filePath)
 {
 
     ifstream file(filePath);
@@ -124,44 +122,4 @@ bool TileMap::loadMapFromCSV(const std::filesystem::path& filePath)
 
     file.close();
     return true;
-}
-
-bool TileMap::collision(const sf::FloatRect& rect, const DIRECTIONS d, const float speed)
-{
-
-    // Calculate the offset based on the direction
-    sf::Vector2f offset(0.f, 0.f);
-    switch (d) {
-        case UP:    offset.y = -speed; break;
-        case DOWN:  offset.y = speed;  break;
-        case LEFT:  offset.x = -speed; break;
-        case RIGHT: offset.x = speed;  break;
-    }
-
-    // Calculate new corners of the rectangle with applied offset
-    sf::Vector2f topLeft = { rect.position.x + offset.x, rect.position.y + offset.y };
-    sf::Vector2f bottomRight = { rect.position.x + HITBOX_SIZE + offset.x, rect.position.y + HITBOX_SIZE + offset.y };
-
-    // Convert to tile coordinates
-    sf::Vector2i tileTopLeft = positionToTile(topLeft);
-    sf::Vector2i tileBottomRight = positionToTile(bottomRight);
-
-    // Check for out-of-bounds tiles
-    if (tileTopLeft.x < 0 || tileTopLeft.y < 0 || tileBottomRight.x >= width || tileBottomRight.y >= height)
-        return true;
-
-    // Check collision based on direction
-    switch (d)
-    {
-        case UP:
-            return isSolid({tileTopLeft.x, tileTopLeft.y}) || isSolid({tileBottomRight.x, tileTopLeft.y});
-        case DOWN:
-            return isSolid({tileTopLeft.x, tileBottomRight.y}) || isSolid({tileBottomRight.x, tileBottomRight.y});
-        case LEFT:
-            return isSolid({tileTopLeft.x, tileTopLeft.y}) || isSolid({tileTopLeft.x, tileBottomRight.y});
-        case RIGHT:
-            return isSolid({tileBottomRight.x, tileTopLeft.y}) || isSolid({tileBottomRight.x, tileBottomRight.y});
-    }
-
-    return false;
 }

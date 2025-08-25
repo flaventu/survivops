@@ -1,4 +1,4 @@
-#include "../include/Entity.hpp"
+#include "../include/entities/Entity.hpp"
 using namespace sf;
 
 void Entity::updateTextureRect() {
@@ -12,7 +12,7 @@ void Entity::updateTextureRect() {
     entitySprite.setTextureRect(rect);
 }
 
-void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
+void Entity::update(const DIRECTIONS dir, const Collision& collision)
 {
 
     Vector2f newPosition = position; // Create a new position vector to store the updated position
@@ -20,23 +20,15 @@ void Entity::update(const DIRECTIONS dir, TileMap& tilemap)
     // Update the temporary position based on the input
     switch (dir)
     {
-        case UP:
-            newPosition.y -= speed;
-            break;
-        case DOWN:
-            newPosition.y += speed;
-            break;
-        case LEFT:
-            newPosition.x -= speed;
-            break;
-        case RIGHT:
-            newPosition.x += speed;
-        break;
+        case UP: newPosition.y -= speed; break;
+        case DOWN: newPosition.y += speed; break;
+        case LEFT: newPosition.x -= speed; break;
+        case RIGHT: newPosition.x += speed; break;
     }
 
     direction = dir;
 
-    if(!tilemap.collision(entityHitbox.getGlobalBounds(), direction, speed))
+    if(!collision.checkTileCollision(entityHitbox.getGlobalBounds(), direction, speed))
     {
         position = newPosition; // Update the position if there is no collision
 

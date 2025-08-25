@@ -19,5 +19,6 @@ target_compile_features(SurvivOps PRIVATE cxx_std_17)
 target_include_directories(SurvivOps PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/State
+    ${CMAKE_SOURCE_DIR}/include/Entities
 )
 target_link_libraries(SurvivOps PRIVATE SFML::Graphics)
