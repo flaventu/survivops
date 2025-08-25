@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.hpp"
+#include "entities/Player.hpp"
 
 inline const sf::Vector2f levelhBarSize = {180,10};
 inline const sf::Vector2f healthBarSize = {200,20};
