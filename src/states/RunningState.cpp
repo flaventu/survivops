@@ -3,6 +3,10 @@ using namespace sf;
 
 void RunningState::update() {
 
+    for(auto& npc : gs.npcs) {
+        npc->move(gs.collision);
+    }
+
     // Update player position
     for(int i = 0; i < 4; i++) {
         
@@ -30,6 +34,10 @@ void RunningState::draw(RenderWindow& window) const {
     // Draw the running state
     window.draw(gs.tilemap);
     gs.player.draw(window);
+
+    for(const auto& npc : gs.npcs) {
+        npc->draw(window);
+    }
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);

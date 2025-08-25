@@ -14,8 +14,6 @@ class Entity
         
     protected:
 
-        sf::Clock animationClock;
-
         // Sprite variables
         sf::Sprite entitySprite;
         sf::RectangleShape entityHitbox;
@@ -28,11 +26,11 @@ class Entity
 
         void updateTextureRect(); // Update the texture rectangle for the sprite
 
+        virtual void animate() = 0;
+
     public:
 
-        Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
-            : textureSheet(textureFile), entitySprite(textureSheet), animationClock(), frameWidth(frameWidth), frameHeight(frameHeight) 
-                { updateTextureRect(); }
+        Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight);
 
         // Getters
         const sf::Vector2f& get_position() const { return position; };

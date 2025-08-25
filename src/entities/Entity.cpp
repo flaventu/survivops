@@ -1,6 +1,20 @@
 #include "../include/entities/Entity.hpp"
 using namespace sf;
 
+Entity::Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
+            : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight) 
+{
+    
+    entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});
+    entitySprite.setPosition(position);
+    
+    entityHitbox.setSize({HITBOX_SIZE,HITBOX_SIZE});
+    entityHitbox.setOrigin({HITBOX_SIZE / 2.0f, HITBOX_SIZE / 2.0f});
+    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET});
+
+    updateTextureRect(); 
+}
+
 void Entity::updateTextureRect() {
 
     IntRect rect;
@@ -32,11 +46,7 @@ void Entity::update(const DIRECTIONS dir, const Collision& collision)
     {
         position = newPosition; // Update the position if there is no collision
 
-        // update the sprite animation every 200 milliseconds (12 frames at 60 FPS)
-        if(animationClock.getElapsedTime().asMilliseconds() > 200) {
-            spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
-            animationClock.restart();
-        }
+        animate();
     }
 
     // Update the entity sprite position

@@ -41,6 +41,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         // Getters
         const int getWidth() const { return width; }
         const int getHeight() const { return height; }
+        const sf::Vector2u& getMapSize() const { return mapSize; }
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
 

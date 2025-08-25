@@ -17,9 +17,14 @@ class Player : public Entity
         float expForNew = level * 100;
         float currentExp = 0;
 
+        sf::Clock animationClock;
+
+        void animate() override;
+
     public:
 
-        Player(); // Constructor to initialize the player sprite
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock()
+        { position = {0, 0}; speed = 3; }
 
         // Getters
         const float getHealth() const { return currentHealth; };

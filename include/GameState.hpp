@@ -1,11 +1,20 @@
 #pragma once
 #include "states/IState.hpp"
 #include "UI.hpp"
+#include "entities/Npc.hpp"
 
 
 // Class to handle the game state
 class GameState
 {
+    private:
+
+        void loadNpcs() {
+
+            // Merchant NPC
+            npcs.push_back(std::make_unique<Npc>("assets/entities/npcs/merchant/spritesheet.png", TILE_SIZE, TILE_SIZE, tilemap));
+
+        }
 
     public:
 
@@ -15,11 +24,15 @@ class GameState
         TileMap tilemap;
         UI ui;
         Collision collision;
+        std::vector<std::shared_ptr<Npc>> npcs;
 
         GameState(std::unique_ptr<IState> init)
             : state(std::move(init)), player(), tilemap("../../assets/maps/map1.png", "../../assets/maps/map1.csv", 5), 
               view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui(), collision(tilemap)
-                { tilemap.update(view); } // Initialize the tilemap
+                { 
+                    tilemap.update(view);
+                    loadNpcs();
+                } 
 
         bool move_directions[4] = {false,false,false,false}; // Array to store movement directions
 

@@ -1,19 +1,13 @@
 #include "../include/entities/Player.hpp"
 using namespace sf;
 
-
-Player::Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE)
+void Player::animate()
 {
-
-    position = {0, 0};
-    speed = 3; 
-
-    entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});
-    entitySprite.setPosition(position);
-
-    entityHitbox.setSize({HITBOX_SIZE,HITBOX_SIZE});
-    entityHitbox.setOrigin({HITBOX_SIZE / 2.0f, HITBOX_SIZE / 2.0f});
-    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET});
+    // update the sprite animation every 200 milliseconds (12 frames at 60 FPS)
+    if(animationClock.getElapsedTime().asMilliseconds() > 200) {
+        spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
+        animationClock.restart();
+    }
 }
 
 void Player::gainExp(const float exp) {
