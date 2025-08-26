@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.hpp"
+#include "../Collision.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -24,8 +25,7 @@ class Npc : public Entity
             spawn(tileMap); 
         }
 
-        void move(const Collision&, const sf::View&);
-
+        void update(const Collision&, const sf::View&, const sf::FloatRect&);
         void draw(sf::RenderWindow& window) const override { if(visible) Entity::draw(window); }
 
 };

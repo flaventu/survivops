@@ -1,5 +1,6 @@
 #pragma once
-#include "../Collision.hpp"
+#include <SFML/Graphics.hpp>
+#include "../const.hpp"
 
 // Class to handle the entities
 class Entity
@@ -13,7 +14,7 @@ class Entity
         const sf::Texture textureSheet;
 
         
-        protected:
+    protected:
         
         // Sprite variables
         sf::Sprite entitySprite;
@@ -39,7 +40,7 @@ class Entity
 
         // Getters
         const sf::Vector2f& get_position() const { return position; };
+        sf::FloatRect getHitbox() const { return entityHitbox.getGlobalBounds(); }
 
-        void update(const DIRECTIONS, const Collision&);
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

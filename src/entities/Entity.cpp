@@ -26,35 +26,6 @@ void Entity::updateTextureRect() {
     entitySprite.setTextureRect(rect);
 }
 
-void Entity::update(const DIRECTIONS dir, const Collision& collision)
-{
-
-    Vector2f newPosition = position; // Create a new position vector to store the updated position
-
-    // Update the temporary position based on the input
-    switch (dir)
-    {
-        case UP: newPosition.y -= speed; break;
-        case DOWN: newPosition.y += speed; break;
-        case LEFT: newPosition.x -= speed; break;
-        case RIGHT: newPosition.x += speed; break;
-    }
-
-    direction = dir;
-
-    if(!collision.checkTileCollision(entityHitbox.getGlobalBounds(), direction, speed))
-    {
-        position = newPosition; // Update the position if there is no collision
-
-        animate();
-    }
-
-    // Update the entity sprite position
-    entitySprite.setPosition(position);
-    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
-    updateTextureRect();
-}
-
 void Entity::updateVisibility(const sf::View& view)
 {
     Vector2f topLeft = view.getCenter() - view.getSize() / 2.f - sf::Vector2f{TILE_SIZE / 2.f, TILE_SIZE / 2.f};

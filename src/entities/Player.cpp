@@ -26,3 +26,38 @@ void Player::upgradePlayer() {
     dodge += 0.2f;
     expForNew = level * 100.f;
 }
+
+void Player::update(const DIRECTIONS dir, const Collision& collision, const std::vector<std::unique_ptr<Npc>>& npc_entities)
+{
+
+    Vector2f newPosition = position;
+
+    switch (dir)
+    {
+        case UP: newPosition.y -= speed; break;
+        case DOWN: newPosition.y += speed; break;
+        case LEFT: newPosition.x -= speed; break;
+        case RIGHT: newPosition.x += speed; break;
+        default: break;
+    }
+
+    direction = dir;
+
+    for (const auto& npc : npc_entities) {
+        if (collision.collision(entityHitbox.getGlobalBounds(), direction, speed, *npc)) {
+            return;
+        }
+    }
+
+    if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed))
+    {
+        position = newPosition; // Update the position if there is no collision
+
+        animate();
+    }
+
+    // Update the entity sprite position
+    entitySprite.setPosition(position);
+    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
+    updateTextureRect();
+}

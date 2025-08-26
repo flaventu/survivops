@@ -1,5 +1,8 @@
 #pragma once
+#include "Npc.hpp"
 #include "Entity.hpp"
+#include "../Collision.hpp"
+#include <iostream>
 
 // Class to handle the player character
 class Player : public Entity
@@ -44,4 +47,6 @@ class Player : public Entity
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };
         const float getHealthPerc() const { return currentHealth / totalHealth; };
+
+        void update(const DIRECTIONS, const Collision&, const std::vector<std::unique_ptr<Npc>>& npc_entities);
 };

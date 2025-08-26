@@ -9,7 +9,7 @@ void RunningState::update() {
         if(gs.move_directions[i])
         {
             
-            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision);
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.npcs);
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
@@ -20,7 +20,7 @@ void RunningState::update() {
     }
     
     for(auto& npc : gs.npcs) {
-        npc->move(gs.collision, gs.view);
+        npc->update(gs.collision, gs.view, gs.player.getHitbox());
     }
 
     sort(gs.drawable_entities.begin(), gs.drawable_entities.end(), [](const Entity* a, const Entity* b) {
