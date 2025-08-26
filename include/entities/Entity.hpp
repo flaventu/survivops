@@ -11,22 +11,27 @@ class Entity
         const int frameHeight;
 
         const sf::Texture textureSheet;
-        
-    protected:
 
+        
+        protected:
+        
         // Sprite variables
         sf::Sprite entitySprite;
         sf::RectangleShape entityHitbox;
-
+        
         // Movement variables
         DIRECTIONS direction = DOWN;
         sf::Vector2f position;
         float speed;
         int spriteNum = 0;
-
+        
         void updateTextureRect(); // Update the texture rectangle for the sprite
-
+        
         virtual void animate() = 0;
+        
+        bool visible = true;
+
+        void updateVisibility(const sf::View&);
 
     public:
 
@@ -36,5 +41,5 @@ class Entity
         const sf::Vector2f& get_position() const { return position; };
 
         void update(const DIRECTIONS, const Collision&);
-        void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
+        virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

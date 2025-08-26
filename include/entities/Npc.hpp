@@ -24,6 +24,8 @@ class Npc : public Entity
             spawn(tileMap); 
         }
 
-        void move(const Collision&);
+        void move(const Collision&, const sf::View&);
+
+        void draw(sf::RenderWindow& window) const override { if(visible) Entity::draw(window); }
 
 };

@@ -16,6 +16,13 @@ class GameState
 
         }
 
+        void loadDrawableEntities() {
+            drawable_entities.push_back(&player);
+            for (const auto& npc : npcs) {
+                drawable_entities.push_back(npc.get());
+            }
+        }
+
     public:
 
         std::unique_ptr<IState> state; // Pointer to the current state of the game (using smart pointers for automatic memory management)
@@ -24,7 +31,8 @@ class GameState
         TileMap tilemap;
         UI ui;
         Collision collision;
-        std::vector<std::shared_ptr<Npc>> npcs;
+        std::vector<std::unique_ptr<Npc>> npcs;
+        std::vector<Entity*> drawable_entities;
 
         GameState(std::unique_ptr<IState> init)
             : state(std::move(init)), player(), tilemap("../../assets/maps/map1.png", "../../assets/maps/map1.csv", 5), 
@@ -32,6 +40,7 @@ class GameState
                 { 
                     tilemap.update(view);
                     loadNpcs();
+                    loadDrawableEntities();
                 } 
 
         bool move_directions[4] = {false,false,false,false}; // Array to store movement directions

@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "../GameState.hpp"
 
 // Running state class

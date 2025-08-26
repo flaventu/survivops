@@ -16,7 +16,7 @@ void Npc::spawn(const TileMap& tilemap) {
     }
 }
 
-void Npc::move(const Collision& collision) {
+void Npc::move(const Collision& collision, const sf::View& view) {
     int timeElapsed = moveClock.getElapsedTime().asMilliseconds();
     if(timeElapsed > 600 && timeElapsed % 200 < 15) {
         update(direction, collision);
@@ -26,4 +26,6 @@ void Npc::move(const Collision& collision) {
             moveClock.restart();
         }
     }
+
+    updateVisibility(view);
 }

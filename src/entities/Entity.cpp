@@ -54,3 +54,12 @@ void Entity::update(const DIRECTIONS dir, const Collision& collision)
     entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
     updateTextureRect();
 }
+
+void Entity::updateVisibility(const sf::View& view)
+{
+    Vector2f topLeft = view.getCenter() - view.getSize() / 2.f - sf::Vector2f{TILE_SIZE / 2.f, TILE_SIZE / 2.f};
+    Vector2f bottomRight = view.getCenter() + view.getSize() / 2.f + sf::Vector2f{TILE_SIZE / 2.f, TILE_SIZE / 2.f};
+
+    visible = (position.x > topLeft.x && position.x < bottomRight.x &&
+               position.y > topLeft.y && position.y < bottomRight.y);
+}
