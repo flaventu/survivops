@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "../GameState.hpp"
 
 // Running state class
@@ -14,5 +15,5 @@ class RunningState : public IState {
 
         void update() override;
         void draw(sf::RenderWindow&) const override;
-        
+
 };

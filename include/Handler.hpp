@@ -1,13 +1,14 @@
 #pragma once
 #include "states/StartState.hpp"
 #include "states/RunningState.hpp"
+#include "states/DialogState.hpp"
 
 // Handler class to manage game states
 class Handler {
 
     private:
 
-        Handler() = default;
+        Handler() = default; // protect instance creation
 
         static inline constexpr float ASPECT = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
 

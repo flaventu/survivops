@@ -20,7 +20,7 @@ void Handler::handle_resize (const Event::Resized& resized, RenderWindow& window
 }
 
 
-void Handler::resizeWindow(sf::Vector2u& ws, sf::Vector2u &last_window_size, sf::RenderWindow &window)
+void Handler::resizeWindow(Vector2u& ws, Vector2u &last_window_size, RenderWindow &window)
 {
         // casting to float
         float x_float = static_cast<float>(ws.x);
@@ -71,10 +71,37 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
 
 void Handler::handleEnterPressed(GameState& game_state)
 {
+    // Startstate -> RunningState
     if(dynamic_cast<StartState*>(game_state.state.get()))
     {
-        RunningState running_state(game_state); // Create a new running state
-        game_state.state = move(make_unique<RunningState>(running_state)); // Change the game state to the running state
+        RunningState running_state(game_state);
+        game_state.state = move(make_unique<RunningState>(running_state));
+    }
+
+    // RunningState -> DialogState
+    else if(dynamic_cast<RunningState*>(game_state.state.get()))
+    {
+        // If the player is in dialogue with an NPC, print the dialogue to the console
+        if(game_state.player.dialogueActive)
+        {
+            Npc* npc = dynamic_cast<Npc*>(game_state.player.currentNpc);
+            game_state.state = move(make_unique<DialogState>(game_state,npc));
+        }
+    }
+
+    // DialogState -> RunningState
+    else if(DialogState* dialogState = dynamic_cast<DialogState*>(game_state.state.get()))
+    {
+        // If the current NPC is not in dialogue, switch back to the running state
+        if(!dialogState->getCurrentNpc()->isInDialogue())
+        {
+            game_state.player.dialogueActive = false;
+            game_state.player.currentNpc = nullptr;
+            RunningState running_state(game_state);
+            game_state.state = move(make_unique<RunningState>(running_state));
+        } else {
+            dialogState->advanceDialogue();
+        }
     }
 }
 

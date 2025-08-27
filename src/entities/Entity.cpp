@@ -1,5 +1,17 @@
 #include "../include/entities/Entity.hpp"
 using namespace sf;
+using namespace std;
+
+Entity::Entity(const filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
+    : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight), 
+      entityHitbox({position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET},{ HITBOX_SIZE, HITBOX_SIZE}) 
+{
+    
+    entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});
+    entitySprite.setPosition(position);
+
+    updateTextureRect(); 
+}
 
 void Entity::updateTextureRect() {
 
@@ -12,35 +24,11 @@ void Entity::updateTextureRect() {
     entitySprite.setTextureRect(rect);
 }
 
-void Entity::update(const DIRECTIONS dir, const Collision& collision)
+void Entity::updateVisibility(const sf::View& view)
 {
+    Vector2f topLeft = view.getCenter() - view.getSize() / 2.f - sf::Vector2f{TILE_SIZE / 2.f, TILE_SIZE / 2.f};
+    Vector2f bottomRight = view.getCenter() + view.getSize() / 2.f + sf::Vector2f{TILE_SIZE / 2.f, TILE_SIZE / 2.f};
 
-    Vector2f newPosition = position; // Create a new position vector to store the updated position
-
-    // Update the temporary position based on the input
-    switch (dir)
-    {
-        case UP: newPosition.y -= speed; break;
-        case DOWN: newPosition.y += speed; break;
-        case LEFT: newPosition.x -= speed; break;
-        case RIGHT: newPosition.x += speed; break;
-    }
-
-    direction = dir;
-
-    if(!collision.checkTileCollision(entityHitbox.getGlobalBounds(), direction, speed))
-    {
-        position = newPosition; // Update the position if there is no collision
-
-        // update the sprite animation every 200 milliseconds (12 frames at 60 FPS)
-        if(animationClock.getElapsedTime().asMilliseconds() > 200) {
-            spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
-            animationClock.restart();
-        }
-    }
-
-    // Update the entity sprite position
-    entitySprite.setPosition(position);
-    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
-    updateTextureRect();
+    visible = (position.x > topLeft.x && position.x < bottomRight.x &&
+               position.y > topLeft.y && position.y < bottomRight.y);
 }

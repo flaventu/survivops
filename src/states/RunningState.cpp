@@ -9,7 +9,7 @@ void RunningState::update() {
         if(gs.move_directions[i])
         {
             
-            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision);
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.npcs);
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
@@ -18,6 +18,16 @@ void RunningState::update() {
             gs.tilemap.update(gs.view);
         }
     }
+    
+    // Update NPC positions
+    for(auto& npc : gs.npcs) {
+        npc->update(gs.collision, gs.view, gs.player.getHitbox());
+    }
+
+    // Sort the drawable entities based on their Y position
+    sort(gs.drawable_entities.begin(), gs.drawable_entities.end(), [](const Entity* a, const Entity* b) {
+        return a->get_position().y < b->get_position().y;
+    });
 
     gs.ui.update(gs.player);
 
@@ -25,11 +35,13 @@ void RunningState::update() {
 
 void RunningState::draw(RenderWindow& window) const {
     
-    window.setView(gs.view); // Set the view for the window
+    window.setView(gs.view);
 
-    // Draw the running state
     window.draw(gs.tilemap);
-    gs.player.draw(window);
+
+    for(const auto& entity : gs.drawable_entities) {
+        entity->draw(window);
+    }
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);

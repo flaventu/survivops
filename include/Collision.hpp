@@ -12,6 +12,7 @@ class Collision {
 
         Collision(TileMap& tilemap) : tilemap(tilemap) {}
 
-        bool checkTileCollision(const sf::FloatRect&, const DIRECTIONS, const float) const;
+        bool collision(const sf::FloatRect&, const DIRECTIONS, const float) const; // Entity on Tilemap
+        bool collision(const sf::FloatRect&, const DIRECTIONS, const float, const sf::FloatRect&) const; // Entity on Entity
 
 };

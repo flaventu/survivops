@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.hpp"
+#include "Npc.hpp"
 
 // Class to handle the player character
 class Player : public Entity
@@ -17,9 +17,21 @@ class Player : public Entity
         float expForNew = level * 100;
         float currentExp = 0;
 
+        // Animation
+        sf::Clock animationClock;
+        void animate() override;
+
     public:
 
-        Player(); // Constructor to initialize the player sprite
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock()
+        { 
+            position = {0, 0}; 
+            speed = 3; 
+        }
+
+        // Dialogue
+        bool dialogueActive = false;
+        Entity* currentNpc = nullptr;
 
         // Getters
         const float getHealth() const { return currentHealth; };
@@ -39,4 +51,6 @@ class Player : public Entity
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };
         const float getHealthPerc() const { return currentHealth / totalHealth; };
+
+        void update(const DIRECTIONS, const Collision&, const std::vector<std::unique_ptr<Npc>>& npc_entities);
 };

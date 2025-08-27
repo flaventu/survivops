@@ -2,7 +2,7 @@
 using namespace sf;
 
 
-bool Collision::checkTileCollision(const FloatRect& rect, const DIRECTIONS d, const float speed) const
+bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float speed) const
 {
     // Calculate the offset based on the direction
     Vector2f offset(0.f, 0.f);
@@ -39,4 +39,20 @@ bool Collision::checkTileCollision(const FloatRect& rect, const DIRECTIONS d, co
     }
 
     return false;
+}
+
+bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float speed, const FloatRect& otherRect) const
+{
+    
+    // Calculate the offset based on the direction
+    Vector2f offset(0.f, 0.f);
+    switch (d) {
+        case UP: offset.y = -speed; break;
+        case DOWN: offset.y = speed; break;
+        case LEFT: offset.x = -speed; break;
+        case RIGHT: offset.x = speed; break;
+    }
+
+    FloatRect movedRect({ rect.position.x + offset.x, rect.position.y + offset.y},{ rect.size.x, rect.size.y });
+    return (movedRect.findIntersection(otherRect)) ? true : false;
 }
