@@ -17,7 +17,7 @@ class Entity
         
         // Sprite variables
         sf::Sprite entitySprite;
-        sf::RectangleShape entityHitbox;
+        sf::FloatRect entityHitbox;
         
         // Movement variables
         DIRECTIONS direction = DOWN;
@@ -39,7 +39,7 @@ class Entity
 
         // Getters
         const sf::Vector2f& get_position() const { return position; };
-        sf::FloatRect getHitbox() const { return entityHitbox.getGlobalBounds(); }
+        const sf::FloatRect& getHitbox() const { return entityHitbox; }
         const bool isVisible() const { return visible; }
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}

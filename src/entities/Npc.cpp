@@ -4,6 +4,7 @@ using namespace sf;
 
 void Npc::spawn(const TileMap& tilemap) {
 
+    // Spawn the NPC at a random non-solid tile position
     while(true) {
         int x = rand() % tilemap.getWidth();
         int y = rand() % tilemap.getHeight();
@@ -34,9 +35,9 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
             default: break;
         }
 
-        if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed))
+        if(!collision.collision(getHitbox(), direction, speed))
         {
-            if(!isVisible() || !collision.collision(entityHitbox.getGlobalBounds(), direction, speed, playerHitbox))
+            if(!isVisible() || !collision.collision(getHitbox(), direction, speed, playerHitbox))
             {
                 position = newPosition; // Update the position if there is no collision
 
@@ -46,9 +47,10 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
 
         // Update the entity sprite position
         entitySprite.setPosition(position);
-        entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
+        entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET}; // Set the position of the entity hitbox
         updateTextureRect();
 
+        // Change direction randomly after a certain period
         if(timeElapsed > 1200)
         {
             direction = static_cast<DIRECTIONS>(rand() % 4);
@@ -56,12 +58,15 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
         }
     }
 
+    // Update the NPC's visibility based on the camera view
     updateVisibility(view);
 }
 
 string Npc::speak() { 
+
     string message = dialogue[currentDialogueIndex++];
     if(currentDialogueIndex == dialogue.size())
         inDialogue = false;
     return message;
+    
 }

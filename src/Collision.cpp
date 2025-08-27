@@ -41,31 +41,6 @@ bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float
     return false;
 }
 
-bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float speed, const Entity& entity) const
-{
-    
-    // Calculate the offset based on the direction
-    Vector2f offset(0.f, 0.f);
-    switch (d) {
-        case UP: offset.y = -speed; break;
-        case DOWN: offset.y = speed; break;
-        case LEFT: offset.x = -speed; break;
-        case RIGHT: offset.x = speed; break;
-    }
-
-    // Calculate new corners of the rectangle with applied offset
-    Vector2f topLeft = { rect.position.x + offset.x, rect.position.y + offset.y };
-    Vector2f bottomRight = { rect.position.x + HITBOX_SIZE + offset.x, rect.position.y + HITBOX_SIZE + offset.y };
-
-    // Convert to tile coordinates
-    Vector2i tileTopLeft = tilemap.positionToTile(topLeft);
-    Vector2i tileBottomRight = tilemap.positionToTile(bottomRight);
-
-    FloatRect movedRect({ rect.position.x + offset.x, rect.position.y + offset.y},{ rect.size.x, rect.size.y });
-
-    return (movedRect.findIntersection(entity.getHitbox())) ? true : false;
-}
-
 bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float speed, const FloatRect& otherRect) const
 {
     

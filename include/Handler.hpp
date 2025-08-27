@@ -8,7 +8,7 @@ class Handler {
 
     private:
 
-        Handler() = default;
+        Handler() = default; // protect instance creation
 
         static inline constexpr float ASPECT = static_cast<float>(SCREEN_WIDTH) / static_cast<float>(SCREEN_HEIGHT);
 

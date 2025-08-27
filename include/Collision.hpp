@@ -1,6 +1,5 @@
 #pragma once
 #include "Tilemap.hpp"
-#include "../entities/Entity.hpp"
 
 // Collision detection class
 class Collision {
@@ -13,8 +12,7 @@ class Collision {
 
         Collision(TileMap& tilemap) : tilemap(tilemap) {}
 
-        bool collision(const sf::FloatRect&, const DIRECTIONS, const float) const;
-        bool collision(const sf::FloatRect&, const DIRECTIONS, const float, const Entity&) const;
-        bool collision(const sf::FloatRect&, const DIRECTIONS, const float, const sf::FloatRect&) const;
+        bool collision(const sf::FloatRect&, const DIRECTIONS, const float) const; // Entity on Tilemap
+        bool collision(const sf::FloatRect&, const DIRECTIONS, const float, const sf::FloatRect&) const; // Entity on Entity
 
 };

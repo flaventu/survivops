@@ -1,5 +1,6 @@
 #include "../include/entities/Player.hpp"
 using namespace sf;
+using namespace std;
 
 void Player::animate()
 {
@@ -27,7 +28,7 @@ void Player::upgradePlayer() {
     expForNew = level * 100.f;
 }
 
-void Player::update(const DIRECTIONS dir, const Collision& collision, const std::vector<std::unique_ptr<Npc>>& npc_entities)
+void Player::update(const DIRECTIONS dir, const Collision& collision, const vector<unique_ptr<Npc>>& npc_entities)
 {
 
     Vector2f newPosition = position;
@@ -44,7 +45,9 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const std:
     direction = dir;
 
     for (const auto& npc : npc_entities) {
-        if (npc->isVisible() && collision.collision(entityHitbox.getGlobalBounds(), direction, speed, *npc)) {
+
+        // if the NPC is visible and colliding with the player we can start a dialogue (return for not make the player move)
+        if (npc->isVisible() && collision.collision(getHitbox(), direction, speed, npc->getHitbox())) {
             dialogueActive = true;
             currentNpc = npc.get();
             npc->startDialogue();
@@ -52,18 +55,20 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const std:
         }
     }
 
+    // reset dialogue
     dialogueActive = false;
     currentNpc = nullptr;
 
-    if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed))
+    // Check for collisions with the environment
+    if(!collision.collision(getHitbox(), direction, speed))
     {
         position = newPosition; // Update the position if there is no collision
 
         animate();
     }
 
-    // Update the entity sprite position
+    // Update the entity sprite position and hitbox
     entitySprite.setPosition(position);
-    entityHitbox.setPosition({position.x, position.y + HITBOX_OFFSET}); // Set the position of the entity hitbox
+    entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET}; // Set the position of the entity hitbox
     updateTextureRect();
 }

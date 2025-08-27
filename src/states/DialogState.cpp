@@ -13,18 +13,20 @@ DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), curren
     // Setup the dialogue box
     dialogueBox.setSize({350.f, 80.f});
     dialogueBox.setOrigin({dialogueBox.getSize().x / 2.f, dialogueBox.getSize().y / 2.f});
-    dialogueBox.setFillColor(Color(0, 0, 0, 200)); // Semi-transparent black
+    dialogueBox.setFillColor(Color(0, 0, 0, 200));
     dialogueBox.setOutlineColor(Color::White);
     dialogueBox.setOutlineThickness(2);
     
-    dialogueBox.setPosition({SCREEN_WIDTH / 2.f, 150.f}); // Position at the bottom of the screen
+    dialogueBox.setPosition({SCREEN_WIDTH / 2.f, 150.f});
 }
 
 void DialogState::advanceDialogue() {
-    string dialogue = currentNpc->speak();
 
+    // Get the next line of dialogue from the NPC
+    string dialogue = currentNpc->speak();
     dialogueText.setString(dialogue);
 
+    // Center the text within the dialogue box
     dialogueText.setOrigin({dialogueText.getLocalBounds().size.x / 2.f, dialogueText.getLocalBounds().size.y / 2.f});
     dialogueText.setPosition({dialogueBox.getPosition().x + 10.f, dialogueBox.getPosition().y});
 }

@@ -6,7 +6,7 @@ class StartState : public IState {
 
     public:
 
-        void update() override;
-        void draw(sf::RenderWindow&) const override;
+        void update() override {}
+        void draw(sf::RenderWindow&) const override {}
 
 };

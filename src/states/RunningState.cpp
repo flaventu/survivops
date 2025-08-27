@@ -19,10 +19,12 @@ void RunningState::update() {
         }
     }
     
+    // Update NPC positions
     for(auto& npc : gs.npcs) {
         npc->update(gs.collision, gs.view, gs.player.getHitbox());
     }
 
+    // Sort the drawable entities based on their Y position
     sort(gs.drawable_entities.begin(), gs.drawable_entities.end(), [](const Entity* a, const Entity* b) {
         return a->get_position().y < b->get_position().y;
     });
@@ -33,9 +35,8 @@ void RunningState::update() {
 
 void RunningState::draw(RenderWindow& window) const {
     
-    window.setView(gs.view); // Set the view for the window
+    window.setView(gs.view);
 
-    // Draw the running state
     window.draw(gs.tilemap);
 
     for(const auto& entity : gs.drawable_entities) {

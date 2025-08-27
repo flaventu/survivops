@@ -1,26 +1,31 @@
 #pragma once
 #include "../Collision.hpp"
+#include "Entity.hpp"
 #include <cstdlib>
 #include <ctime>
 
 // Class to handle non-player characters
 class Npc : public Entity
 {
+    private:
 
+        // Dialogue
+        int currentDialogueIndex = 0;
+        bool inDialogue = false;
+        virtual void loadDialogue() = 0;
+        
+        // Animation
+        void animate() override { spriteNum = (spriteNum + 1) % 2; }
+        
+        // Movement
+        sf::Clock moveClock;
+        void spawn(const TileMap&);
+        
     protected:
 
-        int currentDialogueIndex = 0;
         std::vector<std::string> dialogue;
-        bool inDialogue = false;
-
-        void animate() override { spriteNum = (spriteNum + 1) % 2; }
-        void spawn(const TileMap&);
-
-        virtual void loadDialogue() {}
         
     public:
-        
-        sf::Clock moveClock;
         
         Npc(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const TileMap& tileMap) 
         : Entity(textureFile, frameWidth, frameHeight), moveClock()
@@ -30,6 +35,7 @@ class Npc : public Entity
             spawn(tileMap); 
         }
 
+        // Dialogue
         std::string speak();
         const bool isInDialogue() const { return inDialogue; }
         void startDialogue() { inDialogue = true; currentDialogueIndex = 0; }
