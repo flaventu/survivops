@@ -1,6 +1,6 @@
 #pragma once
 #include "Tilemap.hpp"
-#include "Entity.hpp"
+#include "../entities/Entity.hpp"
 
 // Collision detection class
 class Collision {

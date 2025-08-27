@@ -1,5 +1,4 @@
 #pragma once
-#include "IState.hpp"
 #include "../GameState.hpp"
 
 // Dialog state class

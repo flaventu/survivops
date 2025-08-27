@@ -1,7 +1,5 @@
 #pragma once
 #include "Npc.hpp"
-#include "Entity.hpp"
-#include "../Collision.hpp"
 #include <iostream>
 
 // Class to handle the player character

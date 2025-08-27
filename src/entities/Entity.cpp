@@ -1,8 +1,9 @@
 #include "../include/entities/Entity.hpp"
 using namespace sf;
+using namespace std;
 
-Entity::Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
-            : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight) 
+Entity::Entity(const filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
+    : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight) 
 {
     
     entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});

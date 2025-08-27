@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "../const.hpp"
 
 // Class to handle the entities
@@ -28,10 +27,10 @@ class Entity
         
         void updateTextureRect(); // Update the texture rectangle for the sprite
         
-        virtual void animate() = 0;
-        
-        bool visible = true;
+        virtual void animate() = 0; // Pure virtual function for animation
 
+        // Visibility
+        bool visible = true;
         void updateVisibility(const sf::View&);
 
     public:

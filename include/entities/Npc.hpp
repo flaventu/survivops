@@ -1,5 +1,4 @@
 #pragma once
-#include "Entity.hpp"
 #include "../Collision.hpp"
 #include <cstdlib>
 #include <ctime>

@@ -2,7 +2,6 @@
 #include "states/IState.hpp"
 #include "UI.hpp"
 #include "entities/Merchant.hpp"
-#include "entities/Npc.hpp"
 
 
 // Class to handle the game state

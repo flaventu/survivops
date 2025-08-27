@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include <string>
 
 inline const std::string TITLE = "SurvivOps"; // Title of the game
