@@ -15,5 +15,5 @@ class RunningState : public IState {
 
         void update() override;
         void draw(sf::RenderWindow&) const override;
-        
+
 };

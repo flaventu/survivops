@@ -26,6 +26,9 @@ class Player : public Entity
 
     public:
 
+        bool dialogueActive = false;
+        Entity* currentNpc = nullptr;
+
         Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock()
         { position = {0, 0}; speed = 3; }
 

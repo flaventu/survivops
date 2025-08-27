@@ -1,6 +1,7 @@
 #pragma once
 #include "states/IState.hpp"
 #include "UI.hpp"
+#include "entities/Merchant.hpp"
 #include "entities/Npc.hpp"
 
 
@@ -12,7 +13,7 @@ class GameState
         void loadNpcs() {
 
             // Merchant NPC
-            npcs.push_back(std::make_unique<Npc>("assets/entities/npcs/merchant/spritesheet.png", TILE_SIZE, TILE_SIZE, tilemap));
+            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant/spritesheet.png", TILE_SIZE, TILE_SIZE, tilemap));
 
         }
 

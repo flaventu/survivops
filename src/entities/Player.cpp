@@ -44,10 +44,16 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const std:
     direction = dir;
 
     for (const auto& npc : npc_entities) {
-        if (collision.collision(entityHitbox.getGlobalBounds(), direction, speed, *npc)) {
+        if (npc->isVisible() && collision.collision(entityHitbox.getGlobalBounds(), direction, speed, *npc)) {
+            dialogueActive = true;
+            currentNpc = npc.get();
+            npc->startDialogue();
             return;
         }
     }
+
+    dialogueActive = false;
+    currentNpc = nullptr;
 
     if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed))
     {

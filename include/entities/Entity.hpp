@@ -41,6 +41,7 @@ class Entity
         // Getters
         const sf::Vector2f& get_position() const { return position; };
         sf::FloatRect getHitbox() const { return entityHitbox.getGlobalBounds(); }
+        const bool isVisible() const { return visible; }
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

@@ -34,11 +34,14 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
             default: break;
         }
 
-        if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed) && !collision.collision(entityHitbox.getGlobalBounds(), direction, speed, playerHitbox))
+        if(!collision.collision(entityHitbox.getGlobalBounds(), direction, speed))
         {
-            position = newPosition; // Update the position if there is no collision
+            if(!isVisible() || !collision.collision(entityHitbox.getGlobalBounds(), direction, speed, playerHitbox))
+            {
+                position = newPosition; // Update the position if there is no collision
 
-            animate();
+                animate();
+            }
         }
 
         // Update the entity sprite position
@@ -54,4 +57,11 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
     }
 
     updateVisibility(view);
+}
+
+string Npc::speak() { 
+    string message = dialogue[currentDialogueIndex++];
+    if(currentDialogueIndex == dialogue.size())
+        inDialogue = false;
+    return message;
 }

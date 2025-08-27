@@ -76,6 +76,31 @@ void Handler::handleEnterPressed(GameState& game_state)
         RunningState running_state(game_state); // Create a new running state
         game_state.state = move(make_unique<RunningState>(running_state)); // Change the game state to the running state
     }
+    else if(dynamic_cast<RunningState*>(game_state.state.get()))
+    {
+        // If the player is in dialogue with an NPC, print the dialogue to the console
+        if(game_state.player.dialogueActive)
+        {
+            Npc* npc = dynamic_cast<Npc*>(game_state.player.currentNpc);
+            game_state.state = move(make_unique<DialogState>(game_state,npc));
+        }
+    }
+    else if(DialogState* dialogState = dynamic_cast<DialogState*>(game_state.state.get()))
+    {
+        // If the player is in dialogue with an NPC, print the dialogue to the console
+        if(game_state.player.dialogueActive)
+        {
+            if(!dialogState->getCurrentNpc()->isInDialogue())
+            {
+                game_state.player.dialogueActive = false;
+                game_state.player.currentNpc = nullptr;
+                RunningState running_state(game_state); // Create a new running state
+                game_state.state = move(make_unique<RunningState>(running_state)); // Change the game state to the running state
+            } else {
+                dialogState->advanceDialogue();
+            }
+        }
+    }
 }
 
 void Handler::handle(const Event::KeyReleased& key, GameState& game_state)

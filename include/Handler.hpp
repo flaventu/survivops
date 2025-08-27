@@ -1,6 +1,7 @@
 #pragma once
 #include "states/StartState.hpp"
 #include "states/RunningState.hpp"
+#include "states/DialogState.hpp"
 
 // Handler class to manage game states
 class Handler {
