@@ -72,3 +72,9 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
     entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET}; // Set the position of the entity hitbox
     updateTextureRect();
 }
+
+void Player::attack() {
+    if (weapon->isUsable()) {
+        weapon->useWeapon();
+    }
+}

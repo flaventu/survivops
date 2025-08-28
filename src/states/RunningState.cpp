@@ -3,6 +3,13 @@ using namespace sf;
 
 void RunningState::update() {
 
+    // Update weapon state
+    gs.player.getWeapon()->update();
+
+    if(gs.player.isAttacking) {
+        gs.player.attack();
+    }
+
     // Update player position
     for(int i = 0; i < 4; i++) {
         

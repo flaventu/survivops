@@ -11,6 +11,7 @@ void Weapon::useWeapon() {
 
 void Weapon::update() {
     if (!usable && cooldownClock.getElapsedTime().asMilliseconds() >= cooldown) {
+        weaponSprite.setTextureRect(sf::IntRect({weaponSprite.getTextureRect().position.x + TILE_SIZE, weaponSprite.getTextureRect().position.y}, {TILE_SIZE, TILE_SIZE}));
         usable = true;
     }
 }

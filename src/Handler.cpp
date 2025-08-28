@@ -51,6 +51,10 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             handleEnterPressed(game_state); // Handle enter key events
             break;
 
+        case Keyboard::Key::P:
+            game_state.player.isAttacking = true;
+            break;
+
         case Keyboard::Key::W:
                 game_state.move_directions[UP] = true;
             break;
@@ -110,6 +114,9 @@ void Handler::handle(const Event::KeyReleased& key, GameState& game_state)
     // Handle key released events
     switch (key.code)
     {
+        case Keyboard::Key::P:
+            game_state.player.isAttacking = false;
+            break;
         case Keyboard::Key::W:
                 game_state.move_directions[UP] = false;
             break;

@@ -36,6 +36,9 @@ class Player : public Entity
         bool dialogueActive = false;
         Entity* currentNpc = nullptr;
 
+        // Combat
+        bool isAttacking = false;
+
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
@@ -50,6 +53,9 @@ class Player : public Entity
         // Player state
         void upgradePlayer();
         void respawn() { currentHealth = totalHealth; position = {0, 0}; };
+
+        // Combat
+        void attack();
         
         // UI utils
         const int getCurrentLevel() const { return level; };
