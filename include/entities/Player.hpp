@@ -50,6 +50,7 @@ class Player : public Entity
         void gainExp(const float);
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
         void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };
+        void changeWeapon(std::unique_ptr<Weapon> newWeapon) { weapon = std::move(newWeapon); }
 
         // Player state
         void upgradePlayer();

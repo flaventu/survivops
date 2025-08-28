@@ -1,8 +1,11 @@
+#pragma once
 #include "../const.hpp"
 
 class Weapon {
 
     private:
+
+        std::string name;
 
         // Texture
         const sf::Texture textureSheet;
@@ -26,8 +29,8 @@ class Weapon {
 
     public:
 
-        Weapon(const std::filesystem::path& textureFile, const int dmg, const int rng, const int cd) 
-            : textureSheet(textureFile), weaponSprite(textureSheet), damage(dmg), range(rng), cooldown(cd), cooldownClock() 
+        Weapon(const std::filesystem::path& textureFile, const std::string nm, const int dmg, const int rng, const int cd) 
+            : textureSheet(textureFile), weaponSprite(textureSheet), name(nm), damage(dmg), range(rng), cooldown(cd), cooldownClock() 
             {  
                 weaponSprite.setTextureRect(sf::IntRect({TILE_SIZE, 0}, {TILE_SIZE, TILE_SIZE}));
                 weaponSprite.setOrigin({TILE_SIZE / 2, TILE_SIZE / 2});
@@ -35,6 +38,7 @@ class Weapon {
             }
         
         // Getters
+        const std::string& getName() const { return name; }
         const int getDamage() const { return damage; }
         const int getRange() const { return range; }
         const int getLevel() const { return level; }

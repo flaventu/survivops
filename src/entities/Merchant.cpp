@@ -1,14 +1,13 @@
-#include "../../include/entities/Blacksmith.hpp"
+#include "../../include/entities/Merchant.hpp"
 using namespace std;
 
-string Blacksmith::speak() {
+string Merchant::speak() {
 
-    dialogue[1][1] = "It would cost you " + std::to_string(findPrice()) + " coins.";
+    dialogue[1][4] = "It costs " + std::to_string(findPrice()) + " coins.";
 
-    if(player.getWeapon()->getLevel() == 5)
-    {
+    if(inventory.empty()) {
         inDialogue = false;
-        return "Looks like you don't need me.";
+        return "Sorry, you caught me before the restock.";
     }
 
     string message = dialogue[currentMessage][currentDialogueIndex++];
@@ -19,12 +18,17 @@ string Blacksmith::speak() {
         switch (answer)
         {
         case 0:
-            if(player.getMoney() < findPrice()) {
-                message = "You need " + to_string(findPrice() - player.getMoney()) + " more coins!";
+            if(player.getMoney() < 150) {
+                message = "You need " + to_string(150 - player.getMoney()) + " more coins!";
             } else {
-                message = "Great! I'll upgrade your weapon.";
-                player.payMoney(findPrice());
-                player.getWeapon()->upgradeWeapon();
+                Weapon* newWeapon = inventory.front().release();
+                inventory.pop();
+                message = "Great! Enjoy your new " + newWeapon->getName() + "!";
+                player.payMoney(150);
+                player.changeWeapon(std::unique_ptr<Weapon>(newWeapon));
+                if(!inventory.empty())
+                    dialogue[currentMessage][3] = "I have this " + inventory.front()->getName() + " for sale.";
+
             }
             break;
 

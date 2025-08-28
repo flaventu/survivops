@@ -13,7 +13,7 @@ class GameState
         void loadNpcs() {
 
             // Merchant NPC
-            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, tilemap));
+            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, tilemap, player));
             // Blacksmith NPC
             npcs.push_back(std::make_unique<Blacksmith>("assets/entities/npcs/blacksmith.png", TILE_SIZE, TILE_SIZE, tilemap, player));
 
