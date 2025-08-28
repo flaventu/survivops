@@ -45,4 +45,5 @@ void RunningState::draw(RenderWindow& window) const {
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);
+    gs.player.getWeapon()->draw(window);
 }

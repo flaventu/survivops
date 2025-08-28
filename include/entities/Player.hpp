@@ -1,5 +1,6 @@
 #pragma once
 #include "Npc.hpp"
+#include "../weapons/Hand.hpp"
 
 // Class to handle the player character
 class Player : public Entity
@@ -21,12 +22,14 @@ class Player : public Entity
         sf::Clock animationClock;
         void animate() override;
 
+        std::unique_ptr<Weapon> weapon;
+
     public:
 
-        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock()
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock(), weapon(std::make_unique<Hand>())
         { 
             position = {0, 0}; 
-            speed = 3; 
+            speed = 3;
         }
 
         // Dialogue
@@ -36,6 +39,7 @@ class Player : public Entity
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
+        Weapon* getWeapon() const { return weapon.get(); };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
