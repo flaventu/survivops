@@ -10,24 +10,7 @@ class Merchant : public Npc
         Player& player;
         std::queue<std::unique_ptr<Weapon>> inventory;
 
-        void loadDialogue() override {
-            dialogue = {
-                {
-                    "Looking for deals?",
-                    "I have the best weapons in town.",
-                    "Come and visit me anytime!"
-                },
-                {
-                    "Seems like you need a weapon.",
-                    "Mh... let me see...",
-                    "Here you go!",
-                    "I have this " + inventory.front()->getName() + " for sale.",
-                    "It costs " + std::to_string(findPrice()) + " coins.",
-                    "What do you think?",
-                    "- I'll take it!\n- No thanks."
-                }
-            };
-        }
+        void loadDialogue() override;
 
         int findPrice() {
             return 150 - (player.getWeapon()->getLevel()*10);

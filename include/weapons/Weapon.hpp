@@ -42,10 +42,12 @@ class Weapon {
         const int getDamage() const { return damage; }
         const int getRange() const { return range; }
         const int getLevel() const { return level; }
+        const int getMaxLevel() const { return maxLevel; }
         bool isUsable() const { return usable; }
 
         void useWeapon();
 
+        // Update stats and appearance
         void upgradeWeapon() {
             if(level < maxLevel) {
                 level++;

@@ -1,4 +1,4 @@
-#include "../include/entities/Player.hpp"
+#include "../../include/entities/Player.hpp"
 using namespace sf;
 using namespace std;
 

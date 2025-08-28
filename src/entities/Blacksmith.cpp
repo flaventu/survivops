@@ -1,24 +1,46 @@
 #include "../../include/entities/Blacksmith.hpp"
 using namespace std;
 
+void Blacksmith::loadDialogue() {
+
+    dialogue = {
+        {
+            "Hey, traveler!",
+            "I can help you upgrade your weapons.",
+            "Just bring me some coins!"
+        },
+        {
+            "Do you need an upgrade?",
+            "It would cost you ... coins.",
+            "- Yes\n- No"
+        }
+    };
+}
+
 string Blacksmith::speak() {
 
-    dialogue[1][1] = "It would cost you " + std::to_string(findPrice()) + " coins.";
+    // Update the dialogue with the current price
+    dialogue[1][1] = "It would cost you " + to_string(findPrice()) + " coins.";
 
-    if(player.getWeapon()->getLevel() == 5)
+    // Check if the player's weapon is at max level
+    if(player.getWeapon()->getLevel() == player.getWeapon()->getMaxLevel())
     {
         inDialogue = false;
         return "Looks like you don't need me.";
     }
 
+    // Retrieve the current message
     string message = dialogue[currentMessage][currentDialogueIndex++];
 
+    // Check if the message is a dialogue option
     if(message.substr(0,1) == ("-"))
     {
         optionAvailable = true;
         switch (answer)
         {
         case 0:
+
+            // Logic for upgrading the weapon
             if(player.getMoney() < findPrice()) {
                 message = "You need " + to_string(findPrice() - player.getMoney()) + " more coins!";
             } else {
@@ -47,11 +69,7 @@ string Blacksmith::speak() {
 
     answer = -1; // prevent early answer
 
-    if(currentDialogueIndex == dialogue[currentMessage].size())
-    {
-        inDialogue = false;
-        if(currentMessage < dialogue.size() - 1)
-            currentMessage++;
-    }
+    nextDialogue();
+    
     return message;
 }

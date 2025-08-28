@@ -1,4 +1,4 @@
-#include "../include/entities/Npc.hpp"
+#include "../../include/entities/Npc.hpp"
 using namespace std;
 using namespace sf;
 
@@ -65,12 +65,16 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
 string Npc::speak() { 
 
     string message = dialogue[currentMessage][currentDialogueIndex++];
+    nextDialogue();
+    return message;
+    
+}
+
+void Npc::nextDialogue() {
     if(currentDialogueIndex == dialogue[currentMessage].size())
     {
         inDialogue = false;
         if(currentMessage < dialogue.size() - 1)
             currentMessage++;
     }
-    return message;
-    
 }

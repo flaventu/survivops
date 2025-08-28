@@ -24,7 +24,7 @@ class DialogState : public IState {
         void advanceDialogue();
         Npc* getCurrentNpc() const { return currentNpc; }
 
-        void setAnswer() { currentNpc->answer = (currentNpc->answer+1) % 2; }
+        void setAnswer() const { currentNpc->setAnswer((currentNpc->getAnswer()+1) % 2); }
 
         void update() override;
         void draw(sf::RenderWindow&) const override;

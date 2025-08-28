@@ -2,7 +2,7 @@
 using namespace sf;
 using namespace std;
 
-DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), currentNpc(npc), font("../../assets/fonts/arial.ttf"), dialogueText(font), arrowTexture("../../assets/ui/arrow.png"), arrowSprite(arrowTexture) {
+DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), currentNpc(npc), font("assets/fonts/arial.ttf"), dialogueText(font), arrowTexture("assets/ui/arrow.png"), arrowSprite(arrowTexture) {
 
     // Setup the dialogue text
     dialogueText.setCharacterSize(20);
@@ -49,12 +49,16 @@ void DialogState::draw(RenderWindow& window) const {
     gs.player.getWeapon()->draw(window);
     window.draw(dialogueBox);
     window.draw(dialogueText);
-    if(currentNpc->optionAvailable && currentNpc->answer >= 0)
+
+    // Draw the arrow sprite if the option is available and a valid answer is present
+    if(currentNpc->isOptionAvailable() && currentNpc->getAnswer() >= 0)
         window.draw(arrowSprite);
 }
 
 void DialogState::update() {
-    switch (currentNpc->answer)
+
+    // Update the arrow sprite position based on the possible answer
+    switch (currentNpc->getAnswer())
     {
     case 0:
         arrowSprite.setPosition({dialogueBox.getPosition().x - dialogueBox.getSize().x / 2.f + 20.f, dialogueBox.getPosition().y - 23.f});

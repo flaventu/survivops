@@ -1,23 +1,48 @@
 #include "../../include/entities/Merchant.hpp"
 using namespace std;
 
+void Merchant::loadDialogue() {
+    dialogue = {
+        {
+            "Looking for deals?",
+            "I have the best weapons in town.",
+            "Come and visit me anytime!"
+        },
+        {
+            "Seems like you need a weapon.",
+            "Mh... let me see...",
+            "Here you go!",
+            "I have this " + inventory.front()->getName() + " for sale.",
+            "It costs ... coins.",
+            "What do you think?",
+            "- I'll take it!\n- No thanks."
+        }
+    };
+}
+
 string Merchant::speak() {
 
+    // Update the dialogue with the current price
     dialogue[1][4] = "It costs " + std::to_string(findPrice()) + " coins.";
 
+    // Check if the inventory is empty
     if(inventory.empty()) {
         inDialogue = false;
         return "Sorry, you caught me before the restock.";
     }
 
+    // Retrieve the current message
     string message = dialogue[currentMessage][currentDialogueIndex++];
 
+    // Check if the message is a dialogue option
     if(message.substr(0,1) == ("-"))
     {
         optionAvailable = true;
         switch (answer)
         {
         case 0:
+
+            // Shop logic
             if(player.getMoney() < 150) {
                 message = "You need " + to_string(150 - player.getMoney()) + " more coins!";
             } else {
@@ -28,7 +53,6 @@ string Merchant::speak() {
                 player.changeWeapon(std::unique_ptr<Weapon>(newWeapon));
                 if(!inventory.empty())
                     dialogue[currentMessage][3] = "I have this " + inventory.front()->getName() + " for sale.";
-
             }
             break;
 
@@ -51,11 +75,7 @@ string Merchant::speak() {
 
     answer = -1; // prevent early answer
 
-    if(currentDialogueIndex == dialogue[currentMessage].size())
-    {
-        inDialogue = false;
-        if(currentMessage < dialogue.size() - 1)
-            currentMessage++;
-    }
+    nextDialogue();
+    
     return message;
 }

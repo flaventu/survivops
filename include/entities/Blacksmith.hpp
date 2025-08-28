@@ -7,26 +7,14 @@ class Blacksmith : public Npc
 
         Player& player;
 
-        void loadDialogue() override {
-            dialogue = {
-                {
-                    "Hey, traveler!",
-                    "I can help you upgrade your weapons.",
-                    "Just bring me some coins!"
-                },
-                {
-                    "Do you need an upgrade?",
-                    "It would cost you " + std::to_string(findPrice()) + " coins.",
-                    "- Yes\n- No"
-                }
-            };
-        }
+        void loadDialogue() override;
 
-        int findPrice() {
+        const int findPrice() const {
             return player.getWeapon()->getLevel() * 50;
         }
 
     public:
+    
         Blacksmith(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const TileMap& tileMap, Player& player)
         : Npc(textureFile, frameWidth, frameHeight, tileMap), player(player) {
             loadDialogue();

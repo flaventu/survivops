@@ -4,7 +4,7 @@
 
 inline const std::string TITLE = "SurvivOps"; // Title of the game
 
-inline const std::string ICON_PATH = "../../assets/icon.png"; // Path to the game icon
+inline const std::string ICON_PATH = "assets/icon.png"; // Path to the game icon
 
 inline constexpr unsigned int MAX_FPS = 60; // Frames per second
 inline constexpr unsigned int TILE_SIZE = 48; // tile size in pixels (48x48)

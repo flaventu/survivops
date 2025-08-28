@@ -2,7 +2,7 @@
 using namespace sf;
 using namespace std;
 
-UI::UI() : font("../../assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weaponLevel(font)
+UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weaponLevel(font)
 {
     
     // Prepare the money text
@@ -104,23 +104,23 @@ void UI::setWeaponLevelColor(const int level) {
     
     switch (level)
     {
-    case 2:
+    case 2: // Gold
         weaponLevel.setFillColor(Color(255, 215, 0));
         break;
 
-    case 3:
+    case 3: // Amethyst
         weaponLevel.setFillColor(Color(153, 102, 204));
         break;
 
-    case 4:
+    case 4: // Diamond
         weaponLevel.setFillColor(Color(78, 226, 236));
         break;
 
-    case 5:
+    case 5: // Obsidian
         weaponLevel.setFillColor(Color(49, 41, 42));
         break;
 
-    default: // 1
+    default: // Bronze
         weaponLevel.setFillColor(Color(205, 127, 50));
         break;
     }

@@ -6,6 +6,7 @@ void RunningState::update() {
     // Update weapon state
     gs.player.getWeapon()->update();
 
+    // Handle player attack
     if(gs.player.isAttacking) {
         gs.player.attack();
     }
