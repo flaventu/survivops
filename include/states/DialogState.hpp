@@ -12,6 +12,9 @@ class DialogState : public IState {
         sf::Font font;
         sf::Text dialogueText;
 
+        const sf::Texture arrowTexture;
+        sf::Sprite arrowSprite;
+
         sf::RectangleShape dialogueBox;
 
     public:
@@ -21,7 +24,9 @@ class DialogState : public IState {
         void advanceDialogue();
         Npc* getCurrentNpc() const { return currentNpc; }
 
-        void update() override {}
+        void setAnswer() { currentNpc->answer = (currentNpc->answer+1) % 2; }
+
+        void update() override;
         void draw(sf::RenderWindow&) const override;
         
 };

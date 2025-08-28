@@ -2,7 +2,7 @@
 using namespace sf;
 using namespace std;
 
-DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), currentNpc(npc), font("../../assets/fonts/arial.ttf"), dialogueText(font) {
+DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), currentNpc(npc), font("../../assets/fonts/arial.ttf"), dialogueText(font), arrowTexture("../../assets/ui/arrow.png"), arrowSprite(arrowTexture) {
 
     // Setup the dialogue text
     dialogueText.setCharacterSize(20);
@@ -11,13 +11,15 @@ DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), curren
     dialogueText.setOutlineThickness(1);
     
     // Setup the dialogue box
-    dialogueBox.setSize({350.f, 80.f});
+    dialogueBox.setSize({400.f, 80.f});
     dialogueBox.setOrigin({dialogueBox.getSize().x / 2.f, dialogueBox.getSize().y / 2.f});
     dialogueBox.setFillColor(Color(0, 0, 0, 200));
     dialogueBox.setOutlineColor(Color::White);
     dialogueBox.setOutlineThickness(2);
     
     dialogueBox.setPosition({SCREEN_WIDTH / 2.f, 150.f});
+
+    arrowSprite.setPosition({dialogueBox.getPosition().x - dialogueBox.getSize().x / 2.f + 20.f, dialogueBox.getPosition().y - 23.f});
 }
 
 void DialogState::advanceDialogue() {
@@ -44,6 +46,22 @@ void DialogState::draw(RenderWindow& window) const {
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);
+    gs.player.getWeapon()->draw(window);
     window.draw(dialogueBox);
     window.draw(dialogueText);
+    if(currentNpc->optionAvailable && currentNpc->answer >= 0)
+        window.draw(arrowSprite);
+}
+
+void DialogState::update() {
+    switch (currentNpc->answer)
+    {
+    case 0:
+        arrowSprite.setPosition({dialogueBox.getPosition().x - dialogueBox.getSize().x / 2.f + 20.f, dialogueBox.getPosition().y - 23.f});
+        break;
+
+    case 1:
+        arrowSprite.setPosition({dialogueBox.getPosition().x - dialogueBox.getSize().x / 2.f + 20.f, dialogueBox.getPosition().y - 3.f});
+        break;
+    }
 }

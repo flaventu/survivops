@@ -55,6 +55,20 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             game_state.player.isAttacking = true;
             break;
 
+        case Keyboard::Key::Up:
+            if(DialogState* dialogState = dynamic_cast<DialogState*>(game_state.state.get()))
+            {
+                dialogState->setAnswer();
+            }
+            break;
+
+        case Keyboard::Key::Down:
+            if(DialogState* dialogState = dynamic_cast<DialogState*>(game_state.state.get()))
+            {
+                dialogState->setAnswer();
+            }
+            break;
+
         case Keyboard::Key::W:
                 game_state.move_directions[UP] = true;
             break;

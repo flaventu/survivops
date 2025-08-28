@@ -2,6 +2,7 @@
 #include "states/IState.hpp"
 #include "UI.hpp"
 #include "entities/Merchant.hpp"
+#include "entities/Blacksmith.hpp"
 
 
 // Class to handle the game state
@@ -12,7 +13,9 @@ class GameState
         void loadNpcs() {
 
             // Merchant NPC
-            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant/spritesheet.png", TILE_SIZE, TILE_SIZE, tilemap));
+            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, tilemap));
+            // Blacksmith NPC
+            npcs.push_back(std::make_unique<Blacksmith>("assets/entities/npcs/blacksmith.png", TILE_SIZE, TILE_SIZE, tilemap, player));
 
         }
 

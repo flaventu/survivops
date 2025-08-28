@@ -7,10 +7,11 @@
 // Class to handle non-player characters
 class Npc : public Entity
 {
-    private:
+    protected:
 
         // Dialogue
         int currentDialogueIndex = 0;
+        int currentMessage = 0;
         bool inDialogue = false;
         virtual void loadDialogue() = 0;
         
@@ -23,20 +24,22 @@ class Npc : public Entity
         
     protected:
 
-        std::vector<std::string> dialogue;
-        
+        std::vector<std::vector<std::string>> dialogue;
+
     public:
         
         Npc(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const TileMap& tileMap) 
         : Entity(textureFile, frameWidth, frameHeight), moveClock()
         { 
             speed = 4;
-            srand(static_cast<unsigned int>(time(0)));
             spawn(tileMap); 
         }
 
         // Dialogue
-        std::string speak();
+        int answer = 0;
+        bool optionAvailable = false;
+
+        virtual std::string speak();
         const bool isInDialogue() const { return inDialogue; }
         void startDialogue() { inDialogue = true; currentDialogueIndex = 0; }
 

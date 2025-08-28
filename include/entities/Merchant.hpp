@@ -6,10 +6,15 @@ class Merchant : public Npc
     private:
         void loadDialogue() override {
             dialogue = {
-                "Welcome to my shop!",
-                "We have the best goods in town.",
-                "Feel free to browse around.",
-                "Thank you for your patronage!"
+                {
+                    "Looking for deals?",
+                    "I have the best weapons in town.",
+                    "Come and visit me anytime!"
+                },
+                {
+                    "Sorry...",
+                    "you caught me before the restock."
+                }
             };
         }
 
@@ -18,7 +23,4 @@ class Merchant : public Npc
         : Npc(textureFile, frameWidth, frameHeight, tileMap) {
             loadDialogue();
         }
-
-        void update(const Collision& collision, const sf::View& view, const sf::FloatRect& rect) { Npc::update(collision, view, rect); }
-        void draw(sf::RenderWindow& window) const override { if(visible) Npc::draw(window); }
 };

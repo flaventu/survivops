@@ -46,6 +46,7 @@ class Player : public Entity
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
+        void payMoney(const int coins) { money -= coins; };
         void gainExp(const float);
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
         void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };

@@ -64,9 +64,13 @@ void Npc::update(const Collision& collision, const sf::View& view, const FloatRe
 
 string Npc::speak() { 
 
-    string message = dialogue[currentDialogueIndex++];
-    if(currentDialogueIndex == dialogue.size())
+    string message = dialogue[currentMessage][currentDialogueIndex++];
+    if(currentDialogueIndex == dialogue[currentMessage].size())
+    {
         inDialogue = false;
+        if(currentMessage < dialogue.size() - 1)
+            currentMessage++;
+    }
     return message;
     
 }
