@@ -12,12 +12,17 @@ class UI
         sf::Font font;
         sf::Text moneyTab;
         sf::Text levelTab;
+        sf::Text weaponLevel;
 
         sf::RectangleShape levelBar;
         sf::RectangleShape levelBarBack;
 
         sf::RectangleShape healthBar;
         sf::RectangleShape healthBarBack;
+
+        sf::RectangleShape weaponBack;
+
+        void setWeaponLevelColor(const int level);
 
     public:
 

@@ -1,4 +1,4 @@
-#include "../include/entities/Player.hpp"
+#include "../../include/entities/Player.hpp"
 using namespace sf;
 using namespace std;
 
@@ -71,4 +71,10 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
     entitySprite.setPosition(position);
     entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET}; // Set the position of the entity hitbox
     updateTextureRect();
+}
+
+void Player::attack() {
+    if (weapon->isUsable()) {
+        weapon->useWeapon();
+    }
 }

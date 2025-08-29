@@ -2,6 +2,7 @@
 #include "states/IState.hpp"
 #include "UI.hpp"
 #include "entities/Merchant.hpp"
+#include "entities/Blacksmith.hpp"
 
 
 // Class to handle the game state
@@ -12,7 +13,9 @@ class GameState
         void loadNpcs() {
 
             // Merchant NPC
-            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant/spritesheet.png", TILE_SIZE, TILE_SIZE, tilemap));
+            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, tilemap, player));
+            // Blacksmith NPC
+            npcs.push_back(std::make_unique<Blacksmith>("assets/entities/npcs/blacksmith.png", TILE_SIZE, TILE_SIZE, tilemap, player));
 
         }
 
@@ -35,7 +38,7 @@ class GameState
         std::vector<Entity*> drawable_entities;
 
         GameState(std::unique_ptr<IState> init)
-            : state(std::move(init)), player(), tilemap("../../assets/maps/map1.png", "../../assets/maps/map1.csv", 5), 
+            : state(std::move(init)), player(), tilemap("assets/maps/map1.png", "assets/maps/map1.csv", 5), 
               view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui(), collision(tilemap)
                 { 
                     tilemap.update(view);

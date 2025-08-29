@@ -18,7 +18,8 @@ add_executable(SurvivOps ${SOURCES})
 target_compile_features(SurvivOps PRIVATE cxx_std_17)
 target_include_directories(SurvivOps PRIVATE 
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/include/State
-    ${CMAKE_SOURCE_DIR}/include/Entities
+    ${CMAKE_SOURCE_DIR}/include/states
+    ${CMAKE_SOURCE_DIR}/include/entities
+    ${CMAKE_SOURCE_DIR}/include/weapons
 )
 target_link_libraries(SurvivOps PRIVATE SFML::Graphics)

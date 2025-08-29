@@ -23,6 +23,8 @@ int main()
 
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
+    srand((time(nullptr)));
+
     // TO BE CHANGED (now we start with the RunningState instead of the StartState)
     GameState game_state(std::make_unique<StartState>());
     

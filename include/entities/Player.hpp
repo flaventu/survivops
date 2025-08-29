@@ -1,5 +1,6 @@
 #pragma once
 #include "Npc.hpp"
+#include "../weapons/Hand.hpp"
 
 // Class to handle the player character
 class Player : public Entity
@@ -21,31 +22,42 @@ class Player : public Entity
         sf::Clock animationClock;
         void animate() override;
 
+        std::unique_ptr<Weapon> weapon;
+
     public:
 
-        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock()
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock(), weapon(std::make_unique<Hand>())
         { 
             position = {0, 0}; 
-            speed = 3; 
+            speed = 3;
         }
 
         // Dialogue
         bool dialogueActive = false;
         Entity* currentNpc = nullptr;
 
+        // Combat
+        bool isAttacking = false;
+
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
+        Weapon* getWeapon() const { return weapon.get(); };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
+        void payMoney(const int coins) { money -= coins; };
         void gainExp(const float);
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
         void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };
+        void changeWeapon(std::unique_ptr<Weapon> newWeapon) { weapon = std::move(newWeapon); }
 
         // Player state
         void upgradePlayer();
         void respawn() { currentHealth = totalHealth; position = {0, 0}; };
+
+        // Combat
+        void attack();
         
         // UI utils
         const int getCurrentLevel() const { return level; };

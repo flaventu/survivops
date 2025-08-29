@@ -3,6 +3,14 @@ using namespace sf;
 
 void RunningState::update() {
 
+    // Update weapon state
+    gs.player.getWeapon()->update();
+
+    // Handle player attack
+    if(gs.player.isAttacking) {
+        gs.player.attack();
+    }
+
     // Update player position
     for(int i = 0; i < 4; i++) {
         
@@ -45,4 +53,5 @@ void RunningState::draw(RenderWindow& window) const {
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);
+    gs.player.getWeapon()->draw(window);
 }
