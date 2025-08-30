@@ -77,9 +77,9 @@ void UI::update(const Player& player)
     // Update the level tab
     levelTab.setString("Level " + to_string(player.getCurrentLevel()));
 
-    weaponLevel.setString("Lv. " + to_string(player.getWeapon()->getLevel()));
+    weaponLevel.setString("Lv. " + to_string(player.getWeapon().getLevel()));
 
-    setWeaponLevelColor(player.getWeapon()->getLevel());
+    setWeaponLevelColor(player.getWeapon().getLevel());
 
     Vector2f levelTabSize = {levelTab.getLocalBounds().size.x,levelTab.getLocalBounds().size.y};
     levelTab.setOrigin({levelTabSize.x / 2.f, levelTabSize.y / 2.f});

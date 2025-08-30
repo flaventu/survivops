@@ -2,21 +2,6 @@
 using namespace std;
 using namespace sf;
 
-void Npc::spawn(const TileMap& tilemap) {
-
-    // Spawn the NPC at a random non-solid tile position
-    while(true) {
-        int x = rand() % tilemap.getWidth();
-        int y = rand() % tilemap.getHeight();
-
-        if(!tilemap.isSolid({x, y})) {
-            position = Vector2f{ x * TILE_SIZE - tilemap.getMapSize().x / 2.f + TILE_SIZE / 2.f,
-                         y * TILE_SIZE - tilemap.getMapSize().y / 2.f + TILE_SIZE / 2.f };
-            break;
-        }
-    }
-}
-
 void Npc::update(const Collision& collision, const sf::View& view, const FloatRect& playerHitbox)
 {
 

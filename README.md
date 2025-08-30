@@ -122,7 +122,7 @@ You can easily configure, build, and run the project in Visual Studio Code using
 
 > ℹ️ **Note**: All of these actions can also be performed by clicking the corresponding buttons in the blue **status bar** at the bottom of the VS Code window — there's no need to use the command palette if you prefer using the UI.
 
-## 🕹️ How To Play
+## How To Play 🕹️
 
 - When the window opens, press `Enter` to **start playing**.
 - Use `WASD` to **move** your character.

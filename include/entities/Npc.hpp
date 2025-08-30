@@ -1,8 +1,6 @@
 #pragma once
 #include "../Collision.hpp"
 #include "Entity.hpp"
-#include <cstdlib>
-#include <ctime>
 
 // Class to handle non-player characters
 class Npc : public Entity
@@ -24,16 +22,12 @@ class Npc : public Entity
         
         // Movement
         sf::Clock moveClock;
-        void spawn(const TileMap&);
 
     public:
         
-        Npc(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const TileMap& tileMap) 
+        Npc(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
         : Entity(textureFile, frameWidth, frameHeight), moveClock()
-        { 
-            speed = 4;
-            spawn(tileMap); 
-        }
+            { speed = 4; }
 
         // Getters
         const int getAnswer() const { return answer; }
@@ -49,6 +43,5 @@ class Npc : public Entity
         void startDialogue() { inDialogue = true; currentDialogueIndex = 0; }
 
         void update(const Collision&, const sf::View&, const sf::FloatRect&);
-        void draw(sf::RenderWindow& window) const override { if(visible) Entity::draw(window); }
 
 };

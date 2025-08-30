@@ -42,5 +42,8 @@ class Entity
         const sf::FloatRect& getHitbox() const { return entityHitbox; }
         const bool isVisible() const { return visible; }
 
+        // Setters
+        void setPosition(const sf::Vector2f& newPos) { position = newPos; }
+
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

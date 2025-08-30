@@ -38,11 +38,12 @@ class Player : public Entity
 
         // Combat
         bool isAttacking = false;
+        void attack();
 
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
-        Weapon* getWeapon() const { return weapon.get(); };
+        Weapon& getWeapon() const { return *weapon.get(); };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
@@ -55,14 +56,11 @@ class Player : public Entity
         // Player state
         void upgradePlayer();
         void respawn() { currentHealth = totalHealth; position = {0, 0}; };
-
-        // Combat
-        void attack();
         
         // UI utils
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };
         const float getHealthPerc() const { return currentHealth / totalHealth; };
 
-        void update(const DIRECTIONS, const Collision&, const std::vector<std::unique_ptr<Npc>>& npc_entities);
+        void update(const DIRECTIONS, const Collision&, const std::vector<std::shared_ptr<Entity>>&);
 };
