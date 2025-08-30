@@ -91,10 +91,8 @@ void Handler::handleEnterPressed(GameState& game_state)
 {
     // Startstate -> RunningState
     if(dynamic_cast<StartState*>(game_state.state.get()))
-    {
-        RunningState running_state(game_state);
-        game_state.state = move(make_unique<RunningState>(running_state));
-    }
+        game_state.state = move(make_unique<RunningState>(game_state));
+
 
     // RunningState -> DialogState
     else if(dynamic_cast<RunningState*>(game_state.state.get()))
@@ -102,8 +100,8 @@ void Handler::handleEnterPressed(GameState& game_state)
         // If the player is in dialogue with an NPC, print the dialogue to the console
         if(game_state.player.dialogueActive)
         {
-            Npc* npc = dynamic_cast<Npc*>(game_state.player.currentNpc);
-            game_state.state = move(make_unique<DialogState>(game_state,npc));
+            Npc& npc = dynamic_cast<Npc&>(*game_state.player.currentNpc);
+            game_state.state = move(make_unique<DialogState>(game_state, npc));
         }
     }
 
@@ -111,12 +109,11 @@ void Handler::handleEnterPressed(GameState& game_state)
     else if(DialogState* dialogState = dynamic_cast<DialogState*>(game_state.state.get()))
     {
         // If the current NPC is not in dialogue, switch back to the running state
-        if(!dialogState->getCurrentNpc()->isInDialogue())
+        if(!dialogState->getCurrentNpc().isInDialogue())
         {
             game_state.player.dialogueActive = false;
             game_state.player.currentNpc = nullptr;
-            RunningState running_state(game_state);
-            game_state.state = move(make_unique<RunningState>(running_state));
+            game_state.state = move(make_unique<RunningState>(game_state));
         } else {
             dialogState->advanceDialogue();
         }

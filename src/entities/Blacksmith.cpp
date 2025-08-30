@@ -23,7 +23,7 @@ string Blacksmith::speak() {
     dialogue[1][1] = "It would cost you " + to_string(findPrice()) + " coins.";
 
     // Check if the player's weapon is at max level
-    if(player.getWeapon()->getLevel() == player.getWeapon()->getMaxLevel())
+    if(player.getWeapon().getLevel() == player.getWeapon().getMaxLevel())
     {
         inDialogue = false;
         return "Looks like you don't need me.";
@@ -46,7 +46,7 @@ string Blacksmith::speak() {
             } else {
                 message = "Great! I'll upgrade your weapon.";
                 player.payMoney(findPrice());
-                player.getWeapon()->upgradeWeapon();
+                player.getWeapon().upgradeWeapon();
             }
             break;
 

@@ -43,7 +43,7 @@ class Player : public Entity
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
-        Weapon* getWeapon() const { return weapon.get(); };
+        Weapon& getWeapon() const { return *weapon.get(); };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };

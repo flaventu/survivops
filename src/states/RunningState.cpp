@@ -4,7 +4,7 @@ using namespace sf;
 void RunningState::update() {
 
     // Update weapon state
-    gs.player.getWeapon()->update();
+    gs.player.getWeapon().update();
 
     // Handle player attack
     if(gs.player.isAttacking) {
@@ -30,7 +30,7 @@ void RunningState::update() {
     // Update entities positions
     for(auto& entity : gs.tilemap.entities) {
         if(!gs.tilemap.isFightable())
-            dynamic_cast<Npc*>(entity.get())->update(gs.collision, gs.view, gs.player.getHitbox());
+            dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
     }
 
     gs.loadDrawableEntities();
@@ -56,5 +56,5 @@ void RunningState::draw(RenderWindow& window) const {
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);
-    gs.player.getWeapon()->draw(window);
+    gs.player.getWeapon().draw(window);
 }

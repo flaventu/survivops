@@ -12,7 +12,7 @@ class Blacksmith : public Npc
 
         // The price is based on the player's weapon level
         const int findPrice() const {
-            return player.getWeapon()->getLevel() * 50;
+            return player.getWeapon().getLevel() * 50;
         }
 
     public:

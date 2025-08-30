@@ -2,7 +2,7 @@
 using namespace sf;
 using namespace std;
 
-DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), currentNpc(npc), font("assets/fonts/arial.ttf"), dialogueText(font), arrowTexture("assets/ui/arrow.png"), arrowSprite(arrowTexture) {
+DialogState::DialogState(GameState& gameState, Npc& npc) : gs(gameState), currentNpc(npc), font("assets/fonts/arial.ttf"), dialogueText(font), arrowTexture("assets/ui/arrow.png"), arrowSprite(arrowTexture) {
 
     // Setup the dialogue text
     dialogueText.setCharacterSize(20);
@@ -25,7 +25,7 @@ DialogState::DialogState(GameState& gameState, Npc* npc) : gs(gameState), curren
 void DialogState::advanceDialogue() {
 
     // Get the next line of dialogue from the NPC
-    string dialogue = currentNpc->speak();
+    string dialogue = currentNpc.speak();
     dialogueText.setString(dialogue);
 
     // Center the text within the dialogue box
@@ -46,19 +46,19 @@ void DialogState::draw(RenderWindow& window) const {
 
     window.setView(window.getDefaultView());
     gs.ui.draw(window);
-    gs.player.getWeapon()->draw(window);
+    gs.player.getWeapon().draw(window);
     window.draw(dialogueBox);
     window.draw(dialogueText);
 
     // Draw the arrow sprite if the option is available and a valid answer is present
-    if(currentNpc->isOptionAvailable() && currentNpc->getAnswer() >= 0)
+    if(currentNpc.isOptionAvailable() && currentNpc.getAnswer() >= 0)
         window.draw(arrowSprite);
 }
 
 void DialogState::update() {
 
     // Update the arrow sprite position based on the possible answer
-    switch (currentNpc->getAnswer())
+    switch (currentNpc.getAnswer())
     {
     case 0:
         arrowSprite.setPosition({dialogueBox.getPosition().x - dialogueBox.getSize().x / 2.f + 20.f, dialogueBox.getPosition().y - 23.f});

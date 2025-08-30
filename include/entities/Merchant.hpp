@@ -15,7 +15,7 @@ class Merchant : public Npc
 
         // The price is 150 each with a discount based on the player's weapon level
         int findPrice() {
-            return 150 - (player.getWeapon()->getLevel()*10);
+            return 150 - (player.getWeapon().getLevel()*10);
         }
 
     public:

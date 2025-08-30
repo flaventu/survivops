@@ -7,7 +7,7 @@ class DialogState : public IState {
     private:
 
         GameState& gs;
-        Npc* currentNpc;
+        Npc& currentNpc;
 
         sf::Font font;
         sf::Text dialogueText;
@@ -19,12 +19,12 @@ class DialogState : public IState {
 
     public:
 
-        DialogState(GameState& gameState, Npc* npc);
+        DialogState(GameState& gameState, Npc& npc);
 
         void advanceDialogue();
-        Npc* getCurrentNpc() const { return currentNpc; }
+        Npc& getCurrentNpc() const { return currentNpc; }
 
-        void setAnswer() const { currentNpc->setAnswer((currentNpc->getAnswer()+1) % 2); }
+        void setAnswer() const { currentNpc.setAnswer((currentNpc.getAnswer()+1) % 2); }
 
         void update() override;
         void draw(sf::RenderWindow&) const override;
