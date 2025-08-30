@@ -1,8 +1,9 @@
 #include "../include/Tilemap.hpp"
+#include <iostream>
 using namespace std;
 using namespace sf;
 
-TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, const int solid) : m_tileset(texture), solidTileNum(solid)
+TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, const int solid, const bool fight) : m_tileset(texture), solidTileNum(solid), fightable(fight)
 {
 
     // Load the map from the CSV file
@@ -15,6 +16,21 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
     mapSize = {width * TILE_SIZE, height * TILE_SIZE};
 
     m_vertices.setPrimitiveType(PrimitiveType::Triangles);
+}
+
+void TileMap::spawnNpc(Entity& npc) {
+
+    // Spawn the NPC at a random non-solid tile position
+    while(true) {
+        int x = rand() % width;
+        int y = rand() % height;
+
+        if(!isSolid({x, y})) {
+            npc.setPosition(Vector2f{ x * TILE_SIZE - mapSize.x / 2.f + TILE_SIZE / 2.f,
+                         y * TILE_SIZE - mapSize.y / 2.f + TILE_SIZE / 2.f });
+            break;
+        }
+    }
 }
 
 void TileMap::update(const View& view)

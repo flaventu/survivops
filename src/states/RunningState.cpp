@@ -17,7 +17,7 @@ void RunningState::update() {
         if(gs.move_directions[i])
         {
             
-            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.npcs);
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.tilemap.entities);
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
@@ -27,10 +27,13 @@ void RunningState::update() {
         }
     }
     
-    // Update NPC positions
-    for(auto& npc : gs.npcs) {
-        npc->update(gs.collision, gs.view, gs.player.getHitbox());
+    // Update entities positions
+    for(auto& entity : gs.tilemap.entities) {
+        if(!gs.tilemap.isFightable())
+            dynamic_cast<Npc*>(entity.get())->update(gs.collision, gs.view, gs.player.getHitbox());
     }
+
+    gs.loadDrawableEntities();
 
     // Sort the drawable entities based on their Y position
     sort(gs.drawable_entities.begin(), gs.drawable_entities.end(), [](const Entity* a, const Entity* b) {

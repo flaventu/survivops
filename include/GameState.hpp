@@ -8,23 +8,6 @@
 // Class to handle the game state
 class GameState
 {
-    private:
-
-        void loadNpcs() {
-
-            // Merchant NPC
-            npcs.push_back(std::make_unique<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, tilemap, player));
-            // Blacksmith NPC
-            npcs.push_back(std::make_unique<Blacksmith>("assets/entities/npcs/blacksmith.png", TILE_SIZE, TILE_SIZE, tilemap, player));
-
-        }
-
-        void loadDrawableEntities() {
-            drawable_entities.push_back(&player);
-            for (const auto& npc : npcs) {
-                drawable_entities.push_back(npc.get());
-            }
-        }
 
     public:
 
@@ -34,17 +17,31 @@ class GameState
         TileMap tilemap;
         UI ui;
         Collision collision;
-        std::vector<std::unique_ptr<Npc>> npcs;
-        std::vector<Entity*> drawable_entities;
+        std::vector<std::shared_ptr<Entity>> npcs = {};
+        std::vector<Entity*> drawable_entities = {}; // Vector to hold pointers to drawable entities
 
         GameState(std::unique_ptr<IState> init)
-            : state(std::move(init)), player(), tilemap("assets/maps/map1.png", "assets/maps/map1.csv", 5), 
+            : state(std::move(init)), player(), tilemap("assets/maps/map1.png", "assets/maps/map1.csv", 5, false), 
               view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui(), collision(tilemap)
                 { 
-                    tilemap.update(view);
-                    loadNpcs();
-                    loadDrawableEntities();
+                    npcs.push_back(std::make_shared<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, player));
+                    npcs.push_back(std::make_shared<Blacksmith>("assets/entities/npcs/blacksmith.png", TILE_SIZE, TILE_SIZE, player));
+
+                    if(!tilemap.isFightable())
+                        tilemap.loadNpcs(npcs);
+                    tilemap.update(view); 
                 } 
+
+        // Load drawable entities based on visibility
+        void loadDrawableEntities() {
+            drawable_entities.clear();
+            drawable_entities.push_back(&player);
+            for (const auto& entity : tilemap.entities) {
+                if(entity->isVisible()) {
+                    drawable_entities.push_back(entity.get());
+                }
+            }
+        }
 
         bool move_directions[4] = {false,false,false,false}; // Array to store movement directions
 

@@ -28,7 +28,7 @@ void Player::upgradePlayer() {
     expForNew = level * 100.f;
 }
 
-void Player::update(const DIRECTIONS dir, const Collision& collision, const vector<unique_ptr<Npc>>& npc_entities)
+void Player::update(const DIRECTIONS dir, const Collision& collision, const vector<shared_ptr<Entity>>& entities)
 {
 
     Vector2f newPosition = position;
@@ -44,14 +44,19 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
 
     direction = dir;
 
-    for (const auto& npc : npc_entities) {
+    for (const auto& entity : entities) {
 
-        // if the NPC is visible and colliding with the player we can start a dialogue (return for not make the player move)
-        if (npc->isVisible() && collision.collision(getHitbox(), direction, speed, npc->getHitbox())) {
-            dialogueActive = true;
-            currentNpc = npc.get();
-            npc->startDialogue();
-            return;
+        
+        if (entity->isVisible() && collision.collision(getHitbox(), direction, speed, entity->getHitbox())) {
+
+            // If the entity is an NPC, we can start a dialogue
+            if(Npc* npc = dynamic_cast<Npc*>(entity.get())) {
+                dialogueActive = true;
+                currentNpc = npc;
+                npc->startDialogue();
+                return;
+            }
+            // else monster part
         }
     }
 
