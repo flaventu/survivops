@@ -21,7 +21,7 @@ class GameState
         std::vector<Entity*> drawable_entities = {}; // Vector to hold pointers to drawable entities
 
         GameState(std::unique_ptr<IState> init)
-            : state(std::move(init)), player(), tilemap("assets/maps/map1.png", "assets/maps/map1.csv", 5, false), 
+            : state(std::move(init)), player(), tilemap("assets/maps/map1.png", "assets/maps/map1.csv", 5, true), 
               view({0,0},{SCREEN_WIDTH, SCREEN_HEIGHT}), ui(), collision(tilemap)
                 { 
                     npcs.push_back(std::make_shared<Merchant>("assets/entities/npcs/merchant.png", TILE_SIZE, TILE_SIZE, player));
@@ -29,7 +29,7 @@ class GameState
 
                     if(!tilemap.isFightable())
                         tilemap.loadNpcs(npcs);
-                    tilemap.update(view); 
+                    tilemap.update(view);
                 } 
 
         // Load drawable entities based on visibility

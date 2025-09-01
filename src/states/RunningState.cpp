@@ -21,17 +21,33 @@ void RunningState::update() {
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
-
-            // Update the tilemap to match the view
-            gs.tilemap.update(gs.view);
         }
     }
     
-    // Update entities positions
-    for(auto& entity : gs.tilemap.entities) {
-        if(!gs.tilemap.isFightable())
-            dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
+    // Update the tilemap to match the view
+    gs.tilemap.update(gs.view);
+
+    // Update entities
+    if(!gs.tilemap.isFightable()) {
+        // Update NPCs
+        for(auto& entity : gs.tilemap.entities)
+                dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
+    } else {
+        // Update monsters
+        for(auto& entity : gs.tilemap.entities)
+            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view);
     }
+
+    gs.tilemap.entities.erase(
+        remove_if(gs.tilemap.entities.begin(), gs.tilemap.entities.end(),
+            [](const std::shared_ptr<Entity>& entity) {
+                if(Monster* monster = dynamic_cast<Monster*>(entity.get())) {
+                    return monster->getHealth() <= 0;
+                }
+                return false;
+            }),
+        gs.tilemap.entities.end()
+    );
 
     gs.loadDrawableEntities();
 

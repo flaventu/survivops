@@ -3,7 +3,7 @@
 using namespace std;
 using namespace sf;
 
-TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, const int solid, const bool fight) : m_tileset(texture), solidTileNum(solid), fightable(fight)
+TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, const int solid, const bool fight) : m_tileset(texture), solidTileNum(solid), fightable(fight), spawnMonsterClock()
 {
 
     // Load the map from the CSV file
@@ -99,6 +99,16 @@ void TileMap::update(const View& view)
 
     // Resize the vertex array to the actual number of vertices (to avoid drawing unused vertices)
     m_vertices.resize(vertexIndex);
+
+    if(fightable) {
+        if(spawnMonsterClock.getElapsedTime().asSeconds() >= 5.f) {
+            if(rand() % 100 < 100) { // 100% chance to spawn a monster every 5 seconds
+                entities.push_back(make_shared<Goblin>());
+                spawnNpc(*entities.back());
+            }
+            spawnMonsterClock.restart();
+        }
+    }
 
 }
 

@@ -9,8 +9,6 @@ class Player : public Entity
 
         // Attributes
         int level = 1;
-        float totalHealth = 20.f;
-        float currentHealth = totalHealth;
         float power = 5.f;
         float dodge = 5.f; // %
 
@@ -30,6 +28,8 @@ class Player : public Entity
         { 
             position = {0, 0}; 
             speed = 3;
+            totalHealth = 20.f;
+            currentHealth = totalHealth;
         }
 
         // Dialogue
@@ -49,8 +49,6 @@ class Player : public Entity
         void gainMoney(const int coins) { money += coins; };
         void payMoney(const int coins) { money -= coins; };
         void gainExp(const float);
-        void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
-        void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };
         void changeWeapon(std::unique_ptr<Weapon> newWeapon) { weapon = std::move(newWeapon); }
 
         // Player state

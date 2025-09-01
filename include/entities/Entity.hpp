@@ -24,6 +24,10 @@ class Entity
         sf::Vector2f position;
         float speed;
         int spriteNum = 0;
+
+        // Health
+        float totalHealth;
+        float currentHealth;
         
         void updateTextureRect(); // Update the texture rectangle for the sprite
         
@@ -41,9 +45,13 @@ class Entity
         const sf::Vector2f& get_position() const { return position; };
         const sf::FloatRect& getHitbox() const { return entityHitbox; }
         const bool isVisible() const { return visible; }
+        const float getHealth() const { return currentHealth; }
+        sf::Vector2f getPosition() const { return position; };
 
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }
+        void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
+        void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

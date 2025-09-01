@@ -1,6 +1,6 @@
 #pragma once
 #include "const.hpp"
-#include "entities/Entity.hpp"
+#include "entities/Goblin.hpp"
 #include <vector>
 #include <cmath>
 #include <fstream>
@@ -28,6 +28,8 @@ class TileMap : public sf::Drawable, public sf::Transformable
         static const int maxVertexCount = (MAX_SCREEN_COLS+1) * (MAX_SCREEN_ROWS+1) * 6;
 
         bool loadMapFromCSV(const std::filesystem::path&);
+
+        sf::Clock spawnMonsterClock;
 
         void spawnNpc(Entity&);
 
