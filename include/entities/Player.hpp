@@ -38,7 +38,7 @@ class Player : public Entity
 
         // Combat
         bool isAttacking = false;
-        void attack();
+        bool attack(const Collision&, const std::vector<std::shared_ptr<Entity>>&);
 
         // Getters
         const float getHealth() const { return currentHealth; };

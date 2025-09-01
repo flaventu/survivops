@@ -31,6 +31,8 @@ class TileMap : public sf::Drawable, public sf::Transformable
 
         sf::Clock spawnMonsterClock;
 
+        static constexpr int MAX_MONSTERS = 15;
+
         void spawnNpc(Entity&);
 
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
@@ -62,6 +64,8 @@ class TileMap : public sf::Drawable, public sf::Transformable
         const bool isFightable() const { return fightable; }
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
+
+        void spawnMonster();
 
         void update(const sf::View&);
 };

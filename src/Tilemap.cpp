@@ -1,5 +1,4 @@
 #include "../include/Tilemap.hpp"
-#include <iostream>
 using namespace std;
 using namespace sf;
 
@@ -100,16 +99,6 @@ void TileMap::update(const View& view)
     // Resize the vertex array to the actual number of vertices (to avoid drawing unused vertices)
     m_vertices.resize(vertexIndex);
 
-    if(fightable) {
-        if(spawnMonsterClock.getElapsedTime().asSeconds() >= 5.f) {
-            if(rand() % 100 < 100) { // 100% chance to spawn a monster every 5 seconds
-                entities.push_back(make_shared<Goblin>());
-                spawnNpc(*entities.back());
-            }
-            spawnMonsterClock.restart();
-        }
-    }
-
 }
 
 
@@ -148,4 +137,17 @@ bool TileMap::loadMapFromCSV(const filesystem::path& filePath)
 
     file.close();
     return true;
+}
+
+void TileMap::spawnMonster() {
+
+    if(!fightable) return;
+
+    if(entities.size() < MAX_MONSTERS && spawnMonsterClock.getElapsedTime().asSeconds() >= 5.f) {
+        if(rand() % 100 < 50) { // 50% chance to spawn a monster every 5 seconds
+            entities.push_back(make_shared<Goblin>());
+            spawnNpc(*entities.back());
+        }
+        spawnMonsterClock.restart();
+    }
 }

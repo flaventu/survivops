@@ -22,12 +22,14 @@ class UI
 
         sf::RectangleShape weaponBack;
 
+        sf::CircleShape playerAttackCircle;
+
         void setWeaponLevelColor(const int level);
 
     public:
 
         UI();
-        
-        void update(const Player&);
+
+        void update(const Player&, const bool);
         void draw(sf::RenderWindow&) const;
 };

@@ -7,9 +7,14 @@ void RunningState::update() {
     gs.player.getWeapon().update();
 
     // Handle player attack
-    if(gs.player.isAttacking) {
-        gs.player.attack();
+    bool attackSuccess = false;
+    if(gs.tilemap.isFightable()) {
+        if(gs.player.isAttacking) {
+            attackSuccess = gs.player.attack(gs.collision, gs.tilemap.entities);
+        }
     }
+
+    gs.tilemap.spawnMonster();
 
     // Update player position
     for(int i = 0; i < 4; i++) {
@@ -23,7 +28,9 @@ void RunningState::update() {
             gs.view.setCenter(gs.player.get_position());
         }
     }
-    
+
+    gs.player.checkDamage();
+
     // Update the tilemap to match the view
     gs.tilemap.update(gs.view);
 
@@ -35,19 +42,18 @@ void RunningState::update() {
     } else {
         // Update monsters
         for(auto& entity : gs.tilemap.entities)
-            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view);
-    }
+            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view, gs.tilemap, gs.collision, gs.player);
 
-    gs.tilemap.entities.erase(
+        // Remove dead monsters
+        gs.tilemap.entities.erase(
         remove_if(gs.tilemap.entities.begin(), gs.tilemap.entities.end(),
             [](const std::shared_ptr<Entity>& entity) {
-                if(Monster* monster = dynamic_cast<Monster*>(entity.get())) {
-                    return monster->getHealth() <= 0;
-                }
-                return false;
+                Monster& monster = dynamic_cast<Monster&>(*entity.get());
+                return monster.getHealth() == 0;
             }),
         gs.tilemap.entities.end()
-    );
+        );
+    }
 
     gs.loadDrawableEntities();
 
@@ -56,7 +62,7 @@ void RunningState::update() {
         return a->get_position().y < b->get_position().y;
     });
 
-    gs.ui.update(gs.player);
+    gs.ui.update(gs.player, attackSuccess);
 
 }
 

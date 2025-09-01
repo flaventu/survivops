@@ -57,6 +57,11 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
                 return;
             }
             // else monster part
+            else {
+                Monster& monster = dynamic_cast<Monster&>(*entity.get());
+                takeDamage(monster.getPower());
+                return;
+            }
         }
     }
 
@@ -78,8 +83,40 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
     updateTextureRect();
 }
 
-void Player::attack() {
+bool Player::attack(const Collision& collision, const std::vector<std::shared_ptr<Entity>>& monsters) {
+
+    
     if (weapon->isUsable()) {
+
         weapon->useWeapon();
+
+        Vector2f attackPosition;
+
+        switch (direction)
+        {
+        case UP:
+            attackPosition = {position.x, position.y - weapon->getRange()};
+            break;
+
+        case DOWN:
+            attackPosition = {position.x, position.y + weapon->getRange()};
+            break;
+
+        case LEFT:
+            attackPosition = {position.x - weapon->getRange(), position.y};
+            break;
+
+        case RIGHT:
+            attackPosition = {position.x + weapon->getRange(), position.y};
+            break;
+        }
+
+        for(auto& monster : monsters) {
+            if(monster->isVisible() && collision.collision(attackPosition, monster->getHitbox())) {
+                monster->takeDamage(weapon->getDamage());
+            }
+        }
+        return true;
     }
+    return false;
 }

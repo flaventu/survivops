@@ -28,7 +28,8 @@ class Entity
         // Health
         float totalHealth;
         float currentHealth;
-        
+        sf::Clock damageCooldown;
+
         void updateTextureRect(); // Update the texture rectangle for the sprite
         
         virtual void animate() = 0; // Pure virtual function for animation
@@ -47,11 +48,14 @@ class Entity
         const bool isVisible() const { return visible; }
         const float getHealth() const { return currentHealth; }
         sf::Vector2f getPosition() const { return position; };
+        const DIRECTIONS getDirection() const { return direction; }
 
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
-        void takeDamage(const float damage) { currentHealth -= damage; if(currentHealth < 0) currentHealth = 0; };
+        void takeDamage(const float); 
+
+        void checkDamage() { if(damageCooldown.getElapsedTime().asSeconds() >= 0.5f) entitySprite.setColor(sf::Color::White); }
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

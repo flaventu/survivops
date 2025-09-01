@@ -1,5 +1,7 @@
+#pragma once
 #include "Entity.hpp"
 
+class TileMap; class Player; class Collision; // forward declarations
 class Monster : public Entity {
 
     protected:
@@ -10,12 +12,13 @@ class Monster : public Entity {
 
         // Animation
         sf::Clock animationClock;
-        void animate() override {}
+        sf::Clock moveClock;
+        void animate() override { spriteNum = (spriteNum + 1) % 2; }
     
     public:
 
     Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const float health, const float power, const float sp)
-        : Entity(textureFile, frameWidth, frameHeight), power(power) 
+        : Entity(textureFile, frameWidth, frameHeight), power(power), moveClock(), animationClock()
         {
             totalHealth = health;
             currentHealth = totalHealth;
@@ -25,18 +28,12 @@ class Monster : public Entity {
     // Getters
     const float getPower() const { return power; };
 
-    void attack(Entity& target) {
-        target.takeDamage(power);
-    }
+    void attack(Player& target);
 
     void followPlayer(const sf::Vector2i& tilePosition) {}
 
     // Monster state
     virtual void upgradeMonster() = 0;
 
-    void update(const sf::Vector2i& playerPosition, const sf::View& view) {
-        followPlayer(playerPosition);
-        entitySprite.setPosition(position);
-        updateVisibility(view);
-    }
+    void update(const sf::Vector2i&, const sf::View&, const TileMap&, const Collision&, Player&);
 };
