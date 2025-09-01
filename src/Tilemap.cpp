@@ -17,7 +17,7 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
     m_vertices.setPrimitiveType(PrimitiveType::Triangles);
 }
 
-void TileMap::spawnNpc(Entity& npc) {
+void TileMap::spawnEntity(Entity& npc) {
 
     // Spawn the NPC at a random non-solid tile position
     while(true) {
@@ -146,7 +146,7 @@ void TileMap::spawnMonster() {
     if(entities.size() < MAX_MONSTERS && spawnMonsterClock.getElapsedTime().asSeconds() >= 5.f) {
         if(rand() % 100 < 50) { // 50% chance to spawn a monster every 5 seconds
             entities.push_back(make_shared<Goblin>());
-            spawnNpc(*entities.back());
+            spawnEntity(*entities.back());
         }
         spawnMonsterClock.restart();
     }

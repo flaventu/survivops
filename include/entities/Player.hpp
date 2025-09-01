@@ -58,7 +58,6 @@ class Player : public Entity
         // UI utils
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };
-        const float getHealthPerc() const { return currentHealth / totalHealth; };
 
         void update(const DIRECTIONS, const Collision&, const std::vector<std::shared_ptr<Entity>>&);
 };

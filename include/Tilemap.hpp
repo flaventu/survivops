@@ -22,18 +22,15 @@ class TileMap : public sf::Drawable, public sf::Transformable
         int width, height;
         sf::Vector2u mapSize;
         const int solidTileNum; // grather or equal than solidTileNum are solid tiles
-
-        const bool fightable;
-
         static const int maxVertexCount = (MAX_SCREEN_COLS+1) * (MAX_SCREEN_ROWS+1) * 6;
-
         bool loadMapFromCSV(const std::filesystem::path&);
 
+        // Monster spawning
+        const bool fightable;
         sf::Clock spawnMonsterClock;
-
         static constexpr int MAX_MONSTERS = 15;
 
-        void spawnNpc(Entity&);
+        void spawnEntity(Entity&);
 
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
         
@@ -53,7 +50,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         void loadNpcs(const std::vector<std::shared_ptr<Entity>>& npcs) {
             entities = npcs;
             for (const auto& npc : entities) {
-                spawnNpc(*npc);
+                spawnEntity(*npc);
             }
         }
 

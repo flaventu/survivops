@@ -4,7 +4,14 @@
 class Goblin : public Monster {
 
     public:
-        Goblin() : Monster("assets/entities/monsters/goblin.png", TILE_SIZE, TILE_SIZE, 15.f, 5.f, 5.f) {}
+        Goblin() : Monster("assets/entities/monsters/goblin.png", TILE_SIZE, TILE_SIZE) 
+        {
+            // Initialize Goblin-specific attributes
+            power = 4.f;
+            speed = 5.f;
+            totalHealth = 15.f;
+            currentHealth = totalHealth;
+        }
 
         // Monster state
         void upgradeMonster() override {

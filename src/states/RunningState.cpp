@@ -2,7 +2,9 @@
 using namespace sf;
 
 void RunningState::update() {
-
+    
+    gs.tilemap.spawnMonster();
+    
     // Update weapon state
     gs.player.getWeapon().update();
 
@@ -14,8 +16,6 @@ void RunningState::update() {
         }
     }
 
-    gs.tilemap.spawnMonster();
-
     // Update player position
     for(int i = 0; i < 4; i++) {
         
@@ -26,13 +26,13 @@ void RunningState::update() {
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
+
+            // Update the tilemap to match the view
+            gs.tilemap.update(gs.view);
         }
     }
 
     gs.player.checkDamage();
-
-    // Update the tilemap to match the view
-    gs.tilemap.update(gs.view);
 
     // Update entities
     if(!gs.tilemap.isFightable()) {

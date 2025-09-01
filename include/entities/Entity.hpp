@@ -49,6 +49,7 @@ class Entity
         const float getHealth() const { return currentHealth; }
         sf::Vector2f getPosition() const { return position; };
         const DIRECTIONS getDirection() const { return direction; }
+        const float getHealthPerc() const { return currentHealth / totalHealth; };
 
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }

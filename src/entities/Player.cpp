@@ -26,6 +26,8 @@ void Player::upgradePlayer() {
     power += 0.015f;
     dodge += 0.2f;
     expForNew = level * 100.f;
+
+    entitySprite.setColor(Color::Blue);
 }
 
 void Player::update(const DIRECTIONS dir, const Collision& collision, const vector<shared_ptr<Entity>>& entities)
@@ -114,6 +116,12 @@ bool Player::attack(const Collision& collision, const std::vector<std::shared_pt
         for(auto& monster : monsters) {
             if(monster->isVisible() && collision.collision(attackPosition, monster->getHitbox())) {
                 monster->takeDamage(weapon->getDamage());
+                Monster& monsterRef = dynamic_cast<Monster&>(*monster.get());
+                if(monsterRef.getHealth() == 0) {
+                    gainExp(10.f * monsterRef.getLevel());
+                    if(rand() % 100 < 50 + monsterRef.getLevel()) // 50% + level chance to drop money
+                        gainMoney(1 * monsterRef.getLevel());
+                }
             }
         }
         return true;

@@ -13,20 +13,19 @@ class Monster : public Entity {
         // Animation
         sf::Clock animationClock;
         sf::Clock moveClock;
+        sf::Font levelFont;
+        sf::Text levelText;
+        sf::RectangleShape healthBar;
+        sf::RectangleShape healthBarBack;
         void animate() override { spriteNum = (spriteNum + 1) % 2; }
     
     public:
 
-    Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const float health, const float power, const float sp)
-        : Entity(textureFile, frameWidth, frameHeight), power(power), moveClock(), animationClock()
-        {
-            totalHealth = health;
-            currentHealth = totalHealth;
-            speed = sp;
-        }
+    Monster(const std::filesystem::path&, const int, const int);
 
     // Getters
     const float getPower() const { return power; };
+    const int getLevel() const { return level; };
 
     void attack(Player& target);
 
@@ -35,5 +34,8 @@ class Monster : public Entity {
     // Monster state
     virtual void upgradeMonster() = 0;
 
+    void updateUI();
+
     void update(const sf::Vector2i&, const sf::View&, const TileMap&, const Collision&, Player&);
+    void draw(sf::RenderWindow& window) const override;
 };
