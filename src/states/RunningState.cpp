@@ -31,15 +31,18 @@ void RunningState::update() {
             gs.tilemap.update(gs.view);
         }
     }
-
-    gs.player.checkStatus();
-
+    
     // Update entities
     if(!gs.tilemap.isFightable()) {
+
         // Update NPCs
         for(auto& entity : gs.tilemap.entities)
                 dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
     } else {
+
+        // Update player status
+        gs.player.checkStatus();
+        
         // Update monsters
         for(auto& entity : gs.tilemap.entities)
             dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view, gs.tilemap, gs.collision, gs.player);

@@ -29,7 +29,7 @@ class Monster : public Entity {
         const float getPower() const { return power; };
         const int getLevel() const { return level; };
 
-        virtual void attack(Player& target);
+        virtual void attack(Entity& target) { target.takeDamage(power); };
 
         // Monster state
         virtual void buildMonster() = 0;

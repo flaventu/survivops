@@ -128,6 +128,15 @@ You can easily configure, build, and run the project in Visual Studio Code using
 - Use `WASD` to **move** your character.
 - The UI displays your current **coins**, **player level** (with a progress bar), **health**, and **current weapon** with its level.
 - **Coins** and **EXP** can be collected by defeating enemies.
+
+### 🗣️ Interacting with NPCs
+
+- To start a conversation with an NPC, get close and press `Enter`. A black panel at the top of the screen will appear to indicate **dialogue mode**.
+- During dialogue, press `Enter` to continue through the text.
+- When multiple dialogue **options** appear (each one marked with a "-"), use the `⇑` and `⇓` arrow keys to select one. By default, **no option is pre-selected** to prevent accidental choices from spamming the Enter key.
+
+### 👊 Combat & Weapons
+
 - Press `P` to use your weapon. When the weapon is **glowing**, it’s ready to use; otherwise, you must wait for its **cooldown**, which varies depending on the weapon.
 - Weapons range from **level 1** to **5**.
   - 🟤 Bronze
@@ -137,8 +146,22 @@ You can easily configure, build, and run the project in Visual Studio Code using
   - ⚫ Obsidian
 - Each weapon has a specific **attack range**, and its shot is represented by a **red dot** on the map.
 - **Coins** can be invested to **upgrade weapons** by talking to specific **NPCs**.
-- To start a conversation with an NPC, get close and press `Enter`. A black panel at the top of the screen will appear to indicate **dialogue mode**.
-- During dialogue, press `Enter` to continue through the text.
-- When multiple dialogue **options** appear (each one marked with a "-"), use the `⇑` and `⇓` arrow keys to select one. By default, **no option is pre-selected** to prevent accidental choices from spamming the Enter key.
+
+### 🪲 Arena System & Enemies
+
+- In the arena, enemies **spawn every 5 seconds** on the map, with levels close to the **current player level**.
+- There are **three enemy types**:
+  - 👺 **Goblin**: Very fast, but low health and low damage.
+  - ⚔️ **Knight**: Very slow, but high health and strong attacks.
+  - 🧙‍♀️ **Witch**: Weak in all stats, but can randomly poison the player.
+- Each enemy displays its **current health** and **level** above its head.
+
+### 🧬 Status Effects
+
+- When you **take damage**, your character briefly turns **red** for **0.5 seconds**, during which you are **invulnerable** to further hits.
+- If you are **poisoned**, your character turns **green**, and you take **small damage every second for 5 seconds**.
+- When you **level up**, your character flashes **blue** briefly, and your **health is fully restored**.
+
+---
 
 Have fun! 💟

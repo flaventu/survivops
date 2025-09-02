@@ -124,12 +124,6 @@ void Monster::updateUI() {
     healthBar.setSize({healthBarBack.getSize().x * getHealthPerc(), healthBarBack.getSize().y});
 }
 
-void Monster::attack(Player& target) {
-
-    target.takeDamage(power);
-
-}
-
 void Monster::draw(sf::RenderWindow& window) const {
 
     Entity::draw(window);

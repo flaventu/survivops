@@ -18,5 +18,11 @@ class Witch : public Monster {
             speed = 5.f + (level -1) * 0.03f; // level 100 => 8.00
         }
 
-        void attack(Player& target) override;
+        void attack(Entity& target) override {
+            target.takeDamage(power);
+    
+            // Random poisoning effect
+            if (rand() % 100 < 20 + level) // 20% + level chance to inflict poison
+                target.getPoisoned(power);
+        }
 };
