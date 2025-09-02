@@ -18,7 +18,6 @@ class Player : public Entity
 
         // Animation
         sf::Clock animationClock;
-        void animate() override;
 
         std::unique_ptr<Weapon> weapon;
 

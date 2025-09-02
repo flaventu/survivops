@@ -5,7 +5,7 @@
 using namespace sf;
 
 Monster::Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const int level)
-    : Entity(textureFile, frameWidth, frameHeight), moveClock(), animationClock(), pathClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont), level(level)
+    : Entity(textureFile, frameWidth, frameHeight), moveClock(), pathClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont), level(level)
 {
     levelText.setCharacterSize(15);
     levelText.setFillColor(Color::White);
@@ -108,7 +108,7 @@ void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, c
         entitySprite.setPosition(position);
         entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET};
         updateTextureRect();
-        checkDamage();
+        checkStatus();
         moveClock.restart();
     }
 

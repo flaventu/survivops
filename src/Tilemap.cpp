@@ -17,7 +17,7 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
     m_vertices.setPrimitiveType(PrimitiveType::Triangles);
 }
 
-void TileMap::spawnEntity(Entity& npc) {
+void TileMap::spawnEntity(Entity& npc, const Vector2f& playerPosition) {
 
     // Spawn the NPC at a random non-solid tile position
     while(true) {
@@ -26,8 +26,11 @@ void TileMap::spawnEntity(Entity& npc) {
         int x = 1 + rand() % (width - 2);
         int y = 1 + rand() % (height - 2);
 
-        if(!isSolid({x, y})) {
-            npc.setPosition(tileToPosition({x, y}));
+        Vector2i tileSpawn = {x, y};
+
+        // Spawn entity in a non-solid tile and not on the player's tile
+        if(!isSolid(tileSpawn) && (tileSpawn != positionToTile(playerPosition))) {
+            npc.setPosition(tileToPosition(tileSpawn));
             break;
         }
     }
@@ -141,7 +144,7 @@ bool TileMap::loadMapFromCSV(const filesystem::path& filePath)
     return true;
 }
 
-void TileMap::spawnMonster(const int playerLevel) {
+void TileMap::spawnMonster(const int playerLevel, const Vector2f& playerPosition) {
 
     if(!fightable) return;
 
@@ -149,17 +152,17 @@ void TileMap::spawnMonster(const int playerLevel) {
 
         int roll = rand() % 100;
 
-        switch (roll)
-        {
-        case 0 ... 49: // 50% chance to spawn a goblin
+        if(roll < 50) { // 50% chance to spawn a goblin
             entities.push_back(make_shared<Goblin>(chooseMonsterLevel(playerLevel)));
-            spawnEntity(*entities.back());
-            break;
-        
-        default:
-            break;
+            spawnEntity(*entities.back(), playerPosition);
+        } else if(roll < 80) { // 30% chance to spawn a knight
+            entities.push_back(make_shared<Knight>(chooseMonsterLevel(playerLevel)));
+            spawnEntity(*entities.back(), playerPosition);
+        } else { // 20% chance to spawn a witch
+            entities.push_back(make_shared<Witch>(chooseMonsterLevel(playerLevel)));
+            spawnEntity(*entities.back(), playerPosition);
         }
-        
+
         spawnMonsterClock.restart();
     }
 }
@@ -169,12 +172,10 @@ const int TileMap::chooseMonsterLevel(const int playerLevel) const {
     int level;
     int roll = rand() % 100;
 
-    switch(roll) {
-        case 0 ... 49: level = playerLevel; break; // 50% chance => spawn a monster of the same level
-        case 50 ... 79: level = max(1, playerLevel - 1); break; // 30% chance => spawn a monster of level playerLevel - 1
-        case 80 ... 89: level = playerLevel + 1; break; // 10% chance => spawn a monster of level playerLevel + 1
-        default: level = playerLevel + 2; break; // 10% chance => spawn a monster of level playerLevel + 2
-    }
+        if(roll < 50) level = playerLevel; // 50% chance => spawn a monster of the same level
+        else if(roll < 80) level = max(1, playerLevel - 1); // 30% chance => spawn a monster of level playerLevel - 1
+        else if(roll < 90) level = playerLevel + 1; // 10% chance => spawn a monster of level playerLevel + 1
+        else level = playerLevel + 2; // 10% chance => spawn a monster of level playerLevel + 2
 
     return level;
 }

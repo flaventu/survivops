@@ -30,9 +30,18 @@ class Entity
         float currentHealth;
         sf::Clock damageCooldown;
 
+        // Poison
+        sf::Clock poisonClock;
+        bool poisoned = false;
+        int poisonDamage;
+
+
         void updateTextureRect(); // Update the texture rectangle for the sprite
         
-        virtual void animate() = 0; // Pure virtual function for animation
+        sf::Clock animationClock;
+        virtual void animate();
+        
+        void checkPoison();
 
         // Visibility
         bool visible = true;
@@ -50,13 +59,18 @@ class Entity
         sf::Vector2f getPosition() const { return position; };
         const DIRECTIONS getDirection() const { return direction; }
         const float getHealthPerc() const { return currentHealth / totalHealth; };
+        const bool isPoisoned() const { return poisoned; };
+        void getPoisoned(const int);
 
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
         void takeDamage(const float); 
 
-        void checkDamage() { if(damageCooldown.getElapsedTime().asSeconds() >= 0.5f) entitySprite.setColor(sf::Color::White); }
+        void checkStatus() { 
+            checkPoison();
+            if(damageCooldown.getElapsedTime().asSeconds() >= 0.5f && !poisoned) entitySprite.setColor(sf::Color::White); 
+        }
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };

@@ -3,8 +3,8 @@ using namespace sf;
 
 void RunningState::update() {
 
-    gs.tilemap.spawnMonster(gs.player.getCurrentLevel());
-    
+    gs.tilemap.spawnMonster(gs.player.getCurrentLevel(), gs.player.getPosition());
+
     // Update weapon state
     gs.player.getWeapon().update();
 
@@ -32,7 +32,7 @@ void RunningState::update() {
         }
     }
 
-    gs.player.checkDamage();
+    gs.player.checkStatus();
 
     // Update entities
     if(!gs.tilemap.isFightable()) {

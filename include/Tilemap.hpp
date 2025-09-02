@@ -1,6 +1,8 @@
 #pragma once
 #include "const.hpp"
 #include "entities/Goblin.hpp"
+#include "entities/Knight.hpp"
+#include "entities/Witch.hpp"
 #include <vector>
 #include <cmath>
 #include <fstream>
@@ -31,7 +33,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         static constexpr int MAX_MONSTERS = 15;
         const int chooseMonsterLevel(const int playerLevel) const;
 
-        void spawnEntity(Entity&);
+        void spawnEntity(Entity&, const sf::Vector2f&);
 
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
@@ -59,7 +61,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         void loadNpcs(const std::vector<std::shared_ptr<Entity>>& npcs) {
             entities = npcs;
             for (const auto& npc : entities) {
-                spawnEntity(*npc);
+                spawnEntity(*npc, {0,0});
             }
         }
 
@@ -71,7 +73,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
 
-        void spawnMonster(const int);
+        void spawnMonster(const int, const sf::Vector2f&);
 
         void update(const sf::View&);
 };

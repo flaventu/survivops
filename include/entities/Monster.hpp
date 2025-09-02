@@ -12,14 +12,12 @@ class Monster : public Entity {
         float power;
 
         // Animation
-        sf::Clock animationClock;
         sf::Clock moveClock;
         sf::Clock pathClock;
         sf::Font levelFont;
         sf::Text levelText;
         sf::RectangleShape healthBar;
         sf::RectangleShape healthBarBack;
-        void animate() override { spriteNum = (spriteNum + 1) % 2; }
 
         std::vector<sf::Vector2i> path = {};
 
@@ -31,7 +29,7 @@ class Monster : public Entity {
         const float getPower() const { return power; };
         const int getLevel() const { return level; };
 
-        void attack(Player& target);
+        virtual void attack(Player& target);
 
         // Monster state
         virtual void buildMonster() = 0;
