@@ -4,21 +4,16 @@
 class Goblin : public Monster {
 
     public:
-        Goblin() : Monster("assets/entities/monsters/goblin.png", TILE_SIZE, TILE_SIZE) 
+
+        Goblin(const int lv) : Monster("assets/entities/monsters/goblin.png", TILE_SIZE, TILE_SIZE, lv) 
         {
-            // Initialize Goblin-specific attributes
-            power = 4.f;
-            speed = 5.f;
-            totalHealth = 15.f;
-            currentHealth = totalHealth;
+            buildMonster();
         }
 
-        // Monster state
-        void upgradeMonster() override {
-            level++;
-            totalHealth += 10;
+        void buildMonster() override {
+            totalHealth = 15.f + (level-1) * 0.45f; // level 100 => 60.00
             currentHealth = totalHealth;
-            power += 2;
-            speed += 1;
+            power = 4.f + (level-1) * 0.11f; // level 100 => 15.00
+            speed = 6.f + (level -1) * 0.04f; // level 100 => 10.00
         }
 };

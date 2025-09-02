@@ -4,14 +4,18 @@
 #include "../../include/Collision.hpp"
 using namespace sf;
 
-Monster::Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight)
-    : Entity(textureFile, frameWidth, frameHeight), moveClock(), animationClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont) 
+Monster::Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const int level)
+    : Entity(textureFile, frameWidth, frameHeight), moveClock(), animationClock(), pathClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont), level(level)
 {
     levelText.setCharacterSize(15);
     levelText.setFillColor(Color::White);
     levelText.setOutlineColor(Color::Black);
     levelText.setOutlineThickness(1);
     levelText.setString("Lv." + std::to_string(level));
+
+    // Position of level text
+    Vector2f levelTextSize = {levelText.getLocalBounds().size.x,levelText.getLocalBounds().size.y};
+    levelText.setOrigin({levelTextSize.x / 2.f, levelTextSize.y / 2.f});
 
     // Prepare the health bar back
     healthBarBack.setSize({TILE_SIZE, 5.f});
@@ -28,9 +32,51 @@ Monster::Monster(const std::filesystem::path& textureFile, const int frameWidth,
 
 void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, const TileMap& tilemap, const Collision& collision, Player& player) {
 
-    int timeElapsed = moveClock.getElapsedTime().asMilliseconds();
+    int timeElapsed = pathClock.getElapsedTime().asMilliseconds();
 
-    if(timeElapsed > 600 && timeElapsed % 200 < 15) {
+    if((isVisible() && timeElapsed > 400) || timeElapsed > 800) {
+
+        Vector2i monsterPosition = tilemap.positionToTile(position);
+
+        path.clear();
+        
+        // Calculate the direction with A* pathfinding
+        path = aStarPath(monsterPosition, playerPosition,
+            [&](const sf::Vector2i& tile) {
+                return !tilemap.isSolid(tile);
+            },
+            {tilemap.getWidth(), tilemap.getHeight()});
+    
+        pathClock.restart();
+    }
+
+    // Every 75 ms move the monster
+    if(moveClock.getElapsedTime().asMilliseconds() > 75) {
+
+        // If the monster has a path, follow it
+        if(!path.empty()) {
+
+            // Get the next tile and position
+            sf::Vector2i nextTile = path.front();
+            sf::Vector2f nextPos = tilemap.tileToPosition(nextTile);
+
+            sf::Vector2f delta = nextPos - position;
+            // If the monster has reached the next position, update the path
+            if(delta.x * delta.x + delta.y * delta.y < speed * speed) {
+                path.erase(path.begin());
+                if(path.empty()) return;
+                nextTile = path.front();
+                nextPos = tilemap.tileToPosition(nextTile);
+                delta = nextPos - position;
+            }
+
+            // Calculate the direction
+            if(std::abs(delta.x) > std::abs(delta.y)) {
+                direction = (delta.x > 0) ? RIGHT : LEFT;
+            } else {
+                direction = (delta.y > 0) ? DOWN : UP;
+            }
+        }
 
         Vector2f newPosition = position;
 
@@ -42,7 +88,7 @@ void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, c
             case RIGHT: newPosition.x += speed; break;
             default: break;
         }
-        // followPlayer(playerPosition);
+
         if(!collision.collision(getHitbox(), direction, speed))
         {
             if(!isVisible() || !collision.collision(getHitbox(), direction, speed, player.getHitbox()))
@@ -50,36 +96,28 @@ void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, c
                 position = newPosition; // Update the position if there is no collision
                 animate();
             }
-            else {
+            else
+                // If the monster collides with the player, attack
                 attack(player);
-            }
+        } else {
+            // If the monster is stuck, reset path and change direction randomly
+            path.clear();
+            direction = static_cast<DIRECTIONS>(rand() % 4);
         }
 
         entitySprite.setPosition(position);
         entityHitbox.position = {position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET};
         updateTextureRect();
-
         checkDamage();
-
-        // Change direction randomly after a certain period
-        if(timeElapsed > 1200)
-        {
-            direction = static_cast<DIRECTIONS>(rand() % 4);
-            moveClock.restart();
-        }
+        moveClock.restart();
     }
 
     updateVisibility(view);
-
-    if(isVisible()) {
-        updateUI();
-    }
+    if(isVisible()) updateUI();
+    
 }
 
 void Monster::updateUI() {
-    
-    Vector2f levelTextSize = {levelText.getLocalBounds().size.x,levelText.getLocalBounds().size.y};
-    levelText.setOrigin({levelTextSize.x / 2.f, levelTextSize.y / 2.f});
     levelText.setPosition({position.x, position.y - TILE_SIZE});
     healthBarBack.setPosition({position.x, position.y - TILE_SIZE * 0.65f});
     healthBar.setPosition(healthBarBack.getPosition());

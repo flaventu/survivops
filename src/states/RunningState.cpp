@@ -2,8 +2,8 @@
 using namespace sf;
 
 void RunningState::update() {
-    
-    gs.tilemap.spawnMonster();
+
+    gs.tilemap.spawnMonster(gs.player.getCurrentLevel());
     
     // Update weapon state
     gs.player.getWeapon().update();

@@ -29,11 +29,12 @@ class TileMap : public sf::Drawable, public sf::Transformable
         const bool fightable;
         sf::Clock spawnMonsterClock;
         static constexpr int MAX_MONSTERS = 15;
+        const int chooseMonsterLevel(const int playerLevel) const;
 
         void spawnEntity(Entity&);
 
         void draw(sf::RenderTarget&, sf::RenderStates) const override;
-        
+
     public:
 
         TileMap(const std::filesystem::path&, const std::filesystem::path&, const int, const bool); 
@@ -45,6 +46,14 @@ class TileMap : public sf::Drawable, public sf::Transformable
             };
         }
 
+        sf::Vector2f tileToPosition(const sf::Vector2i& tile) const {
+            return {
+                static_cast<float>(tile.x * TILE_SIZE) - mapSize.x / 2.f + TILE_SIZE / 2.f,
+                static_cast<float>(tile.y * TILE_SIZE) - mapSize.y / 2.f + TILE_SIZE / 2.f
+            };
+        }
+
+        // Entity management
         std::vector<std::shared_ptr<Entity>> entities = {};
 
         void loadNpcs(const std::vector<std::shared_ptr<Entity>>& npcs) {
@@ -62,7 +71,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
 
-        void spawnMonster();
+        void spawnMonster(const int);
 
         void update(const sf::View&);
 };
