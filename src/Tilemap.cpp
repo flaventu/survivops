@@ -118,31 +118,49 @@ void TileMap::draw(RenderTarget& target, RenderStates states) const {
 
 bool TileMap::loadMapFromCSV(const filesystem::path& filePath)
 {
-
     ifstream file(filePath);
-
     if (!file.is_open())
         return false;
 
-    // Read the file line by line
+    vector<vector<int>> tempRows;
+
     string line;
     while (getline(file, line))
     {
-        // For each line, create a vector of integers
         vector<int> row;
         stringstream ss(line);
         string cell;
 
-        // Split the line by commas and convert each cell to an integer
-        while (getline(ss, cell, ','))
+        while (getline(ss, cell, ',')) {
             row.push_back(stoi(cell));
+        }
 
-        m_tiles.push_back(row); // Add the row vector to the tiles vector
+        tempRows.push_back(row);  // Riga -> CSV line
     }
 
     file.close();
+
+    if (tempRows.empty())
+        return false;
+
+    // Transpose the matrix to match m_tiles[x][y] access
+    size_t numRows = tempRows.size();          // Y
+    size_t numCols = tempRows[0].size();       // X
+
+    m_tiles.clear();
+    m_tiles.resize(numCols, vector<int>(numRows));
+
+    for (size_t y = 0; y < numRows; ++y)
+    {
+        for (size_t x = 0; x < numCols; ++x)
+        {
+            m_tiles[x][y] = tempRows[y][x];
+        }
+    }
+
     return true;
 }
+
 
 void TileMap::spawnMonster(const int playerLevel, const Vector2f& playerPosition) {
 

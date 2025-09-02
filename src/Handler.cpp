@@ -128,6 +128,8 @@ void Handler::handleEnterPressed(GameState& game_state)
         } else {
             dialogState->advanceDialogue();
         }
+        for(auto& directions : game_state.move_directions)
+            directions = false;
     }
 }
 
