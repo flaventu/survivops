@@ -3,12 +3,17 @@ using namespace sf;
 
 void RunningState::update() {
 
+    gs.tilemap.spawnMonster(gs.player.getCurrentLevel(), gs.player.getPosition());
+
     // Update weapon state
     gs.player.getWeapon().update();
 
     // Handle player attack
-    if(gs.player.isAttacking) {
-        gs.player.attack();
+    bool attackSuccess = false;
+    if(gs.tilemap.isFightable()) {
+        if(gs.player.isAttacking) {
+            attackSuccess = gs.player.attack(gs.collision, gs.tilemap.entities);
+        }
     }
 
     // Update player position
@@ -27,10 +32,30 @@ void RunningState::update() {
         }
     }
     
-    // Update entities positions
-    for(auto& entity : gs.tilemap.entities) {
-        if(!gs.tilemap.isFightable())
-            dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
+    // Update entities
+    if(!gs.tilemap.isFightable()) {
+
+        // Update NPCs
+        for(auto& entity : gs.tilemap.entities)
+                dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
+    } else {
+
+        // Update player status
+        gs.player.checkStatus();
+        
+        // Update monsters
+        for(auto& entity : gs.tilemap.entities)
+            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view, gs.tilemap, gs.collision, gs.player);
+
+        // Remove dead monsters
+        gs.tilemap.entities.erase(
+        remove_if(gs.tilemap.entities.begin(), gs.tilemap.entities.end(),
+            [](const std::shared_ptr<Entity>& entity) {
+                Monster& monster = dynamic_cast<Monster&>(*entity.get());
+                return monster.getHealth() == 0;
+            }),
+        gs.tilemap.entities.end()
+        );
     }
 
     gs.loadDrawableEntities();
@@ -40,7 +65,7 @@ void RunningState::update() {
         return a->get_position().y < b->get_position().y;
     });
 
-    gs.ui.update(gs.player);
+    gs.ui.update(gs.player, attackSuccess);
 
 }
 

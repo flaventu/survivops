@@ -45,6 +45,12 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
     // Handle key pressed events
     switch (key.code)
     {
+        case Keyboard::Key::Escape:
+            if(dynamic_cast<PausedState*>(game_state.state.get()))
+                game_state.state = move(make_unique<RunningState>(game_state));
+            else if(dynamic_cast<RunningState*>(game_state.state.get()))
+                game_state.state = move(make_unique<PausedState>(game_state));
+            break;
 
         case Keyboard::Key::Enter:
 
@@ -52,7 +58,8 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             break;
 
         case Keyboard::Key::P:
-            game_state.player.isAttacking = true;
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                game_state.player.isAttacking = true;
             break;
 
         case Keyboard::Key::Up:
@@ -70,18 +77,22 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             break;
 
         case Keyboard::Key::W:
-                game_state.move_directions[UP] = true;
+                if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                    game_state.move_directions[UP] = true;
             break;
 
         case Keyboard::Key::S:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[DOWN] = true;
             break;
 
         case Keyboard::Key::A:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[LEFT] = true;
             break;
 
         case Keyboard::Key::D:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[RIGHT] = true;
             break;
     }
@@ -126,21 +137,26 @@ void Handler::handle(const Event::KeyReleased& key, GameState& game_state)
     switch (key.code)
     {
         case Keyboard::Key::P:
-            game_state.player.isAttacking = false;
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                game_state.player.isAttacking = false;
             break;
         case Keyboard::Key::W:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[UP] = false;
             break;
 
         case Keyboard::Key::S:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[DOWN] = false;
             break;
 
         case Keyboard::Key::A:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[LEFT] = false;
             break;
 
         case Keyboard::Key::D:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[RIGHT] = false;
             break;
     }

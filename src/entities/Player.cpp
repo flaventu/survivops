@@ -2,15 +2,6 @@
 using namespace sf;
 using namespace std;
 
-void Player::animate()
-{
-    // update the sprite animation every 200 milliseconds (12 frames at 60 FPS)
-    if(animationClock.getElapsedTime().asMilliseconds() > 200) {
-        spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
-        animationClock.restart();
-    }
-}
-
 void Player::gainExp(const float exp) {
     currentExp += exp;
     if(currentExp >= expForNew) {
@@ -26,6 +17,9 @@ void Player::upgradePlayer() {
     power += 0.015f;
     dodge += 0.2f;
     expForNew = level * 100.f;
+    currentHealth = totalHealth; // Heal the player on level up
+
+    entitySprite.setColor(Color::Blue);
 }
 
 void Player::update(const DIRECTIONS dir, const Collision& collision, const vector<shared_ptr<Entity>>& entities)
@@ -57,6 +51,11 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
                 return;
             }
             // else monster part
+            else {
+                Monster& monster = dynamic_cast<Monster&>(*entity.get());
+                takeDamage(monster.getPower());
+                return;
+            }
         }
     }
 
@@ -78,8 +77,46 @@ void Player::update(const DIRECTIONS dir, const Collision& collision, const vect
     updateTextureRect();
 }
 
-void Player::attack() {
+bool Player::attack(const Collision& collision, const std::vector<std::shared_ptr<Entity>>& monsters) {
+
+    
     if (weapon->isUsable()) {
+
         weapon->useWeapon();
+
+        Vector2f attackPosition;
+
+        switch (direction)
+        {
+        case UP:
+            attackPosition = {position.x, position.y - weapon->getRange()};
+            break;
+
+        case DOWN:
+            attackPosition = {position.x, position.y + weapon->getRange()};
+            break;
+
+        case LEFT:
+            attackPosition = {position.x - weapon->getRange(), position.y};
+            break;
+
+        case RIGHT:
+            attackPosition = {position.x + weapon->getRange(), position.y};
+            break;
+        }
+
+        for(auto& monster : monsters) {
+            if(monster->isVisible() && collision.collision(attackPosition, monster->getHitbox())) {
+                monster->takeDamage(weapon->getDamage());
+                Monster& monsterRef = dynamic_cast<Monster&>(*monster.get());
+                if(monsterRef.getHealth() == 0) {
+                    gainExp(10.f * monsterRef.getLevel());
+                    if(rand() % 100 < 50 + monsterRef.getLevel()) // 50% + level chance to drop money
+                        gainMoney(1 * monsterRef.getLevel());
+                }
+            }
+        }
+        return true;
     }
+    return false;
 }

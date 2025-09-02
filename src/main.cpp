@@ -25,7 +25,6 @@ int main()
 
     srand((time(nullptr)));
 
-    // TO BE CHANGED (now we start with the RunningState instead of the StartState)
     GameState game_state(std::make_unique<StartState>());
     
     while (window.isOpen())

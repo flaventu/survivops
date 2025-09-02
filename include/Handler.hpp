@@ -2,6 +2,7 @@
 #include "states/StartState.hpp"
 #include "states/RunningState.hpp"
 #include "states/DialogState.hpp"
+#include "states/PausedState.hpp"
 
 // Handler class to manage game states
 class Handler {

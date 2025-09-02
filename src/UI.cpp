@@ -53,6 +53,13 @@ UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weapo
     weaponBack.setOutlineColor(Color::Black);
     weaponBack.setOutlineThickness(2);
 
+    // Prepare the player circle attack
+    playerAttackCircle.setRadius(5.f);
+    playerAttackCircle.setOrigin({playerAttackCircle.getRadius(), playerAttackCircle.getRadius()});
+    playerAttackCircle.setFillColor(Color::Red);
+    playerAttackCircle.setOutlineColor(Color::Black);
+    playerAttackCircle.setOutlineThickness(1);
+
     // Prepare the position of the UI elements
     moneyTab.setPosition({15.f, 10.f});
     levelTab.setPosition({SCREEN_WIDTH / 2.f, 20.f});
@@ -64,7 +71,7 @@ UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weapo
     weaponLevel.setPosition(weaponBack.getPosition());
 }
 
-void UI::update(const Player& player)
+void UI::update(const Player& player, const bool attackSuccess)
 {
 
     // Update the health bar and level bar sizes based on the percentage
@@ -86,6 +93,26 @@ void UI::update(const Player& player)
 
     weaponLevel.setOrigin({weaponLevel.getLocalBounds().size.x / 2.f, weaponLevel.getLocalBounds().size.y / 2.f});
     weaponLevel.setPosition({weaponBack.getPosition().x, weaponBack.getPosition().y - weaponBack.getSize().y / 4.f});
+
+    switch(player.getDirection())
+    {
+        case UP:
+        playerAttackCircle.setPosition({SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f - player.getWeapon().getRange()});
+        break;
+        case DOWN:
+        playerAttackCircle.setPosition({SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f + player.getWeapon().getRange()});
+        break;
+        case LEFT:
+        playerAttackCircle.setPosition({SCREEN_WIDTH / 2.f - player.getWeapon().getRange(), SCREEN_HEIGHT / 2.f});
+        break;
+        case RIGHT:
+        playerAttackCircle.setPosition({SCREEN_WIDTH / 2.f + player.getWeapon().getRange(), SCREEN_HEIGHT / 2.f});
+        break;
+    }
+
+    (attackSuccess) ?
+        playerAttackCircle.setFillColor(Color::Red) :
+        playerAttackCircle.setFillColor(Color::Transparent);
 }
 
 void UI::draw(RenderWindow& window) const {
@@ -98,6 +125,7 @@ void UI::draw(RenderWindow& window) const {
     window.draw(healthBar);
     window.draw(weaponBack);
     window.draw(weaponLevel);
+    window.draw(playerAttackCircle);
 }
 
 void UI::setWeaponLevelColor(const int level) {
