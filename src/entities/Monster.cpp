@@ -132,3 +132,9 @@ void Monster::draw(sf::RenderWindow& window) const {
     window.draw(healthBarBack);
     window.draw(healthBar);
 }
+
+void Monster::attack(Player& target) 
+{ 
+    if(rand() % 100 < target.getDodge()) return; // target dodges the attack
+    target.takeDamage(power); 
+}

@@ -50,7 +50,7 @@ string Merchant::speak() {
                 inventory.pop();
                 message = "Great! Enjoy your new " + newWeapon->getName() + "!";
                 player.payMoney(findPrice());
-                player.changeWeapon(std::unique_ptr<Weapon>(newWeapon));
+                player.addWeapon(std::unique_ptr<Weapon>(newWeapon));
                 if(!inventory.empty())
                     dialogue[currentMessage][3] = "I have this " + inventory.front()->getName() + " for sale.";
             }

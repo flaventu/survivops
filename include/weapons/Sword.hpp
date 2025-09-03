@@ -3,11 +3,11 @@
 class Sword : public Weapon {
 
     public:
-        Sword() : Weapon("assets/weapons/sword.png", "Sword", 8, TILE_SIZE * 0.75, 500) {}
+        Sword() : Weapon("assets/weapons/sword.png", "Sword", 8, TILE_SIZE * 1.15, 400) {}
 
         void updateStats() override {
-            damage += 1.5f;
-            cooldown -= 20;
-            range += TILE_SIZE / 4;
+            damage += 2.f; // level 5 => 16.00
+            cooldown -= 25; // level 5 => 300
+            range += TILE_SIZE * 0.15f; // level 5 => 1.6 tiles
         }
 };

@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "../weapons/Sword.hpp"
+#include "../weapons/Bow.hpp"
 #include <queue>
 
 // Class to handle merchant entities
@@ -23,6 +24,7 @@ class Merchant : public Npc
         Merchant(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, Player& player)
         : Npc(textureFile, frameWidth, frameHeight), player(player) {
             inventory.push(std::make_unique<Sword>());
+            inventory.push(std::make_unique<Bow>());
             loadDialogue();
         }
 

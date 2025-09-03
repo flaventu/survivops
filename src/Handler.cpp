@@ -130,6 +130,11 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             }
             break;
 
+        case Keyboard::Key::C:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                game_state.player.changeWeapon();
+            break;
+
     }
 }
 
