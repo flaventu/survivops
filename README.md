@@ -37,10 +37,6 @@ It's a run-based game, which means that instead of following a linear story, the
 - ➡️ **UI arrow**:
   - [caz-pixel-letters](https://cazwolf.itch.io/caz-pixel-letters) by *Caz*
 
-## Current Class Diagram 🔠
-
-![class diagram](docs/class_diagram.png)
-
 ## Requirements ✒️
 
 - [![CMake](https://img.shields.io/badge/CMake-white?logo=cmake&logoColor=darkred)](https://cmake.org/)
@@ -126,8 +122,22 @@ You can easily configure, build, and run the project in Visual Studio Code using
 
 - When the window opens, press `Enter` to **start playing**.
 - Use `WASD` to **move** your character.
-- The UI displays your current **coins**, **player level** (with a progress bar), **health**, and **current weapon** with its level.
+- The UI **displays**
+  - 🪙 Current **coins**
+  - 📈 **Player level** (with a progress bar)
+  - 💓 **Health**
+  - 🗡️ Current **Weapon** with its level
+  - A small icon indicating your **current map**:
+    - 🏠 **Main map**
+    - ⚔️ **Arena**
 - **Coins** and **EXP** can be collected by defeating enemies.
+
+### ⏸️ Pause & Map Switching
+
+- Press `Esc` to pause the game, you can press `Esc` **again** to **resume** the game.
+- You can also **instantly switch maps** from the pause panel:
+  - Press `F` to go to the **arena** (only available when you're on the main map).
+  - Press `H` to go back to the **main map** (only available when you're in the arena).
 
 ### 🗣️ Interacting with NPCs
 
@@ -146,21 +156,31 @@ You can easily configure, build, and run the project in Visual Studio Code using
   - ⚫ Obsidian
 - Each weapon has a specific **attack range**, and its shot is represented by a **red dot** on the map.
 - **Coins** can be invested to **upgrade weapons** by talking to specific **NPCs**.
+- After **purchasing** a new weapon, it is added to your **inventory**.
+- Press `C` to cycle through weapons in your inventory.
 
 ### 🪲 Arena System & Enemies
 
 - In the arena, enemies **spawn every 5 seconds** on the map, with levels close to the **current player level**.
 - There are **three enemy types**:
   - 👺 **Goblin**: Very fast, but low health and low damage.
-  - ⚔️ **Knight**: Very slow, but high health and strong attacks.
+  - 🛡️ **Knight**: Very slow, but high health and strong attacks.
   - 🧙‍♀️ **Witch**: Weak in all stats, but can randomly poison the player.
 - Each enemy displays its **current health** and **level** above its head.
+- After **1 minute** in the arena, both the **player and enemies regenerate 10% of their health**.
 
 ### 🧬 Status Effects
 
 - When you **take damage**, your character briefly turns **red** for **0.5 seconds**, during which you are **invulnerable** to further hits.
 - If you are **poisoned**, your character turns **green**, and you take **small damage every second for 5 seconds**.
-- When you **level up**, your character flashes **blue** briefly, and your **health is fully restored**.
+- When you **level up**, your character flashes **blue** briefly, and your **attributes increase**.
+- During combat, there's a small chance to **dodge incoming attacks** (this chance increases **with your level**).
+
+### ☠️ Game Over & Respawn
+
+- If your health reaches zero, a **Game Over screen** appears.
+- Press `R` to respawn at the center of the **main map**.
+- Upon respawn, you **lose all coins** collected so far, all other attributes (weapons, level, experience, etc.) **remain unchanged**.
 
 ---
 
