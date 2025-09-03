@@ -3,16 +3,16 @@ using namespace sf;
 
 void RunningState::update() {
 
-    gs.tilemap.spawnMonster(gs.player.getCurrentLevel(), gs.player.getPosition());
+    gs.tilemap->spawnMonster(gs.player.getCurrentLevel(), gs.player.getPosition());
 
     // Update weapon state
     gs.player.getWeapon().update();
 
     // Handle player attack
     bool attackSuccess = false;
-    if(gs.tilemap.isFightable()) {
+    if(gs.tilemap->isFightable()) {
         if(gs.player.isAttacking) {
-            attackSuccess = gs.player.attack(gs.collision, gs.tilemap.entities);
+            attackSuccess = gs.player.attack(gs.collision, gs.tilemap->entities);
         }
     }
 
@@ -22,21 +22,21 @@ void RunningState::update() {
         if(gs.move_directions[i])
         {
             
-            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.tilemap.entities);
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.tilemap->entities);
 
             // Update the view position to follow the player
             gs.view.setCenter(gs.player.get_position());
 
             // Update the tilemap to match the view
-            gs.tilemap.update(gs.view);
+            gs.tilemap->update(gs.view);
         }
     }
     
     // Update entities
-    if(!gs.tilemap.isFightable()) {
+    if(!gs.tilemap->isFightable()) {
 
         // Update NPCs
-        for(auto& entity : gs.tilemap.entities)
+        for(auto& entity : gs.tilemap->entities)
                 dynamic_cast<Npc&>(*entity.get()).update(gs.collision, gs.view, gs.player.getHitbox());
     } else {
 
@@ -44,17 +44,17 @@ void RunningState::update() {
         gs.player.checkStatus();
         
         // Update monsters
-        for(auto& entity : gs.tilemap.entities)
-            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap.positionToTile(gs.player.getPosition()), gs.view, gs.tilemap, gs.collision, gs.player);
+        for(auto& entity : gs.tilemap->entities)
+            dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap->positionToTile(gs.player.getPosition()), gs.view, *gs.tilemap.get(), gs.collision, gs.player);
 
         // Remove dead monsters
-        gs.tilemap.entities.erase(
-        remove_if(gs.tilemap.entities.begin(), gs.tilemap.entities.end(),
+        gs.tilemap->entities.erase(
+        remove_if(gs.tilemap->entities.begin(), gs.tilemap->entities.end(),
             [](const std::shared_ptr<Entity>& entity) {
                 Monster& monster = dynamic_cast<Monster&>(*entity.get());
                 return monster.getHealth() == 0;
             }),
-        gs.tilemap.entities.end()
+        gs.tilemap->entities.end()
         );
     }
 
@@ -73,7 +73,7 @@ void RunningState::draw(RenderWindow& window) const {
     
     window.setView(gs.view);
 
-    window.draw(gs.tilemap);
+    window.draw(*gs.tilemap.get());
 
     for(const auto& entity : gs.drawable_entities) {
         entity->draw(window);

@@ -16,14 +16,11 @@ class Player : public Entity
         float expForNew = level * 100;
         float currentExp = 0;
 
-        // Animation
-        sf::Clock animationClock;
-
         std::unique_ptr<Weapon> weapon;
 
     public:
 
-        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock(), weapon(std::make_unique<Hand>())
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), weapon(std::make_unique<Hand>())
         { 
             position = {0, 0}; 
             speed = 3;

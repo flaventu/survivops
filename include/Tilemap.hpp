@@ -65,6 +65,9 @@ class TileMap : public sf::Drawable, public sf::Transformable
             }
         }
 
+        void stopSpawnClock() { spawnMonsterClock.stop(); }
+        void restartSpawnClock() { spawnMonsterClock.start(); }
+
         // Getters
         const int getWidth() const { return width; }
         const int getHeight() const { return height; }

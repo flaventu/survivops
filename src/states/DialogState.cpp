@@ -38,7 +38,7 @@ void DialogState::draw(RenderWindow& window) const {
     window.setView(gs.view); // Set the view for the window
 
     // Draw the running state
-    window.draw(gs.tilemap);
+    window.draw(*gs.tilemap.get());
 
     for(const auto& entity : gs.drawable_entities) {
         entity->draw(window);

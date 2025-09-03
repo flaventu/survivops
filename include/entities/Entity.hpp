@@ -72,5 +72,17 @@ class Entity
             if(damageCooldown.getElapsedTime().asSeconds() >= 0.5f && !poisoned) entitySprite.setColor(sf::Color::White); 
         }
 
+        void stopAllClocks()
+        {
+            damageCooldown.stop();
+            poisonClock.stop();
+        }
+
+        void restartAllClocks()
+        {
+            damageCooldown.start();
+            poisonClock.start();
+        }
+
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}
 };
