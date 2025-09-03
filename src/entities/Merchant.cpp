@@ -43,13 +43,13 @@ string Merchant::speak() {
         case 0:
 
             // Shop logic
-            if(player.getMoney() < 150) {
-                message = "You need " + to_string(150 - player.getMoney()) + " more coins!";
+            if(player.getMoney() < findPrice()) {
+                message = "You need " + to_string(findPrice() - player.getMoney()) + " more coins!";
             } else {
                 Weapon* newWeapon = inventory.front().release();
                 inventory.pop();
                 message = "Great! Enjoy your new " + newWeapon->getName() + "!";
-                player.payMoney(150);
+                player.payMoney(findPrice());
                 player.changeWeapon(std::unique_ptr<Weapon>(newWeapon));
                 if(!inventory.empty())
                     dialogue[currentMessage][3] = "I have this " + inventory.front()->getName() + " for sale.";

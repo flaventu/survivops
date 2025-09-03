@@ -49,8 +49,8 @@ class Player : public Entity
 
         // Player state
         void upgradePlayer();
-        void respawn() { currentHealth = totalHealth; position = {0, 0}; };
-        
+        void respawn() { currentHealth = totalHealth; money = 0; entitySprite.setColor(sf::Color::White); };
+
         // UI utils
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };

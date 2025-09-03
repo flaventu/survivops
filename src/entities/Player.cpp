@@ -17,7 +17,6 @@ void Player::upgradePlayer() {
     power += 0.015f;
     dodge += 0.2f;
     expForNew = level * 100.f;
-    currentHealth = totalHealth; // Heal the player on level up
 
     entitySprite.setColor(Color::Blue);
 }

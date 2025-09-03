@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include "../GameState.hpp"
+#include "DeathState.hpp"
 
 // Running state class
 class RunningState : public IState {

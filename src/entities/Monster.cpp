@@ -113,6 +113,7 @@ void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, c
     }
 
     updateVisibility(view);
+    healing();
     if(isVisible()) updateUI();
     
 }

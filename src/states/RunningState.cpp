@@ -47,6 +47,11 @@ void RunningState::update() {
         for(auto& entity : gs.tilemap->entities)
             dynamic_cast<Monster&>(*entity.get()).update(gs.tilemap->positionToTile(gs.player.getPosition()), gs.view, *gs.tilemap.get(), gs.collision, gs.player);
 
+        // Check for player death
+        if(gs.player.getHealth() <= 0) {
+            gs.state = std::make_unique<DeathState>(gs);
+        }
+
         // Remove dead monsters
         gs.tilemap->entities.erase(
         remove_if(gs.tilemap->entities.begin(), gs.tilemap->entities.end(),

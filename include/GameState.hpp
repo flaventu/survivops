@@ -50,6 +50,7 @@ class GameState
                 tilemap->loadNpcs(npcs);
                 ui.updateMapTexture("assets/ui/main.png");
             } else {
+                player.restartHealing();
                 tilemap->entities.clear();
                 ui.updateMapTexture("assets/ui/arena.png");
             }

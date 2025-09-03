@@ -52,6 +52,8 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             }
             else if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.state = move(make_unique<PausedState>(game_state));
+            for(auto& directions : game_state.move_directions)
+                directions = false;
             break;
 
         case Keyboard::Key::Enter:
@@ -117,7 +119,17 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
                 }
             }
             break;
-                
+
+        case Keyboard::Key::R:
+            if(DeathState* deathState = dynamic_cast<DeathState*>(game_state.state.get()))
+            {
+                deathState->respawn();
+                game_state.state = move(make_unique<RunningState>(game_state));
+                for(auto& directions : game_state.move_directions)
+                    directions = false;
+            }
+            break;
+
     }
 }
 
