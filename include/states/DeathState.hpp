@@ -2,25 +2,23 @@
 #include "IState.hpp"
 #include "../GameState.hpp"
 
-// Paused state class
-class PausedState : public IState {
+// Death state class
+class DeathState : public IState {
 
     private:
 
         GameState& gs;
 
         sf::Font font;
-        sf::Text pausedText;
+        sf::Text deathText;
         sf::RectangleShape background;
         sf::Text instructionText;
 
-        void stopAllClocks();
-
     public:
 
-        PausedState(GameState& game_state);
+        DeathState(GameState& game_state);
 
-        void resume();
+        void respawn();
 
         void update() override;
         void draw(sf::RenderWindow&) const override;

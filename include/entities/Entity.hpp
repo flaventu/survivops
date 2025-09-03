@@ -29,6 +29,7 @@ class Entity
         float totalHealth;
         float currentHealth;
         sf::Clock damageCooldown;
+        sf::Clock healingClock;
 
         // Poison
         sf::Clock poisonClock;
@@ -65,11 +66,28 @@ class Entity
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }
         void heal(const float heal) { currentHealth += heal; if(currentHealth > totalHealth) currentHealth = totalHealth; };
+        void healing();
+        void restartHealing() { healingClock.restart(); };
         void takeDamage(const float); 
 
         void checkStatus() { 
             checkPoison();
             if(damageCooldown.getElapsedTime().asSeconds() >= 0.5f && !poisoned) entitySprite.setColor(sf::Color::White); 
+            healing();
+        }
+
+        void stopAllClocks()
+        {
+            damageCooldown.stop();
+            poisonClock.stop();
+            healingClock.stop();
+        }
+
+        void restartAllClocks()
+        {
+            damageCooldown.start();
+            poisonClock.start();
+            healingClock.start();
         }
 
         virtual void draw(sf::RenderWindow& window) const { window.draw(entitySprite);}

@@ -18,24 +18,24 @@ bool Collision::collision(const FloatRect& rect, const DIRECTIONS d, const float
     Vector2f bottomRight = { rect.position.x + HITBOX_SIZE + offset.x, rect.position.y + HITBOX_SIZE + offset.y };
 
     // Convert to tile coordinates
-    Vector2i tileTopLeft = tilemap.positionToTile(topLeft);
-    Vector2i tileBottomRight = tilemap.positionToTile(bottomRight);
+    Vector2i tileTopLeft = tilemap->positionToTile(topLeft);
+    Vector2i tileBottomRight = tilemap->positionToTile(bottomRight);
 
     // Check for out-of-bounds tiles
-    if (tileTopLeft.x < 0 || tileTopLeft.y < 0 || tileBottomRight.x >= tilemap.getWidth() || tileBottomRight.y >= tilemap.getHeight())
+    if (tileTopLeft.x < 0 || tileTopLeft.y < 0 || tileBottomRight.x >= tilemap->getWidth() || tileBottomRight.y >= tilemap->getHeight())
         return true;
 
     // Check collision based on direction
     switch (d)
     {
         case UP:
-            return tilemap.isSolid({tileTopLeft.x, tileTopLeft.y}) || tilemap.isSolid({tileBottomRight.x, tileTopLeft.y});
+            return tilemap->isSolid({tileTopLeft.x, tileTopLeft.y}) || tilemap->isSolid({tileBottomRight.x, tileTopLeft.y});
         case DOWN:
-            return tilemap.isSolid({tileTopLeft.x, tileBottomRight.y}) || tilemap.isSolid({tileBottomRight.x, tileBottomRight.y});
+            return tilemap->isSolid({tileTopLeft.x, tileBottomRight.y}) || tilemap->isSolid({tileBottomRight.x, tileBottomRight.y});
         case LEFT:
-            return tilemap.isSolid({tileTopLeft.x, tileTopLeft.y}) || tilemap.isSolid({tileTopLeft.x, tileBottomRight.y});
+            return tilemap->isSolid({tileTopLeft.x, tileTopLeft.y}) || tilemap->isSolid({tileTopLeft.x, tileBottomRight.y});
         case RIGHT:
-            return tilemap.isSolid({tileBottomRight.x, tileTopLeft.y}) || tilemap.isSolid({tileBottomRight.x, tileBottomRight.y});
+            return tilemap->isSolid({tileBottomRight.x, tileTopLeft.y}) || tilemap->isSolid({tileBottomRight.x, tileBottomRight.y});
     }
 
     return false;

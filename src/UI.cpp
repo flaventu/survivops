@@ -2,7 +2,7 @@
 using namespace sf;
 using namespace std;
 
-UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weaponLevel(font)
+UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weaponLevel(font), currentMapTexture("assets/ui/main.png"), currentMapSprite(currentMapTexture)
 {
     
     // Prepare the money text
@@ -59,6 +59,9 @@ UI::UI() : font("assets/fonts/arial.ttf"), moneyTab(font), levelTab(font), weapo
     playerAttackCircle.setFillColor(Color::Red);
     playerAttackCircle.setOutlineColor(Color::Black);
     playerAttackCircle.setOutlineThickness(1);
+
+    currentMapSprite.setOrigin({currentMapSprite.getLocalBounds().size.x / 2.f, currentMapSprite.getLocalBounds().size.y / 2.f});
+    currentMapSprite.setPosition({SCREEN_WIDTH - 48.f, 36.f});
 
     // Prepare the position of the UI elements
     moneyTab.setPosition({15.f, 10.f});
@@ -121,6 +124,7 @@ void UI::draw(RenderWindow& window) const {
     window.draw(levelTab);
     window.draw(levelBarBack);
     window.draw(levelBar);
+    window.draw(currentMapSprite);
     window.draw(healthBarBack); 
     window.draw(healthBar);
     window.draw(weaponBack);

@@ -4,7 +4,7 @@ using namespace std;
 
 Entity::Entity(const filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
     : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight), 
-      entityHitbox({position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET},{ HITBOX_SIZE, HITBOX_SIZE}), damageCooldown(), animationClock()
+      entityHitbox({position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET},{ HITBOX_SIZE, HITBOX_SIZE}), damageCooldown(), animationClock(), healingClock()
 {
     
     entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});
@@ -73,5 +73,14 @@ void Entity::animate()
     if(animationClock.getElapsedTime().asMilliseconds() > 200) {
         spriteNum = (spriteNum + 1) % 2; // Toggle between spriteNum 0 and 1
         animationClock.restart();
+    }
+}
+
+void Entity::healing()
+{
+    if(healingClock.getElapsedTime().asSeconds() >= 60.f) {
+        heal(totalHealth * 0.1f); // Heal 10% HP every minute
+        entitySprite.setColor(sf::Color::Green);
+        healingClock.restart();
     }
 }

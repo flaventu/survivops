@@ -6,11 +6,13 @@ class Collision {
 
     private:
 
-        TileMap& tilemap;
+        TileMap* tilemap;
 
     public:
 
-        Collision(TileMap& tilemap) : tilemap(tilemap) {}
+        Collision(TileMap& tilemap) : tilemap(&tilemap) {}
+
+        void changeTileMap(TileMap& newTileMap) { tilemap = &newTileMap;}
 
         bool collision(const sf::FloatRect&, const DIRECTIONS, const float) const; // Entity on Tilemap
         bool collision(const sf::FloatRect&, const DIRECTIONS, const float, const sf::FloatRect&) const; // Entity on Entity

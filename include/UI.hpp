@@ -24,11 +24,22 @@ class UI
 
         sf::CircleShape playerAttackCircle;
 
+        sf::Texture currentMapTexture;
+        sf::Sprite currentMapSprite;
+
         void setWeaponLevelColor(const int level);
 
     public:
 
         UI();
+
+        void updateMapTexture(const std::filesystem::path& path) 
+        { 
+            if(!currentMapTexture.loadFromFile(path)) {
+                throw std::runtime_error("Failed to load UI map texture from " + path.string());
+            }
+            currentMapSprite.setTexture(currentMapTexture); 
+        }
 
         void update(const Player&, const bool);
         void draw(sf::RenderWindow&) const;

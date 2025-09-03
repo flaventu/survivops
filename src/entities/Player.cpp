@@ -14,10 +14,8 @@ void Player::gainExp(const float exp) {
 void Player::upgradePlayer() {
     totalHealth += 0.8f;
     speed += 0.03f;
-    power += 0.015f;
     dodge += 0.2f;
     expForNew = level * 100.f;
-    currentHealth = totalHealth; // Heal the player on level up
 
     entitySprite.setColor(Color::Blue);
 }

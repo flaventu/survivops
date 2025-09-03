@@ -113,6 +113,7 @@ void Monster::update(const sf::Vector2i& playerPosition, const sf::View& view, c
     }
 
     updateVisibility(view);
+    healing();
     if(isVisible()) updateUI();
     
 }
@@ -130,4 +131,10 @@ void Monster::draw(sf::RenderWindow& window) const {
     window.draw(levelText);
     window.draw(healthBarBack);
     window.draw(healthBar);
+}
+
+void Monster::attack(Player& target) 
+{ 
+    if(rand() % 100 < target.getDodge()) return; // target dodges the attack
+    target.takeDamage(power); 
 }

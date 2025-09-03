@@ -9,26 +9,27 @@ class Player : public Entity
 
         // Attributes
         int level = 1;
-        float power = 5.f;
         float dodge = 5.f; // %
 
         int money = 0;
         float expForNew = level * 100;
         float currentExp = 0;
 
-        // Animation
-        sf::Clock animationClock;
+        Weapon* weapon;
 
-        std::unique_ptr<Weapon> weapon;
+        std::vector<std::unique_ptr<Weapon>> inventory;
+        int currentWeaponIndex = 1;
 
     public:
 
-        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE), animationClock(), weapon(std::make_unique<Hand>())
+        Player() : Entity("assets/entities/player/spritesheet.png", TILE_SIZE, TILE_SIZE)
         { 
             position = {0, 0}; 
             speed = 3;
             totalHealth = 20.f;
             currentHealth = totalHealth;
+            inventory.push_back(std::make_unique<Hand>());
+            weapon = inventory.back().get();
         }
 
         // Dialogue
@@ -38,22 +39,24 @@ class Player : public Entity
         // Combat
         bool isAttacking = false;
         bool attack(const Collision&, const std::vector<std::shared_ptr<Entity>>&);
+        const float getDodge() const { return dodge; };
 
         // Getters
         const float getHealth() const { return currentHealth; };
         const int getMoney() const { return money; };
-        Weapon& getWeapon() const { return *weapon.get(); };
+        Weapon& getWeapon() const { return *weapon; };
         
         // Setters
         void gainMoney(const int coins) { money += coins; };
         void payMoney(const int coins) { money -= coins; };
         void gainExp(const float);
-        void changeWeapon(std::unique_ptr<Weapon> newWeapon) { weapon = std::move(newWeapon); }
+        void changeWeapon() { weapon = inventory[currentWeaponIndex++ % inventory.size()].get(); }
+        void addWeapon(std::unique_ptr<Weapon> newWeapon) { inventory.push_back(std::move(newWeapon)); }
 
         // Player state
         void upgradePlayer();
-        void respawn() { currentHealth = totalHealth; position = {0, 0}; };
-        
+        void respawn() { currentHealth = totalHealth; money = 0; entitySprite.setColor(sf::Color::White); };
+
         // UI utils
         const int getCurrentLevel() const { return level; };
         const float getExpPerc() const { return currentExp/expForNew; };

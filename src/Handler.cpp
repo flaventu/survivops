@@ -46,10 +46,14 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
     switch (key.code)
     {
         case Keyboard::Key::Escape:
-            if(dynamic_cast<PausedState*>(game_state.state.get()))
+            if(auto state = dynamic_cast<PausedState*>(game_state.state.get())) {
+                state->resume();
                 game_state.state = move(make_unique<RunningState>(game_state));
+            }
             else if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.state = move(make_unique<PausedState>(game_state));
+            for(auto& directions : game_state.move_directions)
+                directions = false;
             break;
 
         case Keyboard::Key::Enter:
@@ -95,6 +99,42 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[RIGHT] = true;
             break;
+
+        case Keyboard::Key::F:
+            if(auto state = dynamic_cast<PausedState*>(game_state.state.get())) {
+                if(!game_state.tilemap->isFightable()) {
+                    game_state.changeMap("assets/maps/arena.png", "assets/maps/arena.csv", 2, true);
+                    state->resume();
+                    game_state.state = move(make_unique<RunningState>(game_state));
+                }
+            }
+            break;
+        
+        case Keyboard::Key::H:
+            if(auto state = dynamic_cast<PausedState*>(game_state.state.get())) {
+                if(game_state.tilemap->isFightable()) {
+                    game_state.changeMap("assets/maps/main.png", "assets/maps/main.csv", 8, false);
+                    state->resume();
+                    game_state.state = move(make_unique<RunningState>(game_state));
+                }
+            }
+            break;
+
+        case Keyboard::Key::R:
+            if(DeathState* deathState = dynamic_cast<DeathState*>(game_state.state.get()))
+            {
+                deathState->respawn();
+                game_state.state = move(make_unique<RunningState>(game_state));
+                for(auto& directions : game_state.move_directions)
+                    directions = false;
+            }
+            break;
+
+        case Keyboard::Key::C:
+            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                game_state.player.changeWeapon();
+            break;
+
     }
 }
 
