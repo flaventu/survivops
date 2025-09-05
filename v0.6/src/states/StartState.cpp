@@ -1,0 +1,10 @@
+#include "../../include/states/StartState.hpp"
+using namespace sf;
+
+void StartState::update() {
+    // Update game logic for the start state
+}
+
+void StartState::draw(RenderWindow& window) const {
+    // Draw the start state
+}

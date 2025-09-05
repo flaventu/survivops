@@ -1,3 +1,5 @@
+## ‼️This branch exists only to comply with the structure described in the exam guidelines.‼️
+
 # Survivops 🎮
 
 [![CI](https://github.com/flaventu/survivops/actions/workflows/ci.yml/badge.svg)](https://github.com/flaventu/survivops/actions/workflows/ci.yml)

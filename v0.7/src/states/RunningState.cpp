@@ -1,0 +1,48 @@
+#include "../../include/states/RunningState.hpp"
+using namespace sf;
+
+void RunningState::update() {
+
+    // Update player position
+    for(int i = 0; i < 4; i++) {
+        
+        if(gs.move_directions[i])
+        {
+            
+            gs.player.update(static_cast<DIRECTIONS>(i), gs.collision, gs.npcs);
+
+            // Update the view position to follow the player
+            gs.view.setCenter(gs.player.get_position());
+
+            // Update the tilemap to match the view
+            gs.tilemap.update(gs.view);
+        }
+    }
+    
+    // Update NPC positions
+    for(auto& npc : gs.npcs) {
+        npc->update(gs.collision, gs.view, gs.player.getHitbox());
+    }
+
+    // Sort the drawable entities based on their Y position
+    sort(gs.drawable_entities.begin(), gs.drawable_entities.end(), [](const Entity* a, const Entity* b) {
+        return a->get_position().y < b->get_position().y;
+    });
+
+    gs.ui.update(gs.player);
+
+}
+
+void RunningState::draw(RenderWindow& window) const {
+    
+    window.setView(gs.view);
+
+    window.draw(gs.tilemap);
+
+    for(const auto& entity : gs.drawable_entities) {
+        entity->draw(window);
+    }
+
+    window.setView(window.getDefaultView());
+    gs.ui.draw(window);
+}
