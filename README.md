@@ -1,4 +1,142 @@
-## ‼️This branch exists only to comply with the structure described in the exam guidelines.‼️
+# ‼️This branch exists only to comply with the structure described in the exam guidelines.‼️
+
+## V0.1
+
+### What's new 🆕
+
+- Set initial window settings
+- Handle window resizing
+- Configure tile-based window
+- Create game state with its respective states
+- Create player with animated textures/sprites
+- Handle movements
+- Manage the view/camera to follow the player
+
+### Demo 🎥
+
+![Demo_V0.1](/docs/v0.1.gif)
+
+## v0.2
+
+### What's new 🆕
+
+- Create the tilemap using a vertex array
+- Load the map from a CSV file
+- Optimize the tilemap by rendering only the tiles visible in the current view
+
+### Demo 🎥
+
+![Demo_V0.2](/docs/v0.2.gif)
+
+## v0.3
+
+### What's new 🆕
+
+- Create a simple map
+- Add a hitbox to the player
+- Implement solid objects and populate them on the map using a CSV file
+- Implement collisions with solid tiles and objects
+
+### Demo 🎥
+
+![Demo_V0.3](/docs/v0.3.gif)
+
+## v0.4
+
+### What's new 🆕
+
+- Add an abstract Entity class
+- Create collectible (pickup) objects
+- Implement an inventory system to store collected objects
+
+### Demo 🎥
+
+![Demo_V0.4](/docs/v0.4.gif)
+
+## v0.5
+
+### What's new 🆕
+
+- Add coins, health, and experience for the player
+- Implement a UI that displays the above (coins, health, experience) along with the inventory
+
+### Demo 🎥
+
+![Demo_V0.5](/docs/v0.5.gif)
+
+## v0.6
+
+### What's new 🆕
+
+- Refactor game state transitions using polymorphism
+- Load and manage all textures from a single texture atlas (previously, each asset had its own texture)
+- Create dedicated Collision and Handler classes
+- Remove pickable objects from the game
+- Simplify the TileMap, UI, Entity, and Player classes
+
+### Screenshot 📸
+
+![Screenshot_V0.5](/docs/class_diagram_v0.5.png)
+
+---
+
+![Screenshot_V0.6](/docs/class_diagram_v0.6.png)
+
+## 0.7
+
+### What's new 🆕
+
+- Create NPCs
+- Implement depth-ordered drawing and optimize NPC rendering
+- Handle collisions between the player and NPCs
+- Implement dialogue interactions with NPCs
+
+### Demo 🎥
+
+![Demo_V0.7](/docs/v0.7.gif)
+
+## 0.8
+
+### What's new 🆕
+
+- Create weapons with 5 upgrade levels
+- Add weapon display and cooldown indicator to the UI
+- Implement advanced dialogues with selectable options
+
+### Demo 🎥
+
+![Demo_V0.8](/docs/v0.8.gif)
+
+## 0.9
+
+### What's new 🆕
+
+- Dynamic management of entities on the map
+- Create monsters
+- Handle collisions between monsters and player (monster collision triggered by player’s weapon hit)
+- Add an “aiming reticle” for the player’s attack
+- Manage monster spawning
+- Implement simple chasing AI for monsters
+
+### Demo 🎥
+
+![Demo_V0.9](/docs/v0.9.gif)
+
+## 1.0
+
+### What's new 🆕
+
+- Add 2 maps (main map and arena)
+- New textures created by my lovely girlfriend
+- Implement graphics and logic for the pause menu
+- Instant map switching from the pause menu
+- Death and healing system
+- Graphical implementation of the start state
+- Inventory system for weapons
+
+### Demo 🎥
+
+![Demo_V1.0](/docs/v1.0.gif)
 
 # Survivops 🎮
 
