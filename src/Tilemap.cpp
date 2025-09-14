@@ -10,8 +10,8 @@ TileMap::TileMap(const filesystem::path& texture, const filesystem::path& map, c
         throw new Exception("Failed to load map from CSV file");
 
     // Map dimensions
-    width = m_tiles.size();
-    height = m_tiles[0].size();
+    width = static_cast<int>(m_tiles.size());
+    height = static_cast<int>(m_tiles[0].size());
     mapSize = {width * TILE_SIZE, height * TILE_SIZE};
 
     m_vertices.setPrimitiveType(PrimitiveType::Triangles);
@@ -76,8 +76,8 @@ void TileMap::update(const View& view)
 
             // Calculate the position of the tile in the world
             Vector2f position = tileToPosition({i, j});
-            int x = position.x;
-            int y = position.y;
+            float x = position.x;
+            float y = position.y;
 
             // Create two triangles for each tile
             Vertex* triangles = &m_vertices[vertexIndex];
@@ -185,7 +185,7 @@ void TileMap::spawnMonster(const int playerLevel, const Vector2f& playerPosition
     }
 }
 
-const int TileMap::chooseMonsterLevel(const int playerLevel) const {
+int TileMap::chooseMonsterLevel(const int playerLevel) const {
     // Choose a monster level based on the player's level
     int level;
     int roll = rand() % 100;

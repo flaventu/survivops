@@ -7,9 +7,9 @@ class StartState : public IState {
 
     private:
 
+        sf::Font font;
         sf::Texture titleTexture;
         sf::Sprite titleSprite;
-        sf::Font font;
         sf::Text titleText;
         sf::Clock clock;
 

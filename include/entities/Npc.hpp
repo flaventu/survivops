@@ -30,7 +30,7 @@ class Npc : public Entity
             { speed = 4; }
 
         // Getters
-        const int getAnswer() const { return answer; }
+        int getAnswer() const { return answer; }
         bool isOptionAvailable() const { return optionAvailable; }
 
         // Setters
@@ -39,7 +39,7 @@ class Npc : public Entity
 
         // Dialogue
         virtual std::string speak();
-        const bool isInDialogue() const { return inDialogue; }
+        bool isInDialogue() const { return inDialogue; }
         void startDialogue() { inDialogue = true; currentDialogueIndex = 0; }
 
         void update(const Collision&, const sf::View&, const sf::FloatRect&);

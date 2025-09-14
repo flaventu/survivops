@@ -11,7 +11,7 @@ class Blacksmith : public Npc
         void loadDialogue() override;
 
         // The price is based on the player's weapon level
-        const int findPrice() const {
+        int findPrice() const {
             return player.getWeapon().getLevel() * 50;
         }
 

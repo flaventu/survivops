@@ -23,7 +23,7 @@ int main()
 
     Vector2u last_window_size({SCREEN_WIDTH, SCREEN_HEIGHT}); // Last window size
 
-    srand((time(nullptr)));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     GameState game_state(std::make_unique<StartState>());
     
@@ -32,7 +32,7 @@ int main()
 
         // Handle events
         window.handleEvents(
-            [&](const Event::Closed& event) { window.close(); }, // close the window
+            [&](const Event::Closed&) { window.close(); }, // close the window
             [&](const Event::Resized& event) { Handler::handle_resize(event, window, last_window_size); }, // resize the window
             [&](const auto& event) { Handler::handle(event, game_state); } // handle other events
         );

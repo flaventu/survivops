@@ -12,9 +12,9 @@ class GameState
     public:
 
         std::unique_ptr<IState> state; // Pointer to the current state of the game (using smart pointers for automatic memory management)
-        sf::View view;
         Player player;
         std::unique_ptr<TileMap> tilemap;
+        sf::View view;
         UI ui;
         Collision collision;
         std::vector<std::shared_ptr<Entity>> npcs = {};

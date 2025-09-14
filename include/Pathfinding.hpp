@@ -41,7 +41,7 @@ struct Node {
 
 // Heuristic function for A* pathfinding (estimated cost to reach goal)
 inline float heuristic(const sf::Vector2i& a, const sf::Vector2i& b) {
-    return std::abs(a.x - b.x) + std::abs(a.y - b.y); // Manhattan distance for grid-based movement in 4 directions
+    return static_cast<float>(std::abs(a.x - b.x) + std::abs(a.y - b.y)); // Manhattan distance for grid-based movement in 4 directions
 }
 
 inline std::vector<sf::Vector2i> aStarPath(

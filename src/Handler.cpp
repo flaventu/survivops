@@ -48,12 +48,12 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
         case Keyboard::Key::Escape:
             if(auto state = dynamic_cast<PausedState*>(game_state.state.get())) {
                 state->resume();
-                game_state.state = move(make_unique<RunningState>(game_state));
+                game_state.state = std::make_unique<RunningState>(game_state);
             }
             else if(dynamic_cast<RunningState*>(game_state.state.get()))
-                game_state.state = move(make_unique<PausedState>(game_state));
-            for(auto& directions : game_state.move_directions)
-                directions = false;
+                game_state.state = std::make_unique<PausedState>(game_state);
+            for(auto& dir : game_state.move_directions)
+                dir = false;
             break;
 
         case Keyboard::Key::Enter:
@@ -62,7 +62,7 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             break;
 
         case Keyboard::Key::P:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.player.isAttacking = true;
             break;
 
@@ -81,22 +81,22 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             break;
 
         case Keyboard::Key::W:
-                if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+                if(dynamic_cast<RunningState*>(game_state.state.get()))
                     game_state.move_directions[UP] = true;
             break;
 
         case Keyboard::Key::S:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[DOWN] = true;
             break;
 
         case Keyboard::Key::A:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[LEFT] = true;
             break;
 
         case Keyboard::Key::D:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[RIGHT] = true;
             break;
 
@@ -105,7 +105,7 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
                 if(!game_state.tilemap->isFightable()) {
                     game_state.changeMap("assets/maps/arena.png", "assets/maps/arena.csv", 2, true);
                     state->resume();
-                    game_state.state = move(make_unique<RunningState>(game_state));
+                    game_state.state = std::make_unique<RunningState>(game_state);
                 }
             }
             break;
@@ -115,7 +115,7 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
                 if(game_state.tilemap->isFightable()) {
                     game_state.changeMap("assets/maps/main.png", "assets/maps/main.csv", 8, false);
                     state->resume();
-                    game_state.state = move(make_unique<RunningState>(game_state));
+                    game_state.state = std::make_unique<RunningState>(game_state);
                 }
             }
             break;
@@ -124,15 +124,18 @@ void Handler::handle(const Event::KeyPressed& key, GameState& game_state)
             if(DeathState* deathState = dynamic_cast<DeathState*>(game_state.state.get()))
             {
                 deathState->respawn();
-                game_state.state = move(make_unique<RunningState>(game_state));
-                for(auto& directions : game_state.move_directions)
-                    directions = false;
+                game_state.state = std::make_unique<RunningState>(game_state);
+                for(auto& dir : game_state.move_directions)
+                    dir = false;
             }
             break;
 
         case Keyboard::Key::C:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.player.changeWeapon();
+            break;
+
+        default:
             break;
 
     }
@@ -142,7 +145,7 @@ void Handler::handleEnterPressed(GameState& game_state)
 {
     // Startstate -> RunningState
     if(dynamic_cast<StartState*>(game_state.state.get()))
-        game_state.state = move(make_unique<RunningState>(game_state));
+        game_state.state = std::make_unique<RunningState>(game_state);
 
 
     // RunningState -> DialogState
@@ -152,7 +155,7 @@ void Handler::handleEnterPressed(GameState& game_state)
         if(game_state.player.dialogueActive)
         {
             Npc& npc = dynamic_cast<Npc&>(*game_state.player.currentNpc);
-            game_state.state = move(make_unique<DialogState>(game_state, npc));
+            game_state.state = std::make_unique<DialogState>(game_state, npc);
         }
     }
 
@@ -164,12 +167,12 @@ void Handler::handleEnterPressed(GameState& game_state)
         {
             game_state.player.dialogueActive = false;
             game_state.player.currentNpc = nullptr;
-            game_state.state = move(make_unique<RunningState>(game_state));
+            game_state.state = std::make_unique<RunningState>(game_state);
         } else {
             dialogState->advanceDialogue();
         }
-        for(auto& directions : game_state.move_directions)
-            directions = false;
+        for(auto& dir : game_state.move_directions)
+            dir = false;
     }
 }
 
@@ -179,27 +182,30 @@ void Handler::handle(const Event::KeyReleased& key, GameState& game_state)
     switch (key.code)
     {
         case Keyboard::Key::P:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.player.isAttacking = false;
             break;
         case Keyboard::Key::W:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[UP] = false;
             break;
 
         case Keyboard::Key::S:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[DOWN] = false;
             break;
 
         case Keyboard::Key::A:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[LEFT] = false;
             break;
 
         case Keyboard::Key::D:
-            if(RunningState* runningState = dynamic_cast<RunningState*>(game_state.state.get()))
+            if(dynamic_cast<RunningState*>(game_state.state.get()))
                 game_state.move_directions[RIGHT] = false;
+            break;
+
+        default:
             break;
     }
 }

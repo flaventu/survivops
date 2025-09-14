@@ -4,7 +4,7 @@ class Hand : public Weapon {
 
     public:
 
-        Hand() : Weapon("assets/weapons/hand.png", "Hand", 5, TILE_SIZE, 100) {}
+        Hand() : Weapon("assets/weapons/hand.png", "Hand", 5, TILE_SIZE, 100.f) {}
 
         void updateStats() override {
             damage += 1.25f; // level 5 => 10.00

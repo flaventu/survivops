@@ -4,7 +4,7 @@ using namespace std;
 
 Entity::Entity(const filesystem::path& textureFile, const int frameWidth, const int frameHeight) 
     : textureSheet(textureFile), entitySprite(textureSheet), frameWidth(frameWidth), frameHeight(frameHeight), 
-      entityHitbox({position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET},{ HITBOX_SIZE, HITBOX_SIZE}), damageCooldown(), animationClock(), healingClock()
+      entityHitbox({position.x - (HITBOX_SIZE / 2), position.y - (HITBOX_SIZE / 2) + HITBOX_OFFSET},{ HITBOX_SIZE, HITBOX_SIZE}), damageCooldown(), healingClock(), animationClock()
 {
     
     entitySprite.setOrigin({TILE_SIZE / 2.0f, TILE_SIZE / 2.0f});
@@ -42,7 +42,7 @@ void Entity::takeDamage(const float damage)
     if(currentHealth < 0) currentHealth = 0; 
 };
 
-void Entity::getPoisoned(const int damage) {
+void Entity::getPoisoned(const float damage) {
     if(!poisoned) {
         poisoned = true;
         poisonDamage = damage;

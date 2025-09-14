@@ -56,10 +56,10 @@ string Npc::speak() {
 }
 
 void Npc::nextDialogue() {
-    if(currentDialogueIndex == dialogue[currentMessage].size())
+    if(currentDialogueIndex == static_cast<int>(dialogue[currentMessage].size()))
     {
         inDialogue = false;
-        if(currentMessage < dialogue.size() - 1)
+        if(currentMessage < static_cast<int>(dialogue.size()) - 1)
             currentMessage++;
     }
 }
