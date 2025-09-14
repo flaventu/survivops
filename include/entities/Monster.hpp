@@ -26,8 +26,8 @@ class Monster : public Entity {
         Monster(const std::filesystem::path&, const int, const int, const int);
 
         // Getters
-        const float getPower() const { return power; };
-        const int getLevel() const { return level; };
+        float getPower() const { return power; };
+        int getLevel() const { return level; };
 
         virtual void attack(Player& target); 
 

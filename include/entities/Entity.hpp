@@ -4,26 +4,23 @@
 // Class to handle the entities
 class Entity
 {
-    private:
+    protected:
+
+        const sf::Texture textureSheet;
+        sf::Sprite entitySprite;
 
         // Frame dimensions
         const int frameWidth;
         const int frameHeight;
-
-        const sf::Texture textureSheet;
-
-        
-    protected:
-        
-        // Sprite variables
-        sf::Sprite entitySprite;
-        sf::FloatRect entityHitbox;
         
         // Movement variables
         DIRECTIONS direction = DOWN;
         sf::Vector2f position;
         float speed;
         int spriteNum = 0;
+
+        // Sprite variables
+        sf::FloatRect entityHitbox;
 
         // Health
         float totalHealth;
@@ -34,7 +31,7 @@ class Entity
         // Poison
         sf::Clock poisonClock;
         bool poisoned = false;
-        int poisonDamage;
+        float poisonDamage;
 
 
         void updateTextureRect(); // Update the texture rectangle for the sprite
@@ -52,16 +49,18 @@ class Entity
 
         Entity(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight);
 
+        virtual ~Entity() = default;
+
         // Getters
         const sf::Vector2f& get_position() const { return position; };
         const sf::FloatRect& getHitbox() const { return entityHitbox; }
-        const bool isVisible() const { return visible; }
-        const float getHealth() const { return currentHealth; }
+        bool isVisible() const { return visible; }
+        float getHealth() const { return currentHealth; }
         sf::Vector2f getPosition() const { return position; };
-        const DIRECTIONS getDirection() const { return direction; }
-        const float getHealthPerc() const { return currentHealth / totalHealth; };
-        const bool isPoisoned() const { return poisoned; };
-        void getPoisoned(const int);
+        DIRECTIONS getDirection() const { return direction; }
+        float getHealthPerc() const { return currentHealth / totalHealth; };
+        bool isPoisoned() const { return poisoned; };
+        void getPoisoned(const float);
 
         // Setters
         void setPosition(const sf::Vector2f& newPos) { position = newPos; }

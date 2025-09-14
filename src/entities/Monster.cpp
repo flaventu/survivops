@@ -5,7 +5,7 @@
 using namespace sf;
 
 Monster::Monster(const std::filesystem::path& textureFile, const int frameWidth, const int frameHeight, const int level)
-    : Entity(textureFile, frameWidth, frameHeight), moveClock(), pathClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont), level(level)
+    : Entity(textureFile, frameWidth, frameHeight), level(level), moveClock(), pathClock(), levelFont("assets/fonts/arial.ttf"), levelText(levelFont)
 {
     levelText.setCharacterSize(15);
     levelText.setFillColor(Color::White);

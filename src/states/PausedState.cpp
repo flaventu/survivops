@@ -15,7 +15,7 @@ PausedState::PausedState(GameState& game_state) : gs(game_state), font("assets/f
     pausedText.setOrigin({pausedText.getLocalBounds().size.x / 2, pausedText.getLocalBounds().size.y / 2});
     pausedText.setPosition({SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4});
 
-    background.setSize({SCREEN_WIDTH * 0.65, SCREEN_HEIGHT * 0.65});
+    background.setSize({SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.65f});
     background.setOrigin(background.getSize() / 2.f);
     background.setFillColor(Color(0, 0, 0, 150)); // Semi-transparent black
     background.setOutlineColor(Color::White);

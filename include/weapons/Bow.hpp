@@ -3,7 +3,7 @@
 class Bow : public Weapon {
 
     public:
-        Bow() : Weapon("assets/weapons/bow.png", "Bow", 10, TILE_SIZE * 1.4, 800) {}
+        Bow() : Weapon("assets/weapons/bow.png", "Bow", 10, TILE_SIZE * 1.4f, 800.f) {}
 
         void updateStats() override {
             damage += 2.5f; // level 5 => 20.00

@@ -12,7 +12,7 @@ class Player : public Entity
         float dodge = 5.f; // %
 
         int money = 0;
-        float expForNew = level * 100;
+        float expForNew = level * 100.f;
         float currentExp = 0;
 
         Weapon* weapon;
@@ -39,11 +39,11 @@ class Player : public Entity
         // Combat
         bool isAttacking = false;
         bool attack(const Collision&, const std::vector<std::shared_ptr<Entity>>&);
-        const float getDodge() const { return dodge; };
+        float getDodge() const { return dodge; };
 
         // Getters
-        const float getHealth() const { return currentHealth; };
-        const int getMoney() const { return money; };
+        float getHealth() const { return currentHealth; };
+        int getMoney() const { return money; };
         Weapon& getWeapon() const { return *weapon; };
         
         // Setters
@@ -58,8 +58,8 @@ class Player : public Entity
         void respawn() { currentHealth = totalHealth; money = 0; entitySprite.setColor(sf::Color::White); };
 
         // UI utils
-        const int getCurrentLevel() const { return level; };
-        const float getExpPerc() const { return currentExp/expForNew; };
+        int getCurrentLevel() const { return level; };
+        float getExpPerc() const { return currentExp/expForNew; };
 
         void update(const DIRECTIONS, const Collision&, const std::vector<std::shared_ptr<Entity>>&);
 };

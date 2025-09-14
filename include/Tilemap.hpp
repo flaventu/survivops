@@ -31,7 +31,7 @@ class TileMap : public sf::Drawable, public sf::Transformable
         const bool fightable;
         sf::Clock spawnMonsterClock;
         static constexpr int MAX_MONSTERS = 15;
-        const int chooseMonsterLevel(const int playerLevel) const;
+        int chooseMonsterLevel(const int playerLevel) const;
 
         void spawnEntity(Entity&, const sf::Vector2f&);
 
@@ -69,10 +69,10 @@ class TileMap : public sf::Drawable, public sf::Transformable
         void restartSpawnClock() { spawnMonsterClock.start(); }
 
         // Getters
-        const int getWidth() const { return width; }
-        const int getHeight() const { return height; }
+        int getWidth() const { return width; }
+        int getHeight() const { return height; }
         const sf::Vector2u& getMapSize() const { return mapSize; }
-        const bool isFightable() const { return fightable; }
+        bool isFightable() const { return fightable; }
 
         bool isSolid(const sf::Vector2i& tileNum) const { return m_tiles[tileNum.x][tileNum.y] >= solidTileNum; } 
 

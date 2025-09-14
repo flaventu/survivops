@@ -13,7 +13,7 @@ DeathState::DeathState(GameState& game_state) : gs(game_state), font("assets/fon
     deathText.setOrigin({deathText.getLocalBounds().size.x / 2, deathText.getLocalBounds().size.y / 2});
     deathText.setPosition({SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4});
 
-    background.setSize({SCREEN_WIDTH * 0.65, SCREEN_HEIGHT * 0.65});
+    background.setSize({SCREEN_WIDTH * 0.65f, SCREEN_HEIGHT * 0.65f});
     background.setOrigin(background.getSize() / 2.f);
     background.setFillColor(Color(255, 0, 0, 150)); // Semi-transparent red
     background.setOutlineColor(Color::White);
